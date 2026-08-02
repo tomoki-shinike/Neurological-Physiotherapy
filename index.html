@@ -283,6 +283,32 @@
     overflow-y: auto;
   }
 
+  /* ---------- Teaching policy link card ---------- */
+  .policy-card{
+    display:flex;
+    align-items:center;
+    gap: 16px;
+    margin-top: 40px;
+    padding: 20px 22px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .policy-card:hover{ background: var(--accent-soft); }
+  .policy-icon{
+    flex: 0 0 auto;
+    width: 22px; height: 22px;
+    color: var(--accent);
+  }
+  .policy-text{ flex: 1 1 auto; }
+  .policy-title{ font-size: 15.5px; font-weight: 700; }
+  .policy-desc{ font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .policy-path{ font-size: 11.5px; color: var(--ink-soft); flex: 0 0 auto; }
+
   /* ---------- Footer ---------- */
   .footer{
     margin-top: 56px;
@@ -290,8 +316,7 @@
     border-top: 1px solid var(--line);
     font-size: 13px;
     color: var(--ink-soft);
-  }
-  .footer-grid{
+  }  .footer-grid{
     display:grid;
     grid-template-columns: 100px 1fr;
     gap: 8px 16px;
@@ -355,11 +380,13 @@
   </nav>
 
   <div class="note">
-    <strong>使い方:</strong> 各回をクリックすると「講義スライド(PDF)」「配布資料」「要点のまとめ」のリンクが開きます。
-    各疾患の最後にある「参考文献・ガイドライン」を開くと、その疾患に関する文献が一覧表示されます(多い場合は枠内スクロール)。<br><br>
+    <strong>使い方:</strong> 各回をクリックすると「講義スライド(PDF)」「配布資料」「要点のまとめ」「確認テスト(国試過去問ベース)」のリンクが開きます。
+    各疾患の最後にある「振り返りシート」「参考文献・ガイドライン」を開くと、それぞれの資料が一覧表示されます(ページ数・文献数が多い場合は枠内スクロール)。<br><br>
     リンク先は現時点ではダミーのパス(<code>materials/フォルダ名/回-種別.pdf</code>)です。
     GitHubリポジトリ内に同じフォルダ構成でファイルを置くと、そのままリンクが機能します。<br><br>
-    <strong>各回のサブテーマについて:</strong> 現時点でいただいた「押さえたいポイント」をもとにした暫定案です。内容を詰める際に自由に書き換えてください。
+    <strong>振り返りシートについて:</strong> A4縦1枚〜2枚程度を想定していますが、疾患ごとにボリュームが異なるため、ページ数はリンクを増減して調整してください。個人情報は含まれない前提のため、他の資料と同じ公開範囲(全体公開)で問題ありません。<br><br>
+    <strong>各回のサブテーマについて:</strong> 現時点でいただいた「押さえたいポイント」をもとにした暫定案です。内容を詰める際に自由に書き換えてください。<br><br>
+    <strong>授業の方針について:</strong> ページ最下部(フッター手前)に「この講義で意識している方針(PDF)」へのリンクを設置しています。<code>teaching_policy.pdf</code> をHTMLと同じ階層(リポジトリのルート)に置くとリンクします。
   </div>
 
   <section class="disease" id="parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
@@ -391,6 +418,10 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">01_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/01_parkinson/01_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">01_test.pdf</span>
+            </a>
           </div>
         </div>
       </div>
@@ -417,6 +448,10 @@
             <a class="res-link" href="materials/01_parkinson/02_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">02_summary.pdf</span>
+            </a>
+            <a class="res-link" href="materials/01_parkinson/02_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">02_test.pdf</span>
             </a>
           </div>
         </div>
@@ -445,6 +480,10 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">03_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/01_parkinson/03_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">03_test.pdf</span>
+            </a>
           </div>
         </div>
       </div>
@@ -472,7 +511,29 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">04_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/01_parkinson/04_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">04_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/01_parkinson/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <a class="res-link sub" href="materials/01_parkinson/worksheet/worksheet_2.pdf">
+            <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -493,7 +554,7 @@
           <a class="res-link sub" href="materials/01_parkinson/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -528,6 +589,10 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">05_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/02_scd/05_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">05_test.pdf</span>
+            </a>
           </div>
         </div>
       </div>
@@ -555,7 +620,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">06_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/02_scd/06_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">06_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/02_scd/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -576,7 +660,7 @@
           <a class="res-link sub" href="materials/02_scd/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -611,7 +695,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">07_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/03_msa/07_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">07_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/03_msa/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -632,7 +735,7 @@
           <a class="res-link sub" href="materials/03_msa/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -667,7 +770,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">08_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/04_mg/08_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">08_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/04_mg/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -688,7 +810,7 @@
           <a class="res-link sub" href="materials/04_mg/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -723,6 +845,10 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">09_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/05_gbs/09_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">09_test.pdf</span>
+            </a>
           </div>
         </div>
       </div>
@@ -750,7 +876,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">10_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/05_gbs/10_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">10_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/05_gbs/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -771,7 +916,7 @@
           <a class="res-link sub" href="materials/05_gbs/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -806,6 +951,10 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">11_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/06_ms/11_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">11_test.pdf</span>
+            </a>
           </div>
         </div>
       </div>
@@ -833,7 +982,29 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">12_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/06_ms/12_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">12_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/06_ms/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <a class="res-link sub" href="materials/06_ms/worksheet/worksheet_2.pdf">
+            <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -854,7 +1025,7 @@
           <a class="res-link sub" href="materials/06_ms/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -889,7 +1060,29 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">13_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/07_als/13_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">13_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/07_als/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <a class="res-link sub" href="materials/07_als/worksheet/worksheet_2.pdf">
+            <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -910,7 +1103,7 @@
           <a class="res-link sub" href="materials/07_als/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -945,7 +1138,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">14_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/08_md/14_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">14_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/08_md/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -966,7 +1178,7 @@
           <a class="res-link sub" href="materials/08_md/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -1001,7 +1213,26 @@
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">15_summary.pdf</span>
             </a>
+            <a class="res-link" href="materials/09_review/15_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">確認テスト(国試過去問)</span><span class="res-path mono">15_test.pdf</span>
+            </a>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <span class="refs-title">振り返りシート</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner">
+          <a class="res-link sub" href="materials/09_review/worksheet/worksheet_1.pdf">
+            <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+          </a>
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
@@ -1022,11 +1253,20 @@
           <a class="res-link sub" href="materials/09_review/references/reference_3.pdf">
             <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーし、reference_4.pdf のように増やしてください -->
+          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
     </div>
   </section>
+
+  <a class="policy-card" href="teaching_policy.pdf">
+    <svg class="policy-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="policy-text">
+      <div class="policy-title">この講義で意識している方針(PDF)</div>
+      <div class="policy-desc">授業の考え方・構成上の工夫についてまとめた指導方針です</div>
+    </span>
+    <span class="policy-path mono">teaching_policy.pdf</span>
+  </a>
 
   <footer class="footer">
     <dl class="footer-grid">
