@@ -293,6 +293,32 @@
   }
   .callout-note{ font-style: italic; color: var(--ink-soft); }
 
+  .callout-point{
+    margin: 16px 0 4px;
+    padding: 14px 16px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .callout-point .callout-label{ color: var(--accent); }
+  .callout-point ul{ list-style: disc; margin: 6px 0 0; padding-left: 20px; }
+  .callout-point li{ margin: 4px 0; }
+
+  .lecture-block{ margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); }
+  .lecture-block:first-of-type{ margin-top: 10px; border-top: none; padding-top: 0; }
+  .lecture-label{
+    display:inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--dot);
+    background: var(--bg-tint);
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+
   @media (max-width: 560px){
     .wrap{ padding: 0 16px 72px; }
     .tabbar-inner{ padding: 0 16px; }
@@ -384,7 +410,7 @@
           <span class="session-num mono">01</span>
           <span class="session-text">
             <div class="session-theme">パーキンソン病①</div>
-            <div class="session-desc">病態・診断・薬物治療(on-off現象を含む)</div>
+            <div class="session-desc">病態・診断・薬物治療・デバイス治療</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -415,7 +441,7 @@
           <span class="session-num mono">02</span>
           <span class="session-text">
             <div class="session-theme">パーキンソン病②</div>
-            <div class="session-desc">評価(UPDRS、姿勢反射障害、すくみ足の評価など)</div>
+            <div class="session-desc">運動症状と非運動症状について、栄養管理</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -446,7 +472,7 @@
           <span class="session-num mono">03</span>
           <span class="session-text">
             <div class="session-theme">パーキンソン病③</div>
-            <div class="session-desc">運動療法(大きい動きを意識した運動療法、すくみ足への対応)</div>
+            <div class="session-desc">理学療法評価、リハビリ実践part1</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -477,7 +503,7 @@
           <span class="session-num mono">04</span>
           <span class="session-text">
             <div class="session-theme">パーキンソン病④</div>
-            <div class="session-desc">転倒予防・鑑別疾患(PSP/CBDとの鑑別を10〜15分程度で紹介)</div>
+            <div class="session-desc">リハビリ実践part2、歩行介助、「Parkinson病」の復習</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1254,7 +1280,8 @@
 
     <footer class="footer">
       <dl class="footer-grid">
-        <dt>教科書・教材</dt><dd>神経理学療法学(医歯薬出版株式会社)を参考図書の一つとして使用(必須ではなく、ガイドライン・文献も適宜参照)</dd>
+        <dt>教科書</dt><dd>病気がみえる vol.7 脳・神経(株式会社メディックメディア)</dd>
+        <dt>教材</dt><dd>理学療法アクティブ・ラーニング・テキスト 神経障害理学療法学/イラストでわかる中枢神経障害理学療法/パーキンソン病診療ガイドライン2018/理学療法ガイドライン第2版(第三章 神経難病理学療法ガイドライン)</dd>
         <dt>評価基準</dt><dd>期末試験</dd>
         <dt>評価率</dt><dd>100%</dd>
         <dt>その他</dt><dd>内容・コマ配分は今後変更の可能性あり(現時点の暫定案)</dd>
@@ -1281,12 +1308,147 @@
   <section class="topic" id="outline-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
     <button class="topic-trigger">
       <span class="topic-name">パーキンソン病<span class="topic-meta">(4コマ)</span></span>
-      <span class="status-badge">準備中</span>
+      
       <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
-        <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
+        <ul class="outline">
+          <li class="l1">パーキンソン病とは</li>
+        </ul>
+
+        <div class="lecture-block">
+          <span class="lecture-label">講義1</span>
+          <ul class="outline">
+            <li class="l1">病態
+              <ul class="outline">
+                <li class="l2">四大症状(安静時振戦、無動、固縮、姿勢反射障害)</li>
+                <li class="l2">Braak仮説から理解する多彩な症状
+                  <div class="callout">
+                    <span class="callout-label">動画</span>
+                    動画で理解を深める
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li class="l1">診断や類似疾患との鑑別:診療ガイドラインより
+              <ul class="outline">
+                <li class="l2">脳画像の評価、DAT-scan</li>
+                <li class="l2">Hoehn&amp;Yahrの重症度分類</li>
+              </ul>
+            </li>
+            <li class="l1">大脳基底核の機能について</li>
+            <li class="l1">薬物治療(L-dopaとアゴニストの使い分け、副作用の理解)</li>
+            <li class="l1">デバイス治療(DBS、ヴィアレブなど)
+              <div class="callout callout-note">
+                <span class="callout-label">補足</span>
+                視床下核の解剖学的位置の理解:脳画像の理解の確認
+              </div>
+            </li>
+            <li class="l1">本日の復習</li>
+          </ul>
+        </div>
+
+        <div class="lecture-block">
+          <span class="lecture-label">講義2</span>
+          <ul class="outline">
+            <li class="l1">前回のおさらい</li>
+            <li class="l1">症状の特徴と対処
+              <div class="callout">
+                <span class="callout-label">動画</span>
+                動画で理解を深める
+              </div>
+            </li>
+            <li class="l1">リハビリに期待される効果</li>
+            <li class="l1">特徴的な問題と対処 - 運動症状に対して -
+              <ul class="outline">
+                <li class="l2">起き上がり動作、起立動作、歩行(小刻み歩行、突進歩行、すくみ足)</li>
+                <li class="l2">外部cue(床のline、音刺激)</li>
+              </ul>
+            </li>
+            <li class="l1">予後、転倒リスク</li>
+            <li class="l1">特徴的な問題と対処 - 非運動症状に対して -
+              <ul class="outline">
+                <li class="l2">便秘、血圧変動、構音障害、嚥下障害など</li>
+              </ul>
+            </li>
+            <li class="l1">栄養管理
+              <ul class="outline">
+                <li class="l2">注意する栄養素(ドーパミン吸収との競合)、摂取すべき栄養素、エネルギーの管理</li>
+              </ul>
+            </li>
+            <li class="l1">本日の復習</li>
+          </ul>
+        </div>
+
+        <div class="lecture-block">
+          <span class="lecture-label">講義3</span>
+          <ul class="outline">
+            <li class="l1">前回のおさらい</li>
+            <li class="l1">理学療法評価について
+              <ul class="outline">
+                <li class="l2">UPDRS</li>
+              </ul>
+            </li>
+            <li class="l1">環境面でのサポート方法
+              <ul class="outline">
+                <li class="l2">家屋環境でのチェックポイント、アドバイス内容、利用したい福祉用具</li>
+                <li class="l2">「福祉住宅環境コーディネーター」の紹介</li>
+                <li class="l2">ご家族への説明(長期的に病気と関わる上でとても重要)</li>
+              </ul>
+            </li>
+            <li class="l1">リハビリテーションの「実践①」(パーキンソン病に特化したもの)
+              <ul class="outline">
+                <li class="l2">LSVTの紹介、ボクシングメニュー、卓球、水中運動、太極拳など</li>
+                <li class="l2">「LSVT&reg;BIG認定療法士、パーキンソン病療養指導士」などの資格紹介
+                  <div class="callout">
+                    <span class="callout-label">動画</span>
+                    動画で理解を深める
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li class="l1">難病指定の制度について</li>
+            <li class="l1">本日の復習</li>
+          </ul>
+        </div>
+
+        <div class="lecture-block">
+          <span class="lecture-label">講義4</span>
+          <ul class="outline">
+            <li class="l1">前回のおさらい</li>
+            <li class="l1">リハビリテーションの「実践②」
+              <ul class="outline">
+                <li class="l2">臥位で固縮の評価</li>
+              </ul>
+            </li>
+            <li class="l1">歩行介助の「実践」
+              <ul class="outline">
+                <li class="l2">歩行開始時の誘導方法、歩行時の介助(歩幅の調整方法)、介助者への注意点、視線の誘導、目標物の指示方法</li>
+                <li class="l2">重心の移動範囲、体幹回旋の角度、上肢swingについての考え方など</li>
+              </ul>
+            </li>
+            <li class="l1">パーキンソン病の講義全体の復習</li>
+          </ul>
+        </div>
+
+        <div class="callout callout-point">
+          <span class="callout-label">POINT</span>
+          <ul>
+            <li>パーキンソン病の病理を理解することで、多彩な症状を「暗記」するのではなく理解してイメージできるようになる
+              <ul>
+                <li>パーキンソン病パンデミックといわれるほど今後増加することが予想されており、遭遇する頻度も高いためここをおさえておくことは非常に重要</li>
+              </ul>
+            </li>
+            <li>大脳基底核の機能を理解することで脳血管疾患に対する理解も深めることができる</li>
+            <li>鑑別のための脳画像の評価も他の疾患の理解につながる</li>
+            <li>理学療法介入が実際にできることまで目指す
+              <ul>
+                <li>特に起居動作の評価・治療(体位変換の介助方法も含めて)、起立動作、歩行介入の部分は実践できることを目指す</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -1336,15 +1498,36 @@
           </li>
           <li class="l1">MSA-P(線条体黒質変性症)について
             <ul class="outline">
-              <li class="l2">①好発年齢、②症状(小脳の機能を踏まえて)、③確定診断、④治療方法</li>
+              <li class="l2">①好発年齢、②症状(パーキンソニズムについて)、③確定診断、④治療方法</li>
+              <li class="l2">Parkinson病との違い(Parkinson病への理解度を再確認)
+                <ul class="outline">
+                  <li class="l2">症状に左右差がない、安静時振戦が目立たない、Parkinson病よりも進行が速い</li>
+                  <li class="l2">小脳症状が出現する、MIBG心筋シンチグラフィで初期には取り込み低下はみられない、L-dopaに対する反応が低いなど</li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="l1">シャイドレーガー症候群について
             <ul class="outline">
-              <li class="l2">①好発年齢、②症状(小脳の機能を踏まえて)、③確定診断、④治療方法</li>
+              <li class="l2">①好発年齢、②症状、③確定診断、④治療方法</li>
+              <li class="l2">自律神経症状とは?
+                <ul class="outline">
+                  <li class="l2">注意点(起立性低血圧に対するリスク管理など)や介入方法</li>
+                </ul>
+              </li>
             </ul>
           </li>
         </ul>
+
+        <div class="callout callout-point">
+          <span class="callout-label">POINT</span>
+          <ul>
+            <li>複雑な名称にまどわされず、まず分類を整理すること</li>
+            <li>「診断」するわけではないので、どのような症状が出るのかを理解し、それに対するリハビリの評価・方針を考えられることが重要</li>
+            <li>MSA-Pについては、Parkinson病との違いを理解することで、Parkinson病の理解も深められる</li>
+            <li>シャイドレーガー症候群については、自律神経症状(起立性低血圧)への対応も理解するきっかけとする</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -1485,7 +1668,11 @@
       tab.classList.add('active');
       document.getElementById(tab.dataset.view).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' });
-      history.replaceState(null, '', '#' + tab.dataset.view);
+      try {
+        history.replaceState(null, '', '#' + tab.dataset.view);
+      } catch (e) {
+        // プレビュー環境(about:srcdoc等)ではURL履歴を書き換えられないため無視する
+      }
     });
   });
 
