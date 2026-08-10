@@ -439,6 +439,18 @@
     background: var(--paper); border: 1px dashed var(--line); border-radius: 8px;
   }
 
+  .case-image-wrap{ position: relative; margin-bottom: 14px; }
+  .case-image{
+    display: block; width: 100%; max-height: 240px; object-fit: cover;
+    border-radius: 10px; background: var(--paper);
+  }
+  .case-image-placeholder{
+    display: none; color: var(--ink-soft); font-size: 13px; padding: 32px 14px;
+    background: var(--paper); border: 1px dashed var(--line); border-radius: 10px; text-align: center;
+  }
+  .case-image-wrap.missing .case-image{ display: none; }
+  .case-image-wrap.missing .case-image-placeholder{ display: block; }
+
   ul.outline{ list-style: none; margin: 0; padding: 0; }
   li.l1{ font-size: 14.5px; font-weight: 700; margin: 12px 0 6px; padding-left: 14px; position: relative; }
   li.l1::before{
@@ -1607,6 +1619,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/parkinson.webp" alt="パーキンソン病 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/parkinson.webp)</div>
+        </div>
+
         <ul class="outline">
           <li class="l1">パーキンソン病とは</li>
         </ul>
@@ -1760,6 +1777,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/scd_msa.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/scd_msa.webp)</div>
+        </div>
+
         <ul class="outline">
           <li class="l1">脊髄小脳変性症とは
             <span class="term-tag">SCD: Spinocerebellar Degeneration</span>
@@ -1839,6 +1861,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/mg.webp" alt="重症筋無力症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
+        </div>
+
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
       </div>
     </div>
@@ -1852,6 +1879,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/gbs.webp" alt="ギラン・バレー症候群 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
+        </div>
+
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
       </div>
     </div>
@@ -1865,6 +1897,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/ms.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/ms.webp)</div>
+        </div>
+
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
       </div>
     </div>
@@ -1878,6 +1915,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/als.webp" alt="筋萎縮性側索硬化症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/als.webp)</div>
+        </div>
+
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
       </div>
     </div>
@@ -1891,6 +1933,11 @@
     </button>
     <div class="topic-panel">
       <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/md.webp" alt="筋ジストロフィー 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/md.webp)</div>
+        </div>
+
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
       </div>
     </div>
