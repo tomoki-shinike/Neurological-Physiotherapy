@@ -71,11 +71,11 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(20,24,28,0.15) 0%, rgba(20,24,28,0.78) 100%);
+    background: linear-gradient(180deg, rgba(20,24,28,0.75) 0%, rgba(20,24,28,0.15) 45%, rgba(20,24,28,0.35) 100%);
   }
   .hero-content{
     position: absolute;
-    left: 0; right: 0; bottom: 28px;
+    left: 0; right: 0; top: 36px;
     padding: 0 24px;
     max-width: 880px;
     margin: 0 auto;
@@ -452,14 +452,6 @@
       <button class="rhythm-tick" style="height:22px;background:var(--c-tbd)" data-target="plan-tbd" aria-label="第15回へ"></button>
     </div>
     </nav>
-
-    <div class="note">
-      <strong>使い方:</strong> 各回をクリックすると「講義スライド(PDF)」「配布資料」「要点のまとめ」「確認テスト(国試過去問ベース)」のリンクが開きます。
-      各項目の最後にある「振り返りシート」「参考文献・ガイドライン」を開くと、それぞれの資料が一覧表示されます(多い場合は枠内スクロール)。<br><br>
-      リンク先は現時点ではダミーのパス(<code>materials/フォルダ名/回-種別.pdf</code>)です。GitHubリポジトリ内に同じフォルダ構成でファイルを置くと、そのままリンクが機能します。<br><br>
-      <strong>脊髄小脳変性症について:</strong> 多系統萎縮症(MSA)を含めて2コマにまとめました。空いた1コマは「⑨(未定・空きコマ)」として仮置きしています。<br><br>
-      <strong>各回のサブテーマについて:</strong> 現時点でいただいた内容をもとにした暫定案です。内容を詰める際に自由に書き換えてください。
-    </div>
 
   <section class="disease" id="plan-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
     <div class="disease-head">
@@ -1460,11 +1452,6 @@
       <h1 class="display">授業内容アウトライン</h1>
       <p class="subtitle">各項目をクリックすると、現時点で考えている授業内容の目次が展開します</p>
     </header>
-
-    <div class="note">
-      <strong>このページについて:</strong> 「講義計画」タブの資料リンクと同じ9項目構成です。ここは授業の中身そのものを整理するための作業用ビューで、
-      内容が固まったら講義スライドの構成案としてそのまま使えます。「準備中」の項目は、内容が決まり次第追記していきます。
-    </div>
 
   <section class="topic" id="outline-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
     <button class="topic-trigger">
