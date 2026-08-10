@@ -120,7 +120,8 @@
     gap: 8px;
   }
   .tab-btn{
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -134,6 +135,11 @@
     color: var(--ink-soft);
     text-align: left;
     transition: border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .tab-btn .tab-label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .tab-btn .tab-num{
     font-size: 11px;
@@ -151,6 +157,88 @@
   }
   .tab-btn.active .tab-num{ color: var(--accent); }
   .tab-btn:not(.active):hover{ border-color: var(--ink-soft); }
+
+  .menu-btn{
+    flex: 0 0 auto;
+    width: 42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .menu-btn:hover{ border-color: var(--ink-soft); }
+  .menu-btn svg{ width: 18px; height: 18px; }
+  .menu-btn[aria-expanded="true"]{ border-color: var(--accent); background: var(--accent-soft); }
+
+  .menu-panel{
+    position: fixed;
+    top: 68px;
+    right: max(24px, calc((100vw - 880px) / 2 + 24px));
+    width: 280px;
+    max-height: min(70vh, 560px);
+    overflow-y: auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+    padding: 10px;
+    z-index: 20;
+    display: none;
+  }
+  .menu-panel.open{ display: block; }
+  .menu-group{ margin-bottom: 6px; }
+  .menu-group + .menu-group{ margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .menu-group-title{
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    padding: 6px 10px 4px;
+  }
+  .menu-link{
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .menu-link:hover{ background: var(--accent-soft); }
+
+  .to-top-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .18s ease, transform .18s ease, border-color .15s ease;
+  }
+  .to-top-btn.visible{ opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .to-top-btn:hover{ border-color: var(--accent); }
+  .to-top-btn svg{ width: 20px; height: 20px; }
+
+  @media (max-width: 560px){
+    .menu-panel{ right: 16px; left: 16px; width: auto; }
+    .to-top-btn{ right: 16px; bottom: 16px; }
+  }
 
   .view{ display: none; }
   .view.active{ display: block; }
@@ -403,19 +491,49 @@
     </button>
     <button class="tab-btn" data-view="view-outline">
       <span class="tab-num mono">02</span>
-      <span class="tab-label">授業内容アウトライン</span>
+      <span class="tab-label">授業内容</span>
+    </button>
+    <button class="menu-btn" id="menuBtn" aria-label="メニュー" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
   </div>
 </div>
+
+<div class="menu-panel" id="menuPanel">
+  <div class="menu-group">
+    <div class="menu-group-title">01　講義計画(資料)</div>
+    <a class="menu-link" data-view="view-plan" href="#plan-parkinson">パーキンソン病</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-mg">重症筋無力症</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-gbs">ギラン・バレー症候群</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-ms">多発性硬化症／視神経脊髄炎</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-als">筋萎縮性側索硬化症</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-md">筋ジストロフィー</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-review">総復習</a>
+    <a class="menu-link" data-view="view-plan" href="#plan-tbd">(未定・空きコマ)</a>
+  </div>
+  <div class="menu-group">
+    <div class="menu-group-title">02　授業内容</div>
+    <a class="menu-link" data-view="view-outline" href="#outline-parkinson">パーキンソン病</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-mg">重症筋無力症</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-gbs">ギラン・バレー症候群</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-ms">多発性硬化症／視神経脊髄炎</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-als">筋萎縮性側索硬化症</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-md">筋ジストロフィー</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-review">総復習</a>
+    <a class="menu-link" data-view="view-outline" href="#outline-tbd">(未定・空きコマ)</a>
+  </div>
+</div>
+
+<button class="to-top-btn" id="toTopBtn" aria-label="ページトップに戻る">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
 
 <div class="wrap">
 
   <!-- ========================= VIEW 1: 講義計画 ========================= -->
   <div class="view active" id="view-plan">
-
-    <header class="masthead">
-      <p class="subtitle">全15回・90分講義　/　9項目(ボリュームに応じてコマ数を配分)</p>
-    </header>
 
     <nav class="rhythm" aria-label="全15回のナビゲーション">
     <div class="rhythm-group" data-target="plan-parkinson">
@@ -1437,7 +1555,7 @@
         <dt>教材</dt><dd>理学療法アクティブ・ラーニング・テキスト 神経障害理学療法学/イラストでわかる中枢神経障害理学療法/パーキンソン病診療ガイドライン2018/理学療法ガイドライン第2版(第三章 神経難病理学療法ガイドライン)</dd>
         <dt>評価基準</dt><dd>期末試験</dd>
         <dt>評価率</dt><dd>100%</dd>
-        <dt>その他</dt><dd>内容・コマ配分は今後変更の可能性あり(現時点の暫定案)</dd>
+        <dt>その他</dt><dd>全15回・90分講義</dd>
       </dl>
       <p class="credit">三宅リハビリテーション病院リハビリテーション課 / 神経理学療法学担当</p>
     </footer>
@@ -1448,9 +1566,7 @@
   <div class="view" id="view-outline">
 
     <header class="masthead">
-      <div class="eyebrow">神経・筋疾患理学療法　講義内容 目次(作業用)</div>
-      <h1 class="display">授業内容アウトライン</h1>
-      <p class="subtitle">各項目をクリックすると、現時点で考えている授業内容の目次が展開します</p>
+      <div class="eyebrow">神経・筋疾患理学療法　講義内容</div>
     </header>
 
   <section class="topic" id="outline-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
@@ -1863,6 +1979,56 @@
       if(target){ target.click(); }
     }
   })();
+
+  /* ---------- Hamburger menu ---------- */
+  var menuBtn = document.getElementById('menuBtn');
+  var menuPanel = document.getElementById('menuPanel');
+
+  function closeMenu(){
+    menuPanel.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+  function openMenu(){
+    menuPanel.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  menuBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    if(menuPanel.classList.contains('open')){ closeMenu(); } else { openMenu(); }
+  });
+  document.addEventListener('click', function(e){
+    if(menuPanel.classList.contains('open') && !menuPanel.contains(e.target) && e.target !== menuBtn){
+      closeMenu();
+    }
+  });
+
+  document.querySelectorAll('.menu-link').forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var viewId = link.dataset.view;
+      var targetId = link.getAttribute('href').replace('#', '');
+      var tabBtn = document.querySelector('.tab-btn[data-view="' + viewId + '"]');
+      if(tabBtn && !tabBtn.classList.contains('active')){
+        tabBtn.click();
+      }
+      closeMenu();
+      setTimeout(function(){
+        var target = document.getElementById(targetId);
+        if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      }, 30);
+    });
+  });
+
+  /* ---------- Back-to-top button ---------- */
+  var toTopBtn = document.getElementById('toTopBtn');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 400){ toTopBtn.classList.add('visible'); }
+    else { toTopBtn.classList.remove('visible'); }
+  });
+  toTopBtn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
 </body>
 </html>
