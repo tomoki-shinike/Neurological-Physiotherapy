@@ -204,7 +204,7 @@
     position: fixed;
     top: 68px;
     right: max(24px, calc((100vw - 880px) / 2 + 24px));
-    width: 280px;
+    width: 340px;
     max-height: min(70vh, 560px);
     overflow-y: auto;
     background: var(--paper-raised);
@@ -227,11 +227,17 @@
   }
   .menu-link{
     display: block;
+    width: 100%;
     padding: 8px 10px;
+    border: none;
+    background: none;
     border-radius: 6px;
     font-size: 13px;
+    font: inherit;
     color: var(--ink);
     text-decoration: none;
+    text-align: left;
+    cursor: pointer;
   }
   .menu-link:hover{ background: var(--accent-soft); }
 
@@ -276,6 +282,10 @@
   }
   h1.display{ font-size: 28px; font-weight: 700; margin: 0 0 6px; line-height: 1.5; }
   .subtitle{ color: var(--ink-soft); font-size: 14px; margin: 0; }
+  .outline-heading{
+    font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    font-size: 22px; font-weight: 700; color: var(--ink); margin: 0 0 8px;
+  }
 
   /* ---------- Rhythm bar ---------- */
   .rhythm{
@@ -366,6 +376,7 @@
   .link-status[data-status="ok"]{ color: #2F8F7A; }
   .link-status[data-status="missing"]{ color: #B0555A; }
   .link-status[data-status="unknown"]{ color: var(--ink-soft); }
+  .link-status[data-status="external"]{ color: var(--accent); }
 
   .res-link.sub{ border: none; border-top: 1px dashed var(--line); border-radius: 0; padding: 8px 4px 8px 22px; }
   .res-link.sub:hover{ border-color: var(--line); }
@@ -495,17 +506,18 @@
   .callout-point ul{ list-style: disc; margin: 6px 0 0; padding-left: 20px; }
   .callout-point li{ margin: 4px 0; }
 
-  .lecture-block{ margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); }
-  .lecture-block:first-of-type{ margin-top: 10px; border-top: none; padding-top: 0; }
+  .lecture-block{ margin-top: 26px; padding-top: 16px; border-top: 3px solid var(--dot); }
+  .lecture-block:first-of-type{ margin-top: 12px; border-top: none; padding-top: 0; }
   .lecture-label{
     display:inline-block;
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: 700;
-    color: var(--dot);
-    background: var(--bg-tint);
-    padding: 2px 10px;
+    color: #fff;
+    background: var(--dot);
+    padding: 3px 12px;
     border-radius: 999px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
   }
 
   @media (max-width: 560px){
@@ -551,27 +563,27 @@
 <div class="menu-panel" id="menuPanel">
   <div class="menu-group">
     <div class="menu-group-title">01　講義計画(資料)</div>
-    <a class="menu-link" data-view="view-plan" href="#plan-parkinson">パーキンソン病</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-mg">重症筋無力症</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-gbs">ギラン・バレー症候群</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-ms">多発性硬化症／視神経脊髄炎</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-als">筋萎縮性側索硬化症</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-md">筋ジストロフィー</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-review">総復習</a>
-    <a class="menu-link" data-view="view-plan" href="#plan-tbd">(未定・空きコマ)</a>
+    <button class="menu-link" data-view="view-plan" data-target="plan-parkinson">パーキンソン病</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-ms">多発性硬化症／視神経脊髄炎</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-gbs">多発ニューロパチー(ギランバレー症候群など)</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-als">筋萎縮性側索硬化症</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-md">筋ジストロフィー</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-mg">その他の神経筋疾患(重症筋無力症など)</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-review">総復習</button>
+    <button class="menu-link" data-view="view-plan" data-target="plan-tbd">(未定・空きコマ)</button>
   </div>
   <div class="menu-group">
     <div class="menu-group-title">02　授業内容</div>
-    <a class="menu-link" data-view="view-outline" href="#outline-parkinson">パーキンソン病</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-mg">重症筋無力症</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-gbs">ギラン・バレー症候群</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-ms">多発性硬化症／視神経脊髄炎</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-als">筋萎縮性側索硬化症</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-md">筋ジストロフィー</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-review">総復習</a>
-    <a class="menu-link" data-view="view-outline" href="#outline-tbd">(未定・空きコマ)</a>
+    <button class="menu-link" data-view="view-outline" data-target="outline-parkinson">パーキンソン病</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-ms">多発性硬化症／視神経脊髄炎</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-gbs">多発ニューロパチー(ギランバレー症候群など)</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-als">筋萎縮性側索硬化症</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-md">筋ジストロフィー</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-mg">その他の神経筋疾患(重症筋無力症など)</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-review">総復習</button>
+    <button class="menu-link" data-view="view-outline" data-target="outline-tbd">(未定・空きコマ)</button>
   </div>
 </div>
 
@@ -595,22 +607,22 @@
       <button class="rhythm-tick" style="height:22px;background:var(--c-scd_msa)" data-target="plan-scd_msa" aria-label="第5回へ"></button>
       <button class="rhythm-tick" style="height:34px;background:var(--c-scd_msa)" data-target="plan-scd_msa" aria-label="第6回へ"></button>
     </div>
-    <div class="rhythm-group" data-target="plan-mg">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-mg)" data-target="plan-mg" aria-label="第7回へ"></button>
+    <div class="rhythm-group" data-target="plan-ms">
+      <button class="rhythm-tick" style="height:22px;background:var(--c-ms)" data-target="plan-ms" aria-label="第7回へ"></button>
+      <button class="rhythm-tick" style="height:34px;background:var(--c-ms)" data-target="plan-ms" aria-label="第8回へ"></button>
     </div>
     <div class="rhythm-group" data-target="plan-gbs">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第8回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第9回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-ms">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-ms)" data-target="plan-ms" aria-label="第10回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-ms)" data-target="plan-ms" aria-label="第11回へ"></button>
+      <button class="rhythm-tick" style="height:22px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第9回へ"></button>
+      <button class="rhythm-tick" style="height:34px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第10回へ"></button>
     </div>
     <div class="rhythm-group" data-target="plan-als">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-als)" data-target="plan-als" aria-label="第12回へ"></button>
+      <button class="rhythm-tick" style="height:22px;background:var(--c-als)" data-target="plan-als" aria-label="第11回へ"></button>
     </div>
     <div class="rhythm-group" data-target="plan-md">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-md)" data-target="plan-md" aria-label="第13回へ"></button>
+      <button class="rhythm-tick" style="height:22px;background:var(--c-md)" data-target="plan-md" aria-label="第12回へ"></button>
+    </div>
+    <div class="rhythm-group" data-target="plan-mg">
+      <button class="rhythm-tick" style="height:22px;background:var(--c-mg)" data-target="plan-mg" aria-label="第13回へ"></button>
     </div>
     <div class="rhythm-group" data-target="plan-review">
       <button class="rhythm-tick" style="height:22px;background:var(--c-review)" data-target="plan-review" aria-label="第14回へ"></button>
@@ -789,21 +801,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/01_parkinson/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/01_parkinson/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/01_parkinson/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -907,21 +919,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/02_scd_msa/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/02_scd_msa/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/02_scd_msa/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -930,41 +942,76 @@
     </div>
   </section>
 
-  <section class="disease" id="plan-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
+  <section class="disease" id="plan-ms" style="--dot:var(--c-ms); --bg-tint:var(--c-ms-bg)">
     <div class="disease-head">
       <span class="disease-num mono">03</span>
-      <span class="disease-name">重症筋無力症<span class="latin">Myasthenia Gravis</span></span>
+      <span class="disease-name">多発性硬化症／視神経脊髄炎<span class="latin">MS / NMOSD</span></span>
     </div>
     <div class="sessions">
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">07</span>
           <span class="session-text">
-            <div class="session-theme">重症筋無力症</div>
-            <div class="session-desc">疾患概要とリハビリの禁忌・注意点(易疲労性・呼吸筋モニタリング)</div>
+            <div class="session-theme">多発性硬化症/視神経脊髄炎①</div>
+            <div class="session-desc">病態・評価(疲労のマネジメント、ウートフ徴候)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/03_mg/07_slide.pdf">
+            <a class="res-link" href="materials/03_ms/07_slide.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">07_slide.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/03_mg/07_handout.pdf">
+            <a class="res-link" href="materials/03_ms/07_handout.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">配布資料</span><span class="res-path mono">07_handout.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/03_mg/07_summary.pdf">
+            <a class="res-link" href="materials/03_ms/07_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">07_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/03_mg/07_test.pdf">
+            <a class="res-link" href="materials/03_ms/07_test.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
               <span class="res-label">理解度チェック</span><span class="res-path mono">07_test.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="session">
+        <button class="session-trigger">
+          <span class="session-num mono">08</span>
+          <span class="session-text">
+            <div class="session-theme">多発性硬化症/視神経脊髄炎②</div>
+            <div class="session-desc">運動療法・目標設定(再発・寛解を踏まえて)</div>
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="session-panel">
+          <div class="session-panel-inner">
+            <a class="res-link" href="materials/03_ms/08_slide.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">08_slide.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/03_ms/08_handout.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="res-label">配布資料</span><span class="res-path mono">08_handout.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/03_ms/08_summary.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              <span class="res-label">要点のまとめ</span><span class="res-path mono">08_summary.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/03_ms/08_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">理解度チェック</span><span class="res-path mono">08_test.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
           </div>
@@ -979,8 +1026,12 @@
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/03_mg/worksheet/worksheet_1.pdf">
+          <a class="res-link sub" href="materials/03_ms/worksheet/worksheet_1.pdf">
             <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+          </a>
+          <a class="res-link sub" href="materials/03_ms/worksheet/worksheet_2.pdf">
+            <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -990,21 +1041,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/03_mg/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+          <a class="res-link sub" href="materials/03_ms/references/reference_1.pdf">
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/03_mg/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+          <a class="res-link sub" href="materials/03_ms/references/reference_2.pdf">
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/03_mg/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+          <a class="res-link sub" href="materials/03_ms/references/reference_3.pdf">
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1016,50 +1067,15 @@
   <section class="disease" id="plan-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
     <div class="disease-head">
       <span class="disease-num mono">04</span>
-      <span class="disease-name">ギラン・バレー症候群<span class="latin">Guillain-Barré Syndrome</span></span>
+      <span class="disease-name">多発ニューロパチー(ギランバレー症候群など)<span class="latin">Polyneuropathy (incl. Guillain-Barré Syndrome)</span></span>
     </div>
     <div class="sessions">
       <div class="session">
         <button class="session-trigger">
-          <span class="session-num mono">08</span>
+          <span class="session-num mono">09</span>
           <span class="session-text">
             <div class="session-theme">ギラン・バレー症候群①</div>
             <div class="session-desc">病態・病期(急性期〜回復期)</div>
-          </span>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="session-panel">
-          <div class="session-panel-inner">
-            <a class="res-link" href="materials/04_gbs/08_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">08_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_gbs/08_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">08_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_gbs/08_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">08_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_gbs/08_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">08_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="session">
-        <button class="session-trigger">
-          <span class="session-num mono">09</span>
-          <span class="session-text">
-            <div class="session-theme">ギラン・バレー症候群②</div>
-            <div class="session-desc">評価・運動療法(過用性筋力低下に注意した負荷設定)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1088,6 +1104,41 @@
           </div>
         </div>
       </div>
+
+      <div class="session">
+        <button class="session-trigger">
+          <span class="session-num mono">10</span>
+          <span class="session-text">
+            <div class="session-theme">ギラン・バレー症候群②</div>
+            <div class="session-desc">評価・運動療法(過用性筋力低下に注意した負荷設定)</div>
+          </span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="session-panel">
+          <div class="session-panel-inner">
+            <a class="res-link" href="materials/04_gbs/10_slide.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">10_slide.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/04_gbs/10_handout.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="res-label">配布資料</span><span class="res-path mono">10_handout.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/04_gbs/10_summary.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              <span class="res-label">要点のまとめ</span><span class="res-path mono">10_summary.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+            <a class="res-link" href="materials/04_gbs/10_test.pdf">
+              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              <span class="res-label">理解度チェック</span><span class="res-path mono">10_test.pdf</span>
+              <span class="link-status mono" data-status="idle"></span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="disease-refs">
       <button class="refs-trigger">
@@ -1108,21 +1159,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/04_gbs/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/04_gbs/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/04_gbs/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1131,74 +1182,39 @@
     </div>
   </section>
 
-  <section class="disease" id="plan-ms" style="--dot:var(--c-ms); --bg-tint:var(--c-ms-bg)">
+  <section class="disease" id="plan-als" style="--dot:var(--c-als); --bg-tint:var(--c-als-bg)">
     <div class="disease-head">
       <span class="disease-num mono">05</span>
-      <span class="disease-name">多発性硬化症／視神経脊髄炎<span class="latin">MS / NMOSD</span></span>
+      <span class="disease-name">筋萎縮性側索硬化症<span class="latin">ALS</span></span>
     </div>
     <div class="sessions">
       <div class="session">
         <button class="session-trigger">
-          <span class="session-num mono">10</span>
-          <span class="session-text">
-            <div class="session-theme">多発性硬化症/視神経脊髄炎①</div>
-            <div class="session-desc">病態・評価(疲労のマネジメント、ウートフ徴候)</div>
-          </span>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="session-panel">
-          <div class="session-panel-inner">
-            <a class="res-link" href="materials/05_ms/10_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">10_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_ms/10_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">10_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_ms/10_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">10_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_ms/10_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">10_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="session">
-        <button class="session-trigger">
           <span class="session-num mono">11</span>
           <span class="session-text">
-            <div class="session-theme">多発性硬化症/視神経脊髄炎②</div>
-            <div class="session-desc">運動療法・目標設定(再発・寛解を踏まえて)</div>
+            <div class="session-theme">筋萎縮性側索硬化症</div>
+            <div class="session-desc">病態・評価・運動療法(拘縮予防、コミュニケーション支援機器、過用注意)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/05_ms/11_slide.pdf">
+            <a class="res-link" href="materials/05_als/11_slide.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">11_slide.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/05_ms/11_handout.pdf">
+            <a class="res-link" href="materials/05_als/11_handout.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">配布資料</span><span class="res-path mono">11_handout.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/05_ms/11_summary.pdf">
+            <a class="res-link" href="materials/05_als/11_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">11_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/05_ms/11_test.pdf">
+            <a class="res-link" href="materials/05_als/11_test.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
               <span class="res-label">理解度チェック</span><span class="res-path mono">11_test.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
@@ -1215,11 +1231,11 @@
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/05_ms/worksheet/worksheet_1.pdf">
+          <a class="res-link sub" href="materials/05_als/worksheet/worksheet_1.pdf">
             <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/05_ms/worksheet/worksheet_2.pdf">
+          <a class="res-link sub" href="materials/05_als/worksheet/worksheet_2.pdf">
             <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
@@ -1230,21 +1246,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/05_ms/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+          <a class="res-link sub" href="materials/05_als/references/reference_1.pdf">
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/05_ms/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+          <a class="res-link sub" href="materials/05_als/references/reference_2.pdf">
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/05_ms/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+          <a class="res-link sub" href="materials/05_als/references/reference_3.pdf">
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1253,39 +1269,39 @@
     </div>
   </section>
 
-  <section class="disease" id="plan-als" style="--dot:var(--c-als); --bg-tint:var(--c-als-bg)">
+  <section class="disease" id="plan-md" style="--dot:var(--c-md); --bg-tint:var(--c-md-bg)">
     <div class="disease-head">
       <span class="disease-num mono">06</span>
-      <span class="disease-name">筋萎縮性側索硬化症<span class="latin">ALS</span></span>
+      <span class="disease-name">筋ジストロフィー<span class="latin">Muscular Dystrophy</span></span>
     </div>
     <div class="sessions">
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">12</span>
           <span class="session-text">
-            <div class="session-theme">筋萎縮性側索硬化症</div>
-            <div class="session-desc">病態・評価・運動療法(拘縮予防、コミュニケーション支援機器、過用注意)</div>
+            <div class="session-theme">筋ジストロフィー</div>
+            <div class="session-desc">病態・評価・運動療法(過用性筋力低下の予防、拘縮予防、呼吸ケア)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/06_als/12_slide.pdf">
+            <a class="res-link" href="materials/06_md/12_slide.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">12_slide.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/06_als/12_handout.pdf">
+            <a class="res-link" href="materials/06_md/12_handout.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">配布資料</span><span class="res-path mono">12_handout.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/06_als/12_summary.pdf">
+            <a class="res-link" href="materials/06_md/12_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">12_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/06_als/12_test.pdf">
+            <a class="res-link" href="materials/06_md/12_test.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
               <span class="res-label">理解度チェック</span><span class="res-path mono">12_test.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
@@ -1302,12 +1318,8 @@
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/06_als/worksheet/worksheet_1.pdf">
+          <a class="res-link sub" href="materials/06_md/worksheet/worksheet_1.pdf">
             <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-          </a>
-          <a class="res-link sub" href="materials/06_als/worksheet/worksheet_2.pdf">
-            <span class="res-label">2ページ目</span><span class="res-path mono">worksheet_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1317,21 +1329,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/06_als/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+          <a class="res-link sub" href="materials/06_md/references/reference_1.pdf">
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/06_als/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+          <a class="res-link sub" href="materials/06_md/references/reference_2.pdf">
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/06_als/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+          <a class="res-link sub" href="materials/06_md/references/reference_3.pdf">
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1340,39 +1352,39 @@
     </div>
   </section>
 
-  <section class="disease" id="plan-md" style="--dot:var(--c-md); --bg-tint:var(--c-md-bg)">
+  <section class="disease" id="plan-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
     <div class="disease-head">
       <span class="disease-num mono">07</span>
-      <span class="disease-name">筋ジストロフィー<span class="latin">Muscular Dystrophy</span></span>
+      <span class="disease-name">その他の神経筋疾患(重症筋無力症など)<span class="latin">Other Neuromuscular Diseases (incl. MG)</span></span>
     </div>
     <div class="sessions">
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">13</span>
           <span class="session-text">
-            <div class="session-theme">筋ジストロフィー</div>
-            <div class="session-desc">病態・評価・運動療法(過用性筋力低下の予防、拘縮予防、呼吸ケア)</div>
+            <div class="session-theme">重症筋無力症</div>
+            <div class="session-desc">疾患概要とリハビリの禁忌・注意点(易疲労性・呼吸筋モニタリング)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/07_md/13_slide.pdf">
+            <a class="res-link" href="materials/07_mg/13_slide.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">13_slide.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/07_md/13_handout.pdf">
+            <a class="res-link" href="materials/07_mg/13_handout.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="res-label">配布資料</span><span class="res-path mono">13_handout.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/07_md/13_summary.pdf">
+            <a class="res-link" href="materials/07_mg/13_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">13_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/07_md/13_test.pdf">
+            <a class="res-link" href="materials/07_mg/13_test.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
               <span class="res-label">理解度チェック</span><span class="res-path mono">13_test.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
@@ -1389,7 +1401,7 @@
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/07_md/worksheet/worksheet_1.pdf">
+          <a class="res-link sub" href="materials/07_mg/worksheet/worksheet_1.pdf">
             <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
@@ -1400,21 +1412,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
-          <a class="res-link sub" href="materials/07_md/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+          <a class="res-link sub" href="materials/07_mg/references/reference_1.pdf">
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/07_md/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+          <a class="res-link sub" href="materials/07_mg/references/reference_2.pdf">
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
-          <a class="res-link sub" href="materials/07_md/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+          <a class="res-link sub" href="materials/07_mg/references/reference_3.pdf">
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1483,21 +1495,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/08_review/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/08_review/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/08_review/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1566,21 +1578,21 @@
     <div class="disease-refs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <span class="refs-title">参考文献・ガイドライン</span>
+        <span class="refs-title">参考資料</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/09_tbd/references/reference_1.pdf">
-            <span class="res-label">文献A</span><span class="res-path mono">reference_1.pdf</span>
+            <span class="res-label">資料A</span><span class="res-path mono">reference_1.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/09_tbd/references/reference_2.pdf">
-            <span class="res-label">文献B</span><span class="res-path mono">reference_2.pdf</span>
+            <span class="res-label">資料B</span><span class="res-path mono">reference_2.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <a class="res-link sub" href="materials/09_tbd/references/reference_3.pdf">
-            <span class="res-label">文献C</span><span class="res-path mono">reference_3.pdf</span>
+            <span class="res-label">資料C</span><span class="res-path mono">reference_3.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
@@ -1589,7 +1601,7 @@
     </div>
   </section>
 
-    <a class="policy-card" href="teaching_policy.pdf">
+  <a class="policy-card" href="teaching_policy.pdf">
       <svg class="policy-icon" viewBox="0 0 24 24" fill="none"><path d="M6 2h9l5 5v15H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15 2v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h6M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <span class="policy-text">
         <div class="policy-title">この講義で意識している方針(PDF)</div>
@@ -1600,8 +1612,8 @@
 
     <footer class="footer">
       <dl class="footer-grid">
-        <dt>教科書</dt><dd>病気がみえる vol.7 脳・神経(株式会社メディックメディア)</dd>
-        <dt>教材</dt><dd>理学療法アクティブ・ラーニング・テキスト 神経障害理学療法学/イラストでわかる中枢神経障害理学療法/パーキンソン病診療ガイドライン2018/理学療法ガイドライン第2版(第三章 神経難病理学療法ガイドライン)</dd>
+        <dt>教科書</dt><dd>理学療法アクティブ・ラーニング・テキスト 神経障害理学療法学(文光堂)</dd>
+        <dt>教材</dt><dd>イラストでわかる中枢神経障害理学療法/パーキンソン病診療ガイドライン2018/理学療法ガイドライン第2版(第三章 神経難病理学療法ガイドライン)</dd>
         <dt>評価基準</dt><dd>期末試験</dd>
         <dt>評価率</dt><dd>100%</dd>
         <dt>その他</dt><dd>全15回・90分講義</dd>
@@ -1615,7 +1627,8 @@
   <div class="view" id="view-outline">
 
     <header class="masthead">
-      <div class="eyebrow">神経・筋疾患理学療法　講義内容</div>
+      <div class="outline-heading">神経・筋疾患理学療法　講義内容</div>
+      <p class="subtitle">初回)講師の経歴紹介、講義で学ぶ疾患や到達目標の紹介、使用する教材や復習が可能な専用サイトの利用方法についての説明(15分程度)</p>
     </header>
 
   <section class="topic" id="outline-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
@@ -1860,42 +1873,6 @@
     </div>
   </section>
 
-  <section class="topic" id="outline-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">重症筋無力症<span class="topic-meta">(1コマ)</span></span>
-      <span class="status-badge">準備中</span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/mg.webp" alt="重症筋無力症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
-        </div>
-
-        <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">ギラン・バレー症候群<span class="topic-meta">(2コマ)</span></span>
-      <span class="status-badge">準備中</span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/gbs.webp" alt="ギラン・バレー症候群 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
-        </div>
-
-        <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
-      </div>
-    </div>
-  </section>
-
   <section class="topic" id="outline-ms" style="--dot:var(--c-ms); --bg-tint:var(--c-ms-bg)">
     <button class="topic-trigger">
       <span class="topic-name">多発性硬化症／視神経脊髄炎<span class="topic-meta">(2コマ)</span></span>
@@ -1907,6 +1884,24 @@
         <div class="case-image-wrap">
           <img class="case-image" src="images/case/ms.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
           <div class="case-image-placeholder">症例イメージ未アップロード(images/case/ms.webp)</div>
+        </div>
+
+        <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="outline-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
+    <button class="topic-trigger">
+      <span class="topic-name">多発ニューロパチー(ギランバレー症候群など)<span class="topic-meta">(2コマ)</span></span>
+      <span class="status-badge">準備中</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="topic-panel">
+      <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/gbs.webp" alt="ギラン・バレー症候群 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
         </div>
 
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
@@ -1943,6 +1938,24 @@
         <div class="case-image-wrap">
           <img class="case-image" src="images/case/md.webp" alt="筋ジストロフィー 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
           <div class="case-image-placeholder">症例イメージ未アップロード(images/case/md.webp)</div>
+        </div>
+
+        <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="outline-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
+    <button class="topic-trigger">
+      <span class="topic-name">その他の神経筋疾患(重症筋無力症など)<span class="topic-meta">(1コマ)</span></span>
+      <span class="status-badge">準備中</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="topic-panel">
+      <div class="topic-panel-inner">
+        <div class="case-image-wrap">
+          <img class="case-image" src="images/case/mg.webp" alt="重症筋無力症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
         </div>
 
         <div class="empty-note">内容準備中。中身が決まり次第、ここに目次として追加していきます。</div>
@@ -1987,10 +2000,23 @@
       if(a.dataset.checked) return;
       a.dataset.checked = '1';
       var statusEl = a.querySelector('.link-status');
+      var href = a.getAttribute('href') || '';
+      var isExternal = /^https?:\/\//i.test(href);
+
+      if(isExternal){
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+        if(statusEl){
+          statusEl.dataset.status = 'external';
+          statusEl.textContent = '🔗 外部リンク';
+        }
+        return;
+      }
+
       if(!statusEl) return;
       statusEl.dataset.status = 'checking';
       statusEl.textContent = '確認中…';
-      fetch(a.getAttribute('href'), { method: 'HEAD', cache: 'no-store' })
+      fetch(href, { method: 'HEAD', cache: 'no-store' })
         .then(function(res){
           if(res.ok){
             statusEl.dataset.status = 'ok';
@@ -2088,10 +2114,9 @@
   });
 
   document.querySelectorAll('.menu-link').forEach(function(link){
-    link.addEventListener('click', function(e){
-      e.preventDefault();
+    link.addEventListener('click', function(){
       var viewId = link.dataset.view;
-      var targetId = link.getAttribute('href').replace('#', '');
+      var targetId = link.dataset.target;
       var tabBtn = document.querySelector('.tab-btn[data-view="' + viewId + '"]');
       if(tabBtn && !tabBtn.classList.contains('active')){
         tabBtn.click();
