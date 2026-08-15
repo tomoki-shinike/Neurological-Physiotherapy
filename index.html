@@ -9,13 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper: #F6F5F1;
+    --paper: #F5F8FB;
     --paper-raised: #FFFFFF;
     --ink: #23272B;
     --ink-soft: #5B6169;
-    --line: #DBDEE1;
-    --accent: #2F6F62;
-    --accent-soft: #E4EEEC;
+    --line: #D6E2EA;
+    --accent: #2F6F9A;
+    --accent-soft: #E7F1F8;
 
     --c-parkinson: #5C6BB8;
     --c-parkinson-bg: #EEEFF8;
@@ -185,10 +185,13 @@
 
   .menu-btn{
     flex: 0 0 auto;
-    width: 42px;
+    width: 52px;
     display:flex;
+    flex-direction: column;
     align-items:center;
     justify-content:center;
+    gap: 2px;
+    padding: 6px 0;
     background: var(--paper-raised);
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -198,6 +201,7 @@
   }
   .menu-btn:hover{ border-color: var(--ink-soft); }
   .menu-btn svg{ width: 18px; height: 18px; }
+  .menu-btn-label{ font-size: 10px; font-weight: 600; line-height: 1; }
   .menu-btn[aria-expanded="true"]{ border-color: var(--accent); background: var(--accent-soft); }
 
   .menu-panel{
@@ -400,6 +404,75 @@
   .refs-panel{ max-height: 0; overflow: hidden; transition: max-height .22s ease; }
   .refs-panel-inner{ padding: 2px 18px 16px 44px; max-height: 260px; overflow-y: auto; }
 
+  /* ---------- Checklist (理解度チェック) ---------- */
+  .checklist-panel-inner{ max-height: 270px; }
+  .check-progress{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .check-progress-bar{
+    flex: 1 1 auto;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .check-progress-fill{
+    height: 100%;
+    width: 0%;
+    background: var(--dot);
+    border-radius: 999px;
+    transition: width .25s ease;
+  }
+  .check-progress-label{
+    flex: 0 0 auto;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .check-item{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 4px;
+    border-top: 1px dashed var(--line);
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .check-item:first-of-type{ border-top: none; }
+  .check-box{
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    margin-top: 1px;
+    accent-color: var(--dot);
+    cursor: pointer;
+  }
+  .check-actions{
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .check-action-btn{
+    flex: 1 1 auto;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .check-action-btn:hover{ border-color: var(--dot); background: var(--bg-tint); }
+
   /* ---------- Teaching policy link card ---------- */
   .policy-card{
     display:flex; align-items:center; gap: 16px; margin-top: 40px; padding: 20px 22px;
@@ -556,6 +629,7 @@
     </button>
     <button class="menu-btn" id="menuBtn" aria-label="メニュー" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span class="menu-btn-label">目次</span>
     </button>
   </div>
 </div>
@@ -664,11 +738,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">01_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/01_parkinson/01_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">01_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -697,11 +766,6 @@
             <a class="res-link" href="materials/01_parkinson/02_summary.pdf">
               <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
               <span class="res-label">要点のまとめ</span><span class="res-path mono">02_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/01_parkinson/02_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">02_test.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
           </div>
@@ -734,11 +798,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">03_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/01_parkinson/03_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">03_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -769,11 +828,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">04_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/01_parkinson/04_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">04_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -795,6 +849,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="parkinson">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="parkinson-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="parkinson-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="parkinson-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -832,11 +917,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">05_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/02_scd_msa/05_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">05_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -867,11 +947,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">06_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/02_scd_msa/06_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">06_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -889,6 +964,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="scd_msa">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="scd_msa-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="scd_msa-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="scd_msa-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -926,11 +1032,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">07_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/03_ms/07_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">07_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -961,11 +1062,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">08_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/03_ms/08_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">08_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -987,6 +1083,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="ms">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="ms-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="ms-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="ms-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1024,11 +1151,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">09_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/04_gbs/09_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">09_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1059,11 +1181,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">10_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/04_gbs/10_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">10_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1081,6 +1198,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="gbs">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="gbs-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="gbs-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="gbs-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1118,11 +1266,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">11_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/05_als/11_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">11_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1144,6 +1287,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="als">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="als-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="als-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="als-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1181,11 +1355,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">12_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/06_md/12_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">12_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1203,6 +1372,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="md">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="md-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="md-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="md-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1240,11 +1440,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">13_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/07_mg/13_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">13_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1262,6 +1457,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="mg">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1299,11 +1525,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">14_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/08_review/14_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">14_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1321,6 +1542,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="review">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="review-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="review-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="review-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1358,11 +1610,6 @@
               <span class="res-label">要点のまとめ</span><span class="res-path mono">15_summary.pdf</span>
               <span class="link-status mono" data-status="idle"></span>
             </a>
-            <a class="res-link" href="materials/09_tbd/15_test.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-              <span class="res-label">理解度チェック</span><span class="res-path mono">15_test.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
           </div>
         </div>
       </div>
@@ -1380,6 +1627,37 @@
               <span class="link-status mono" data-status="idle"></span>
           </a>
           <!-- 追加する場合はこの<a>行をコピーしてください -->
+        </div>
+      </div>
+    </div>
+    <div class="disease-refs checklist" data-topic="tbd">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">理解度チェック</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 3 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="tbd-0">
+            <span>項目A(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="tbd-1">
+            <span>項目B(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="tbd-2">
+            <span>項目C(仮・内容は決まり次第差し替え)</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1852,6 +2130,76 @@
   wireAccordion('.session-trigger', 'session', '.session-panel', '.session-panel-inner', null);
   wireAccordion('.refs-trigger', 'disease-refs', '.refs-panel', '.refs-panel-inner', 300);
   wireAccordion('.topic-trigger', 'topic', '.topic-panel', '.topic-panel-inner', null);
+
+  /* ---------- 理解度チェック(localStorageで端末内に保存) ---------- */
+  var CHECK_STORAGE_KEY = 'neuro-pt-checklist-v1';
+
+  function loadCheckState(){
+    try {
+      return JSON.parse(localStorage.getItem(CHECK_STORAGE_KEY) || '{}');
+    } catch(e){
+      return {};
+    }
+  }
+  function saveCheckState(state){
+    try {
+      localStorage.setItem(CHECK_STORAGE_KEY, JSON.stringify(state));
+    } catch(e){ /* localStorageが使えない環境では保存をスキップ */ }
+  }
+
+  function updateProgress(group){
+    var boxes = group.querySelectorAll('.check-box');
+    var total = boxes.length;
+    var checked = group.querySelectorAll('.check-box:checked').length;
+    var pct = total ? Math.round((checked / total) * 100) : 0;
+    var fill = group.querySelector('.check-progress-fill');
+    var label = group.querySelector('.check-progress-label');
+    if(fill){ fill.style.width = pct + '%'; }
+    if(label){ label.textContent = checked + ' / ' + total + ' 達成(' + pct + '%)'; }
+  }
+
+  function initChecklists(){
+    var state = loadCheckState();
+    document.querySelectorAll('.checklist').forEach(function(group){
+      group.querySelectorAll('.check-box').forEach(function(box){
+        var key = box.dataset.key;
+        box.checked = !!state[key];
+        box.addEventListener('change', function(){
+          var s = loadCheckState();
+          s[key] = box.checked;
+          saveCheckState(s);
+          updateProgress(group);
+        });
+      });
+      updateProgress(group);
+
+      var allBtn = group.querySelector('.check-all');
+      var resetBtn = group.querySelector('.check-reset');
+      if(allBtn){
+        allBtn.addEventListener('click', function(){
+          var s = loadCheckState();
+          group.querySelectorAll('.check-box').forEach(function(box){
+            box.checked = true;
+            s[box.dataset.key] = true;
+          });
+          saveCheckState(s);
+          updateProgress(group);
+        });
+      }
+      if(resetBtn){
+        resetBtn.addEventListener('click', function(){
+          var s = loadCheckState();
+          group.querySelectorAll('.check-box').forEach(function(box){
+            box.checked = false;
+            delete s[box.dataset.key];
+          });
+          saveCheckState(s);
+          updateProgress(group);
+        });
+      }
+    });
+  }
+  initChecklists();
 
   document.querySelectorAll('.rhythm-tick').forEach(function(tick){
     tick.addEventListener('click', function(){
