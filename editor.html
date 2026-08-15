@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講義計画・授業内容 編集ツール</title>
+<style>
+  :root{
+    --paper: #F5F8FB;
+    --paper-raised: #FFFFFF;
+    --ink: #23272B;
+    --ink-soft: #5B6169;
+    --line: #D6E2EA;
+    --accent: #2F6F9A;
+    --accent-soft: #E7F1F8;
+    --danger: #B0555A;
+    --danger-soft: #F6EAEA;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  .topbar{
+    position: sticky; top: 0; z-index: 10;
+    background: var(--paper-raised);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+  }
+  .topbar-inner{
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .topbar h1{ font-size: 16px; margin: 0; flex: 1 1 auto; }
+  .btn{
+    font: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 7px 14px; border-radius: 7px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+  }
+  .btn:hover{ border-color: var(--accent); background: var(--accent-soft); }
+  .btn.primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.primary:hover{ opacity: .9; }
+  input[type=file]{ display:none; }
+
+  .save-status{ font-size: 11px; color: var(--ink-soft); flex: 0 0 auto; }
+
+  .tabs{
+    max-width: 900px; margin: 14px auto 0; padding: 0 20px;
+    display: flex; gap: 8px;
+  }
+  .tab-btn{
+    flex: 1 1 0; font: inherit; font-size: 13px; font-weight: 700;
+    padding: 10px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+  }
+  .tab-btn.active{ border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
+
+  .wrap{ max-width: 900px; margin: 0 auto; padding: 20px; }
+  .view{ display: none; }
+  .view.active{ display: block; }
+
+  .note-box{
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 20px; font-size: 12.5px; color: var(--ink-soft);
+  }
+  .note-box strong{ color: var(--ink); }
+  .note-box code{ background: var(--accent-soft); color: var(--accent); padding: 1px 5px; border-radius: 4px; }
+
+  .session-card{
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 12px;
+  }
+  .session-card-head{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .session-card-head .session-num-badge{
+    font-size: 14px; padding: 5px 10px;
+  }
+  .session-card-head select.topic-select{
+    font-size: 16px; font-weight: 700; color: var(--ink);
+    padding: 8px 10px;
+  }
+  .session-num-badge{
+    font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 6px;
+    flex: 0 0 auto; white-space: nowrap;
+  }
+  .field-row{ display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .field-row:last-child{ margin-bottom: 0; }
+  .field-row label{ font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .field-row input[type=text], .field-row select{
+    font: inherit; font-size: 13.5px; padding: 8px 10px;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
+    color: var(--ink); width: 100%;
+  }
+  textarea.autogrow{
+    font: inherit; font-size: 13.5px; padding: 8px 10px;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
+    color: var(--ink); width: 100%; resize: none; overflow: hidden;
+    min-height: 38px;
+  }
+  select.topic-select{
+    flex: 1 1 auto; font: inherit; font-size: 13.5px;
+    padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px;
+    background: var(--paper-raised); color: var(--ink);
+  }
+
+  .topic-group{
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 12px;
+  }
+  .topic-group-title{ font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+
+  .item-row{
+    display: flex; align-items: flex-start; gap: 6px; margin-bottom: 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 6px;
+  }
+  .item-row.drag-over{ border-color: var(--accent); background: var(--accent-soft); }
+  .item-row.dragging{ opacity: .4; }
+  .drag-handle{
+    flex: 0 0 auto; width: 20px; height: 32px; display:flex; align-items:center; justify-content:center;
+    cursor: grab; color: var(--ink-soft); font-size: 14px; user-select: none; touch-action: none;
+  }
+  .drag-handle:active{ cursor: grabbing; }
+  .item-row input[type=text]{
+    flex: 1 1 auto; font: inherit; font-size: 13px; padding: 7px 9px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
+  }
+  .item-row textarea{
+    flex: 1 1 auto; font: inherit; font-size: 13px; padding: 7px 9px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
+    resize: none; overflow: hidden; min-height: 32px;
+  }
+  .icon-btn{
+    flex: 0 0 auto; width: 28px; height: 32px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--danger);
+    cursor: pointer; font-size: 14px; line-height: 1;
+  }
+  .icon-btn:hover{ border-color: var(--danger); background: var(--danger-soft); }
+  .add-row-btn{
+    font: inherit; font-size: 12px; font-weight: 600; color: var(--accent);
+    background: none; border: 1px dashed var(--accent); border-radius: 7px;
+    padding: 6px 10px; cursor: pointer; margin-top: 4px;
+  }
+  .add-row-btn:hover{ background: var(--accent-soft); }
+
+  details.notes-details{
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 20px;
+  }
+  details.notes-details summary{ font-size: 13px; font-weight: 700; cursor: pointer; }
+  .topic-note-row{ margin-top: 12px; }
+  .topic-note-row label{ font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
+  .topic-note-row textarea{ min-height: 60px; }
+
+  /* ---------- ③ 授業内容:2段階アコーディオン ---------- */
+  .lecture-card{
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .lecture-head{
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+  }
+  .lecture-head .session-num-badge{
+    font-size: 14px; padding: 5px 10px;
+  }
+  .lecture-head select.topic-select{
+    font-size: 16px; font-weight: 700; color: var(--ink);
+    padding: 8px 10px; border-color: var(--line);
+  }
+  .lecture-toggle{
+    flex: 0 0 auto; width: 30px; height: 30px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
+    cursor: pointer; font-size: 12px; margin-left: auto;
+  }
+  .lecture-toggle:hover{ border-color: var(--accent); }
+  .lecture-body{ display: none; padding: 0 14px 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .lecture-card.open .lecture-body{ display: block; }
+  .lecture-card.open .lecture-toggle{ color: var(--accent); border-color: var(--accent); }
+
+  .group-block{
+    background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+    margin-bottom: 8px; overflow: hidden;
+  }
+  .group-block.drag-over{ border-color: var(--accent); }
+  .group-block.dragging{ opacity: .4; }
+  .group-head{ display: flex; align-items: center; gap: 6px; padding: 6px; }
+  .group-head input[type=text]{
+    flex: 1 1 auto; font: inherit; font-size: 13px; font-weight: 700; padding: 7px 9px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
+  }
+  .group-count{
+    flex: 0 0 auto; font-size: 10.5px; color: var(--ink-soft);
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .group-toggle{
+    flex: 0 0 auto; width: 26px; height: 30px; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
+    cursor: pointer; font-size: 11px;
+  }
+  .group-toggle:hover{ border-color: var(--accent); }
+  .group-body{ display: none; padding: 0 8px 8px 30px; }
+  .group-block.open .group-body{ display: block; }
+  .group-block.open .group-toggle{ color: var(--accent); border-color: var(--accent); }
+  .child-row{
+    display: flex; align-items: flex-start; gap: 6px; margin-top: 6px;
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 7px; padding: 6px;
+  }
+  .child-row.drag-over{ border-color: var(--accent); background: var(--accent-soft); }
+  .child-row.dragging{ opacity: .4; }
+  .child-row textarea{
+    flex: 1 1 auto; font: inherit; font-size: 12.5px; padding: 6px 8px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink);
+    resize: none; overflow: hidden; min-height: 30px;
+  }
+  .add-child-btn{
+    font: inherit; font-size: 11.5px; font-weight: 600; color: var(--accent);
+    background: none; border: 1px dashed var(--accent); border-radius: 6px;
+    padding: 5px 9px; cursor: pointer; margin-top: 6px;
+  }
+  .add-child-btn:hover{ background: var(--accent-soft); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>講義計画・授業内容 編集ツール</h1>
+    <span class="save-status" id="saveStatus"></span>
+    <button class="btn" id="resetBtn">現在のサイト内容に戻す</button>
+    <button class="btn" id="importBtn">JSON読み込み</button>
+    <input type="file" id="importFile" accept="application/json">
+    <button class="btn primary" id="exportBtn">JSON書き出し</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-view="view-sessions">① 講義計画(15コマ)</button>
+  <button class="tab-btn" data-view="view-checklists">② 理解度チェック</button>
+  <button class="tab-btn" data-view="view-outline">③ 授業内容(講義1-15)</button>
+  <button class="tab-btn" data-view="view-topics">④ 疾患一覧</button>
+</div>
+
+<div class="wrap">
+
+  <div class="note-box">
+    ここで編集した内容は、この端末のブラウザに自動保存されます。作業が終わったら右上の<strong>「JSON書き出し」</strong>でファイルをダウンロードし、それをClaudeに渡してください。実際のサイト(index.html)への反映はClaudeが行います。<br><br>
+    <strong>①の「所属疾患」と③の「対象疾患」は連動しています。</strong>どちらで変更しても、同じ回の疾患として両方に反映されます。<br>
+    <strong>③授業内容:</strong> 「第N回・疾患名」は常に表示し、中身は右の <code>▾</code> で開閉します。各「項目」も同様にクリックで開閉し、中の「内容」を編集できます。<br>
+    <strong>並び替え:</strong> <code>::</code> をドラッグすると順番を入れ替えられます。<br>
+    <strong>疾患名の変更・追加:</strong> 「④疾患一覧」タブで行えます。
+  </div>
+
+  <div class="view active" id="view-sessions">
+    <div id="sessionsList"></div>
+  </div>
+
+  <div class="view" id="view-checklists">
+    <div id="checklistsList"></div>
+  </div>
+
+  <div class="view" id="view-outline">
+    <details class="notes-details">
+      <summary>疾患ごとの共通メモ(POINTなど・任意)</summary>
+      <div id="topicNotesList"></div>
+    </details>
+    <div id="outlineList"></div>
+  </div>
+
+  <div class="view" id="view-topics">
+    <div class="note-box">
+      疾患・項目の名称はここで自由に変更できます。「+ 疾患を追加」で新しい項目を増やせます。削除は、①③でその疾患が使われていない場合のみ可能です(使われている場合は、先に他の疾患へ変更してから削除してください)。
+    </div>
+    <div id="topicsList"></div>
+    <button class="add-row-btn" id="addTopicBtn">+ 疾患を追加</button>
+  </div>
+
+</div>
+
+<script>
+  var DEFAULT_STATE = {
+  "version": 3,
+  "topics": [
+    {
+      "id": "parkinson",
+      "name": "パーキンソン病"
+    },
+    {
+      "id": "scd_msa",
+      "name": "脊髄小脳変性症(多系統萎縮症／それ以外)"
+    },
+    {
+      "id": "ms",
+      "name": "多発性硬化症／視神経脊髄炎"
+    },
+    {
+      "id": "gbs",
+      "name": "多発ニューロパチー(ギランバレー症候群など)"
+    },
+    {
+      "id": "als",
+      "name": "筋萎縮性側索硬化症"
+    },
+    {
+      "id": "md",
+      "name": "筋ジストロフィー"
+    },
+    {
+      "id": "mg",
+      "name": "その他の神経筋疾患(重症筋無力症など)"
+    },
+    {
+      "id": "review",
+      "name": "総復習"
+    },
+    {
+      "id": "tbd",
+      "name": "(未定・空きコマ)"
+    }
+  ],
+  "lectures": [
+    {
+      "num": "01",
+      "topicId": "parkinson",
+      "theme": "パーキンソン病①",
+      "desc": "病態・診断・薬物治療・デバイス治療",
+      "items": [
+        {
+          "text": "病態",
+          "children": [
+            "四大症状(安静時振戦、無動、固縮、姿勢反射障害)",
+            "Braak仮説から理解する多彩な症状 [動画]動画で理解を深める"
+          ]
+        },
+        {
+          "text": "診断や類似疾患との鑑別:診療ガイドラインより",
+          "children": [
+            "脳画像の評価、DAT-scan",
+            "Hoehn&Yahrの重症度分類"
+          ]
+        },
+        {
+          "text": "大脳基底核の機能について",
+          "children": []
+        },
+        {
+          "text": "薬物治療(L-dopaとアゴニストの使い分け、副作用の理解)",
+          "children": []
+        },
+        {
+          "text": "デバイス治療(DBS、ヴィアレブなど) [補足]視床下核の解剖学的位置の理解:脳画像の理解の確認",
+          "children": []
+        },
+        {
+          "text": "本日の復習",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "02",
+      "topicId": "parkinson",
+      "theme": "パーキンソン病②",
+      "desc": "運動症状と非運動症状について、栄養管理",
+      "items": [
+        {
+          "text": "前回のおさらい",
+          "children": []
+        },
+        {
+          "text": "症状の特徴と対処 [動画]動画で理解を深める",
+          "children": []
+        },
+        {
+          "text": "リハビリに期待される効果",
+          "children": []
+        },
+        {
+          "text": "特徴的な問題と対処-運動症状に対して-",
+          "children": [
+            "起き上がり動作、起立動作、歩行(小刻み歩行、突進歩行、すくみ足)",
+            "外部cue(床のline、音刺激)"
+          ]
+        },
+        {
+          "text": "予後、転倒リスク",
+          "children": []
+        },
+        {
+          "text": "特徴的な問題と対処-非運動症状に対して-",
+          "children": [
+            "便秘、血圧変動、構音障害、嚥下障害など"
+          ]
+        },
+        {
+          "text": "栄養管理",
+          "children": [
+            "注意する栄養素(ドーパミン吸収との競合)、摂取すべき栄養素、エネルギーの管理"
+          ]
+        },
+        {
+          "text": "本日の復習",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "03",
+      "topicId": "parkinson",
+      "theme": "パーキンソン病③",
+      "desc": "理学療法評価、リハビリ実践part1",
+      "items": [
+        {
+          "text": "前回のおさらい",
+          "children": []
+        },
+        {
+          "text": "理学療法評価について",
+          "children": [
+            "UPDRS"
+          ]
+        },
+        {
+          "text": "環境面でのサポート方法",
+          "children": [
+            "家屋環境でのチェックポイント、アドバイス内容、利用したい福祉用具",
+            "「福祉住宅環境コーディネーター」の紹介",
+            "ご家族への説明(長期的に病気と関わる上でとても重要)"
+          ]
+        },
+        {
+          "text": "リハビリテーションの「実践①」(パーキンソン病に特化したもの)",
+          "children": [
+            "LSVTの紹介、ボクシングメニュー、卓球、水中運動、太極拳など",
+            "「LSVT(R)BIG認定療法士、パーキンソン病療養指導士」などの資格紹介 [動画]動画で理解を深める"
+          ]
+        },
+        {
+          "text": "指定難病について",
+          "children": []
+        },
+        {
+          "text": "指定難病医療費助成制度とは",
+          "children": [
+            "データ収集の効率化と長期療養による経済的な負担の軽減"
+          ]
+        },
+        {
+          "text": "本日の復習",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "04",
+      "topicId": "parkinson",
+      "theme": "パーキンソン病④",
+      "desc": "リハビリ実践part2、歩行介助、「Parkinson病」の復習",
+      "items": [
+        {
+          "text": "前回のおさらい",
+          "children": []
+        },
+        {
+          "text": "リハビリテーションの「実践②」",
+          "children": [
+            "臥位で固縮の評価"
+          ]
+        },
+        {
+          "text": "歩行介助の「実践」",
+          "children": [
+            "歩行開始時の誘導方法、歩行時の介助(歩幅の調整方法)、介助者への注意点、視線の誘導、目標物の指示方法",
+            "重心の移動範囲、体幹回旋の角度、上肢swingについての考え方など"
+          ]
+        },
+        {
+          "text": "パーキンソン病の講義全体の復習",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "05",
+      "topicId": "scd_msa",
+      "theme": "脊髄小脳変性症①",
+      "desc": "SCD総論・MSA以外の病態と評価(運動失調・視覚代償)",
+      "items": [
+        {
+          "text": "脊髄小脳変性症とは [用語]SCD: Spinocerebellar Degeneration",
+          "children": [
+            "概念や症状の進行について"
+          ]
+        },
+        {
+          "text": "代表的なもの:多系統萎縮症(MSA)",
+          "children": [
+            "MSA-C(オリーブ橋小脳萎縮症[OPCA]) [用語解説]「C」はCerebellum(小脳)を表す",
+            "MSA-P(線条体黒質変性症[SND]) [用語解説]「P」はパーキンソニズムを表す",
+            "(シャイドレーガー症候群[SDS]) [補足]欧米ではMSA-P、MSA-Cに統合されている"
+          ]
+        },
+        {
+          "text": "小脳の機能について",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "06",
+      "topicId": "scd_msa",
+      "theme": "脊髄小脳変性症②",
+      "desc": "多系統萎縮症(MSA)を中心とした運動療法・比較(起立性低血圧・自律神経症状)",
+      "items": [
+        {
+          "text": "MSA-C(オリーブ橋小脳萎縮症)について",
+          "children": [
+            "①好発年齢、②症状(小脳の機能を踏まえて)、③確定診断、④治療方法"
+          ]
+        },
+        {
+          "text": "MSA-P(線条体黒質変性症)について",
+          "children": [
+            "①好発年齢、②症状(パーキンソニズムについて)、③確定診断、④治療方法",
+            "Parkinson病との違い:症状に左右差がない、安静時振戦が目立たない、進行が速い",
+            "Parkinson病との違い:小脳症状が出現、MIBG心筋シンチで初期は取り込み低下なし、L-dopa反応が低い"
+          ]
+        },
+        {
+          "text": "シャイドレーガー症候群について",
+          "children": [
+            "①好発年齢、②症状、③確定診断、④治療方法",
+            "自律神経症状とは?注意点(起立性低血圧に対するリスク管理など)や介入方法"
+          ]
+        }
+      ]
+    },
+    {
+      "num": "07",
+      "topicId": "ms",
+      "theme": "多発性硬化症/視神経脊髄炎①",
+      "desc": "病態・評価(疲労のマネジメント、ウートフ徴候)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "08",
+      "topicId": "ms",
+      "theme": "多発性硬化症/視神経脊髄炎②",
+      "desc": "運動療法・目標設定(再発・寛解を踏まえて)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "09",
+      "topicId": "gbs",
+      "theme": "ギラン・バレー症候群①",
+      "desc": "病態・病期(急性期〜回復期)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "10",
+      "topicId": "gbs",
+      "theme": "ギラン・バレー症候群②",
+      "desc": "評価・運動療法(過用性筋力低下に注意した負荷設定)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "11",
+      "topicId": "als",
+      "theme": "筋萎縮性側索硬化症",
+      "desc": "病態・評価・運動療法(拘縮予防、コミュニケーション支援機器、過用注意)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "12",
+      "topicId": "md",
+      "theme": "筋ジストロフィー",
+      "desc": "病態・評価・運動療法(過用性筋力低下の予防、拘縮予防、呼吸ケア)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "13",
+      "topicId": "mg",
+      "theme": "重症筋無力症",
+      "desc": "疾患概要とリハビリの禁忌・注意点(易疲労性・呼吸筋モニタリング)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "14",
+      "topicId": "review",
+      "theme": "総復習",
+      "desc": "疾患比較・鑑別のまとめ(発症率、症状の違い、見分け方)",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    },
+    {
+      "num": "15",
+      "topicId": "tbd",
+      "theme": "未定",
+      "desc": "脊髄小脳変性症とMSAの統合により空いた1コマ。使い道を検討中",
+      "items": [
+        {
+          "text": "内容準備中",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "checklists": {
+    "parkinson": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "scd_msa": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "ms": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "gbs": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "als": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "md": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "mg": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "review": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
+    "tbd": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ]
+  },
+  "topicNotes": {
+    "parkinson": "パーキンソン病の病理を理解することで、多彩な症状を「暗記」するのではなく理解してイメージできるようになる(特にパーキンソン病パンデミックといわれるほど今後増加することが予想されており、遭遇する頻度も高いためここをおさえておくことは非常に重要)\n大脳基底核の機能を理解することで脳血管疾患に対する理解も深めることができる\n鑑別のための脳画像の評価も他の疾患の理解につながる\n理学療法介入が実際にできることまで目指す(特に起居動作の評価・治療(体位変換の介助方法も含めて)、起立動作、歩行介入の部分は実践できることを目指す)",
+    "scd_msa": "複雑な名称にまどわされず、まず分類を整理すること\n「診断」するわけではないので、どのような症状が出るのかを理解し、それに対するリハビリの評価・方針を考えられることが重要\nMSA-Pについては、Parkinson病との違いを理解することで、Parkinson病の理解も深められる\nシャイドレーガー症候群については、自律神経症状(起立性低血圧)への対応も理解するきっかけとする"
+  }
+};
+  var STORAGE_KEY = 'neuro-pt-editor-draft-v3';
+
+  function migrateLectureItems(items){
+    // v2互換: フラットな{type,text}配列を{text,children}構造に変換
+    if(!items || items.length === 0) return [];
+    if(items[0] && items[0].hasOwnProperty('children')) return items;
+    var groups = [];
+    items.forEach(function(it){
+      if(it.type === 'sub'){
+        if(groups.length === 0){ groups.push({text: '(見出しなし)', children: []}); }
+        groups[groups.length - 1].children.push(it.text);
+      } else {
+        groups.push({text: it.text, children: []});
+      }
+    });
+    return groups;
+  }
+
+  function migrateState(data){
+    if(data && data.lectures){
+      data.lectures.forEach(function(lec){
+        lec.items = migrateLectureItems(lec.items);
+      });
+    }
+    return data;
+  }
+
+  function loadState(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) return migrateState(JSON.parse(raw));
+    } catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+
+  var state = loadState();
+  var saveTimer = null;
+
+  function persist(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      var el = document.getElementById('saveStatus');
+      el.textContent = '保存済み ' + new Date().toLocaleTimeString('ja-JP');
+    } catch(e){}
+  }
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(persist, 400);
+  }
+
+  function topicOptions(selectedId){
+    return state.topics.map(function(t){
+      return '<option value="' + t.id + '"' + (t.id === selectedId ? ' selected' : '') + '>' + t.name + '</option>';
+    }).join('');
+  }
+  function topicName(id){
+    var t = state.topics.filter(function(x){ return x.id === id; })[0];
+    return t ? t.name : id;
+  }
+
+  function escapeAttr(s){
+    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function autoGrow(el){
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  /* ---------- 汎用ドラッグ並び替え ---------- */
+  function enableDragReorder(container, array, itemSelector, onChange){
+    var dragIndex = null;
+    container.querySelectorAll(itemSelector).forEach(function(row){
+      row.addEventListener('dragstart', function(ev){
+        ev.stopPropagation();
+        dragIndex = parseInt(row.dataset.index, 10);
+        row.classList.add('dragging');
+      });
+      row.addEventListener('dragend', function(ev){
+        ev.stopPropagation();
+        row.classList.remove('dragging');
+        container.querySelectorAll(itemSelector).forEach(function(r){ r.classList.remove('drag-over'); });
+      });
+      row.addEventListener('dragover', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        row.classList.add('drag-over');
+      });
+      row.addEventListener('dragleave', function(ev){
+        ev.stopPropagation();
+        row.classList.remove('drag-over');
+      });
+      row.addEventListener('drop', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        row.classList.remove('drag-over');
+        var dropIndex = parseInt(row.dataset.index, 10);
+        if(dragIndex === null || dragIndex === dropIndex) return;
+        var moved = array.splice(dragIndex, 1)[0];
+        array.splice(dropIndex, 0, moved);
+        dragIndex = null;
+        onChange();
+      });
+    });
+  }
+
+  /* ---------- ① 講義計画 ---------- */
+  function renderSessions(){
+    var container = document.getElementById('sessionsList');
+    container.innerHTML = '';
+    state.lectures.forEach(function(lec){
+      var card = document.createElement('div');
+      card.className = 'session-card';
+      card.innerHTML =
+        '<div class="session-card-head">' +
+          '<span class="session-num-badge">第' + parseInt(lec.num,10) + '回</span>' +
+          '<select class="topic-select" data-field="topicId">' + topicOptions(lec.topicId) + '</select>' +
+        '</div>' +
+        '<div class="field-row"><label>講義名</label>' +
+          '<input type="text" data-field="theme" value="' + escapeAttr(lec.theme) + '">' +
+        '</div>' +
+        '<div class="field-row"><label>内容</label>' +
+          '<textarea class="autogrow" data-field="desc" rows="1">' + escapeHtml(lec.desc) + '</textarea>' +
+        '</div>';
+
+      card.querySelector('[data-field="topicId"]').addEventListener('change', function(e){
+        lec.topicId = e.target.value;
+        scheduleSave();
+        renderOutline();
+      });
+      card.querySelector('[data-field="theme"]').addEventListener('input', function(e){
+        lec.theme = e.target.value;
+        scheduleSave();
+      });
+      var descEl = card.querySelector('[data-field="desc"]');
+      descEl.addEventListener('input', function(e){
+        lec.desc = e.target.value;
+        autoGrow(e.target);
+        scheduleSave();
+      });
+
+      container.appendChild(card);
+      autoGrow(descEl);
+    });
+  }
+
+  /* ---------- ② 理解度チェック ---------- */
+  function renderChecklists(){
+    var container = document.getElementById('checklistsList');
+    container.innerHTML = '';
+    state.topics.forEach(function(t){
+      var group = document.createElement('div');
+      group.className = 'topic-group';
+      var list = state.checklists[t.id] || (state.checklists[t.id] = []);
+
+      var itemsWrap = document.createElement('div');
+      itemsWrap.className = 'items-wrap';
+
+      list.forEach(function(text, i){
+        var row = document.createElement('div');
+        row.className = 'item-row';
+        row.draggable = true;
+        row.dataset.index = i;
+        row.innerHTML =
+          '<span class="drag-handle">::</span>' +
+          '<textarea rows="1">' + escapeHtml(text) + '</textarea>' +
+          '<button class="icon-btn" data-action="del">×</button>';
+        var ta = row.querySelector('textarea');
+        ta.addEventListener('input', function(e){
+          list[i] = e.target.value;
+          autoGrow(e.target);
+          scheduleSave();
+        });
+        row.querySelector('[data-action="del"]').addEventListener('click', function(){
+          if(!confirm('この項目を削除しますか?\n「' + text + '」')) return;
+          list.splice(i, 1);
+          scheduleSave();
+          renderChecklists();
+        });
+        itemsWrap.appendChild(row);
+      });
+
+      group.innerHTML = '<div class="topic-group-title">' + t.name + '</div>';
+      group.appendChild(itemsWrap);
+      var addBtn = document.createElement('button');
+      addBtn.className = 'add-row-btn';
+      addBtn.textContent = '+ 項目を追加';
+      addBtn.addEventListener('click', function(){
+        list.push('新しい項目');
+        scheduleSave();
+        renderChecklists();
+      });
+      group.appendChild(addBtn);
+      container.appendChild(group);
+
+      itemsWrap.querySelectorAll('textarea').forEach(autoGrow);
+      enableDragReorder(itemsWrap, list, '.item-row', function(){ scheduleSave(); renderChecklists(); });
+    });
+  }
+
+  /* ---------- 疾患共通メモ ---------- */
+  function renderTopicNotes(){
+    var container = document.getElementById('topicNotesList');
+    container.innerHTML = '';
+    state.topics.forEach(function(t){
+      var row = document.createElement('div');
+      row.className = 'topic-note-row';
+      row.innerHTML =
+        '<label>' + t.name + '</label>' +
+        '<textarea class="autogrow" rows="3" placeholder="疾患共通のポイントなど(1行1項目)">' + escapeHtml(state.topicNotes[t.id] || '') + '</textarea>';
+      var ta = row.querySelector('textarea');
+      ta.addEventListener('input', function(e){
+        state.topicNotes[t.id] = e.target.value;
+        autoGrow(e.target);
+        scheduleSave();
+      });
+      container.appendChild(row);
+      autoGrow(ta);
+    });
+  }
+
+  /* ---------- ③ 授業内容(2段階アコーディオン) ---------- */
+  function renderOutline(){
+    var container = document.getElementById('outlineList');
+    container.innerHTML = '';
+
+    state.lectures.forEach(function(lec){
+      var card = document.createElement('div');
+      card.className = 'lecture-card';
+
+      var head = document.createElement('div');
+      head.className = 'lecture-head';
+      head.innerHTML =
+        '<span class="session-num-badge">第' + parseInt(lec.num,10) + '回</span>' +
+        '<select class="topic-select" data-field="topicId">' + topicOptions(lec.topicId) + '</select>' +
+        '<button type="button" class="lecture-toggle">▾ 項目を編集</button>';
+      head.querySelector('[data-field="topicId"]').addEventListener('change', function(e){
+        lec.topicId = e.target.value;
+        scheduleSave();
+        renderSessions();
+      });
+      head.querySelector('.lecture-toggle').addEventListener('click', function(){
+        card.classList.toggle('open');
+      });
+      card.appendChild(head);
+
+      var body = document.createElement('div');
+      body.className = 'lecture-body';
+
+      var groupsWrap = document.createElement('div');
+      groupsWrap.className = 'groups-wrap';
+
+      lec.items.forEach(function(group, gi){
+        var gBlock = document.createElement('div');
+        gBlock.className = 'group-block';
+        gBlock.draggable = true;
+        gBlock.dataset.index = gi;
+
+        var gHead = document.createElement('div');
+        gHead.className = 'group-head';
+        gHead.innerHTML =
+          '<span class="drag-handle">::</span>' +
+          '<input type="text" value="' + escapeAttr(group.text) + '" placeholder="項目名">' +
+          '<span class="group-count">' + group.children.length + '件</span>' +
+          '<button type="button" class="group-toggle">▾</button>' +
+          '<button class="icon-btn" data-action="del-group">×</button>';
+
+        gHead.querySelector('input[type=text]').addEventListener('input', function(e){
+          group.text = e.target.value;
+          scheduleSave();
+        });
+        gHead.querySelector('.group-toggle').addEventListener('click', function(){
+          gBlock.classList.toggle('open');
+        });
+        gHead.querySelector('[data-action="del-group"]').addEventListener('click', function(){
+          var msg = group.children.length > 0
+            ? 'この項目と、その下の内容' + group.children.length + '件をまとめて削除しますか?\n「' + group.text + '」'
+            : 'この項目を削除しますか?\n「' + group.text + '」';
+          if(!confirm(msg)) return;
+          lec.items.splice(gi, 1);
+          scheduleSave();
+          renderOutline();
+        });
+
+        gBlock.appendChild(gHead);
+
+        var gBody = document.createElement('div');
+        gBody.className = 'group-body';
+
+        var childrenWrap = document.createElement('div');
+        childrenWrap.className = 'children-wrap';
+
+        group.children.forEach(function(childText, ci){
+          var cRow = document.createElement('div');
+          cRow.className = 'child-row';
+          cRow.draggable = true;
+          cRow.dataset.index = ci;
+          cRow.innerHTML =
+            '<span class="drag-handle">::</span>' +
+            '<textarea rows="1" placeholder="内容">' + escapeHtml(childText) + '</textarea>' +
+            '<button class="icon-btn" data-action="del-child">×</button>';
+
+          var cta = cRow.querySelector('textarea');
+          cta.addEventListener('input', function(e){
+            group.children[ci] = e.target.value;
+            autoGrow(e.target);
+            scheduleSave();
+          });
+          cRow.querySelector('[data-action="del-child"]').addEventListener('click', function(){
+            if(!confirm('この内容を削除しますか?\n「' + childText + '」')) return;
+            group.children.splice(ci, 1);
+            scheduleSave();
+            renderOutline();
+          });
+          childrenWrap.appendChild(cRow);
+        });
+
+        gBody.appendChild(childrenWrap);
+
+        var addChildBtn = document.createElement('button');
+        addChildBtn.type = 'button';
+        addChildBtn.className = 'add-child-btn';
+        addChildBtn.textContent = '+ 内容を追加';
+        addChildBtn.addEventListener('click', function(){
+          group.children.push('新しい内容');
+          gBlock.classList.add('open');
+          scheduleSave();
+          renderOutline();
+        });
+        gBody.appendChild(addChildBtn);
+
+        gBlock.appendChild(gBody);
+        groupsWrap.appendChild(gBlock);
+
+        childrenWrap.querySelectorAll('textarea').forEach(autoGrow);
+        enableDragReorder(childrenWrap, group.children, '.child-row', function(){ scheduleSave(); renderOutline(); });
+      });
+
+      body.appendChild(groupsWrap);
+
+      var addGroupBtn = document.createElement('button');
+      addGroupBtn.type = 'button';
+      addGroupBtn.className = 'add-row-btn';
+      addGroupBtn.textContent = '+ 項目を追加';
+      addGroupBtn.addEventListener('click', function(){
+        lec.items.push({text: '新しい項目', children: []});
+        card.classList.add('open');
+        scheduleSave();
+        renderOutline();
+      });
+      body.appendChild(addGroupBtn);
+
+      card.appendChild(body);
+      container.appendChild(card);
+
+      enableDragReorder(groupsWrap, lec.items, '.group-block', function(){ scheduleSave(); renderOutline(); });
+    });
+  }
+
+  /* ---------- ④ 疾患一覧 ---------- */
+  function slugify(){
+    return 'topic-' + Date.now().toString(36);
+  }
+
+  function renderTopics(){
+    var container = document.getElementById('topicsList');
+    container.innerHTML = '';
+
+    state.topics.forEach(function(t, i){
+      var row = document.createElement('div');
+      row.className = 'item-row';
+      row.draggable = true;
+      row.dataset.index = i;
+      row.innerHTML =
+        '<span class="drag-handle">::</span>' +
+        '<input type="text" value="' + escapeAttr(t.name) + '">' +
+        '<button class="icon-btn" data-action="del">×</button>';
+
+      row.querySelector('input').addEventListener('input', function(e){
+        t.name = e.target.value;
+        scheduleSave();
+        renderSessions();
+        renderChecklists();
+        renderOutline();
+      });
+
+      row.querySelector('[data-action="del"]').addEventListener('click', function(){
+        var usedIn = state.lectures.filter(function(lec){ return lec.topicId === t.id; })
+          .map(function(lec){ return '第' + parseInt(lec.num,10) + '回'; });
+        if(usedIn.length > 0){
+          alert('「' + t.name + '」は' + usedIn.join('、') + 'で使われているため削除できません。先に別の疾患へ変更してください。');
+          return;
+        }
+        if(!confirm('「' + t.name + '」を削除しますか?')) return;
+        state.topics.splice(i, 1);
+        delete state.checklists[t.id];
+        delete state.topicNotes[t.id];
+        scheduleSave();
+        renderAll();
+      });
+
+      container.appendChild(row);
+    });
+
+    enableDragReorder(container, state.topics, '.item-row', function(){
+      scheduleSave();
+      renderAll();
+    });
+  }
+
+  document.getElementById('addTopicBtn').addEventListener('click', function(){
+    var id = slugify();
+    state.topics.push({id: id, name: '新しい疾患'});
+    state.checklists[id] = [];
+    state.topicNotes[id] = '';
+    scheduleSave();
+    renderTopics();
+  });
+
+  function renderAll(){
+    renderSessions();
+    renderChecklists();
+    renderTopicNotes();
+    renderOutline();
+    renderTopics();
+  }
+  renderAll();
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll('.tab-btn').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.view).classList.add('active');
+    });
+  });
+
+  /* ---------- Export / Import / Reset ---------- */
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var ts = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = 'neuro-pt-content-' + ts + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('importBtn').addEventListener('click', function(){
+    document.getElementById('importFile').click();
+  });
+  document.getElementById('importFile').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var parsed = migrateState(JSON.parse(reader.result));
+        state = parsed;
+        persist();
+        renderAll();
+        alert('読み込みました。');
+      } catch(err){
+        alert('JSONの読み込みに失敗しました。ファイルを確認してください。');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if(!confirm('現在の編集内容を破棄して、サイトの現在の内容に戻します。よろしいですか?')) return;
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    persist();
+    renderAll();
+  });
+
+  persist();
+</script>
+</body>
+</html>
