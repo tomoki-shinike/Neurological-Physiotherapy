@@ -34,11 +34,12 @@
     max-width: 900px; margin: 0 auto;
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   }
-  .topbar h1{ font-size: 16px; margin: 0; flex: 1 1 auto; }
+  .topbar h1{ font-size: 16px; margin: 0; flex: 1 1 auto; min-width: 0; }
   .btn{
     font: inherit; font-size: 12.5px; font-weight: 600;
     padding: 7px 14px; border-radius: 7px; cursor: pointer;
     border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+    display: inline-block; text-decoration: none;
   }
   .btn:hover{ border-color: var(--accent); background: var(--accent-soft); }
   .btn.primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -46,6 +47,17 @@
   input[type=file]{ display:none; }
 
   .save-status{ font-size: 11px; color: var(--ink-soft); flex: 0 0 auto; }
+
+  @media (max-width: 560px){
+    .topbar{ padding: 10px 14px; }
+    .topbar-inner{ gap: 8px; }
+    .topbar h1{ flex: 1 1 100%; font-size: 14px; }
+    .save-status{ flex: 1 1 100%; font-size: 10.5px; }
+    .btn{ font-size: 11.5px; padding: 6px 9px; }
+    .tabs{ padding: 0 14px; flex-wrap: wrap; }
+    .tab-btn{ flex: 1 1 calc(50% - 4px); font-size: 12px; }
+    .wrap{ padding: 14px; }
+  }
 
   .tabs{
     max-width: 900px; margin: 14px auto 0; padding: 0 20px;
@@ -227,6 +239,7 @@
 
 <div class="topbar">
   <div class="topbar-inner">
+    <a class="btn" href="index.html">← 講義計画に戻る</a>
     <h1>講義計画・授業内容 編集ツール</h1>
     <span class="save-status" id="saveStatus"></span>
     <button class="btn" id="resetBtn">現在のサイト内容に戻す</button>
@@ -245,14 +258,6 @@
 
 <div class="wrap">
 
-  <div class="note-box">
-    ここで編集した内容は、この端末のブラウザに自動保存されます。作業が終わったら右上の<strong>「JSON書き出し」</strong>でファイルをダウンロードし、それをClaudeに渡してください。実際のサイト(index.html)への反映はClaudeが行います。<br><br>
-    <strong>①の「所属疾患」と③の「対象疾患」は連動しています。</strong>どちらで変更しても、同じ回の疾患として両方に反映されます。<br>
-    <strong>③授業内容:</strong> 「第N回・疾患名」は常に表示し、中身は右の <code>▾</code> で開閉します。各「項目」も同様にクリックで開閉し、中の「内容」を編集できます。<br>
-    <strong>並び替え:</strong> <code>::</code> をドラッグすると順番を入れ替えられます。<br>
-    <strong>疾患名の変更・追加:</strong> 「④疾患一覧」タブで行えます。
-  </div>
-
   <div class="view active" id="view-sessions">
     <div id="sessionsList"></div>
   </div>
@@ -262,11 +267,11 @@
   </div>
 
   <div class="view" id="view-outline">
+    <div id="outlineList"></div>
     <details class="notes-details">
       <summary>疾患ごとの共通メモ(POINTなど・任意)</summary>
       <div id="topicNotesList"></div>
     </details>
-    <div id="outlineList"></div>
   </div>
 
   <div class="view" id="view-topics">
@@ -1085,6 +1090,7 @@
         renderSessions();
         renderChecklists();
         renderOutline();
+        renderTopicNotes();
       });
 
       row.querySelector('[data-action="del"]').addEventListener('click', function(){
@@ -1118,6 +1124,7 @@
     state.topicNotes[id] = '';
     scheduleSave();
     renderTopics();
+    renderTopicNotes();
   });
 
   function renderAll(){
@@ -1141,7 +1148,7 @@
 
   /* ---------- Export / Import / Reset ---------- */
   document.getElementById('exportBtn').addEventListener('click', function(){
-    var blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+    var blob = new Blob(['\ufeff' + JSON.stringify(state, null, 2)], {type: 'application/json;charset=utf-8'});
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     var ts = new Date().toISOString().slice(0,10);
@@ -1162,7 +1169,8 @@
     var reader = new FileReader();
     reader.onload = function(){
       try {
-        var parsed = migrateState(JSON.parse(reader.result));
+        var text = reader.result.replace(/^\ufeff/, '');
+        var parsed = migrateState(JSON.parse(text));
         state = parsed;
         persist();
         renderAll();
