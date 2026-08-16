@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>出席番号からランダムに抽選</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121A21;
+    --card:#1A242D;
+    --card2:#212D37;
+    --line:#2E3C47;
+    --text:#E7EEF3;
+    --sub:#8496A3;
+    --stamp:#FF5A5F;        /* 押したてのインク */
+    --stamp-deep:#E1484F;
+    --btn:#DFE5E9;          /* 抽選ボタン（灰色みのある白） */
+    --btn-hover:#EDF1F4;
+    --dried:#65757F;        /* 乾いたインク（30秒後） */
+    --absent:#5A6874;
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 620px at 50% -12%, #1E2B36 0%, var(--bg) 62%);
+    background-color:var(--bg);
+    min-height:100vh;
+    color:var(--text);
+    font-family:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
+    font-weight:500;
+    -webkit-text-size-adjust:100%;
+  }
+
+  .wrap{ max-width:1040px; margin:0 auto; padding:28px 20px 64px; }
+
+  header{
+    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+    padding-bottom:16px; border-bottom:1px solid var(--line);
+  }
+  h1{
+    font-family:inherit;
+    font-weight:700; font-size:.92rem; letter-spacing:.1em;
+    color:var(--sub); margin:0;
+  }
+  .layout{
+    display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+    gap:26px; margin-top:26px; align-items:start;
+  }
+  @media (max-width:820px){ .layout{grid-template-columns:1fr; gap:20px;} }
+
+  /* ---------- 結果カード ---------- */
+  .stage{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 24px 24px;
+    box-shadow:0 10px 30px rgba(0,0,0,.28);
+    position:sticky; top:20px;
+  }
+  @media (max-width:820px){ .stage{position:static;} }
+
+  .eyebrow{ font-size:.7rem; letter-spacing:.22em; color:var(--sub); text-align:center; margin:0 0 6px; }
+
+  .numberbox{ display:flex; align-items:center; justify-content:center; min-height:190px; }
+  .number{
+    font-weight:900; font-size:clamp(5.5rem,20vw,10rem); line-height:.9;
+    letter-spacing:-.02em; font-variant-numeric:tabular-nums;
+    color:var(--stamp); transition:color 1.6s ease; display:inline-block;
+  }
+  .number.dried{ color:var(--dried); }
+  .number.empty{
+    color:#3A4855; font-size:clamp(2.2rem,6.5vw,3.1rem); letter-spacing:.04em;
+  }
+  .number.press{ animation:press .32s cubic-bezier(.2,.9,.25,1); }
+  @keyframes press{
+    0%{transform:scale(1.28) rotate(-3deg); opacity:.35;}
+    45%{transform:scale(.94) rotate(1.2deg); opacity:1;}
+    100%{transform:scale(1) rotate(0);}
+  }
+
+  .elapsed{
+    text-align:center; font-size:.85rem; color:var(--sub);
+    letter-spacing:.04em; min-height:1.4em; margin:2px 0 20px;
+  }
+  .elapsed b{ font-weight:700; color:var(--stamp); transition:color 1.6s ease; }
+  .elapsed.dried b{ color:var(--dried); }
+
+  .spin{
+    width:100%; border:none; border-radius:11px;
+    background:var(--btn); color:#17202A;
+    font-family:inherit; font-weight:700; font-size:1.05rem; letter-spacing:.16em;
+    padding:18px 10px; cursor:pointer;
+    transition:transform .12s ease, background .2s ease;
+  }
+  .spin:hover{ background:var(--btn-hover); }
+  .spin:active{ transform:translateY(2px); }
+  .spin:disabled{ background:#4A5761; color:#B9C4CC; cursor:default; transform:none; }
+
+  .notice{ margin:12px 0 0; font-size:.78rem; color:var(--sub); text-align:center; min-height:1.2em; }
+
+  .history{ margin-top:20px; padding-top:16px; border-top:1px dashed var(--line); }
+  .history h2{ font-size:.7rem; letter-spacing:.2em; color:var(--sub); font-weight:700; margin:0 0 10px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    font-size:.8rem; font-weight:700; font-variant-numeric:tabular-nums;
+    color:var(--sub); background:var(--card2); border:1px solid var(--line);
+    border-radius:999px; padding:3px 11px;
+  }
+  .chip.latest{ color:#fff; background:var(--stamp-deep); border-color:var(--stamp-deep); }
+  .chips .none{ font-size:.78rem; color:var(--sub); font-weight:500; }
+
+  /* ---------- 設定パネル ---------- */
+  .panel{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px 22px 24px;
+  }
+  .field + .field{ margin-top:22px; }
+  .label{ font-size:.78rem; font-weight:700; letter-spacing:.08em; margin:0 0 4px; }
+  .hint{ font-size:.75rem; color:var(--sub); margin:0 0 10px; line-height:1.6; }
+
+  .stepper{ display:flex; align-items:center; gap:8px; }
+  .stepper button{
+    width:38px;height:38px; border:1px solid var(--line); background:var(--card2);
+    border-radius:9px; font-size:1.2rem; line-height:1; color:var(--text); cursor:pointer;
+  }
+  .stepper button:hover{ background:#2A3742; }
+  .stepper input{
+    width:88px; height:38px; text-align:center;
+    font-family:inherit; font-weight:700; font-size:1.05rem; font-variant-numeric:tabular-nums;
+    border:1px solid var(--line); border-radius:9px; background:var(--card2); color:var(--text);
+  }
+  .stepper .unit{ font-size:.82rem; color:var(--sub); }
+
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; margin:0 0 10px; font-size:.74rem; color:var(--sub); }
+  .legend span{ display:inline-flex; align-items:center; gap:5px; }
+  .swatch{ width:15px;height:15px;border-radius:4px;border:1px solid var(--line);background:var(--card2);flex:none; }
+  .swatch.absent{ border-style:dashed; background:transparent; }
+  .swatch.done{ border:2px solid var(--stamp); background:transparent; }
+  .swatch.current{ background:var(--stamp-deep); border-color:var(--stamp-deep); }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(50px,1fr)); gap:6px; }
+  .num{
+    position:relative; aspect-ratio:1/1;
+    border:1px solid var(--line); background:var(--card2); border-radius:9px;
+    font-family:inherit; font-weight:700; font-size:.95rem; font-variant-numeric:tabular-nums;
+    color:var(--text); cursor:pointer;
+    transition:background .12s ease, color .12s ease, border-color .12s ease;
+  }
+  .num:hover{ background:#2A3742; }
+  .num.done{ border:2px solid var(--stamp); color:#FF9CA0; }
+  .num.current{ background:var(--stamp-deep); border:2px solid var(--stamp); color:#fff; }
+  .num.absent{
+    background:transparent; border:1px dashed var(--line);
+    color:var(--absent); text-decoration:line-through;
+  }
+  .num.absent::after{
+    content:"欠"; position:absolute; top:2px; right:4px;
+    font-size:.55rem; letter-spacing:0; text-decoration:none; color:var(--absent);
+  }
+
+  .rowline{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-top:12px; flex-wrap:wrap;
+  }
+  .count{ font-size:.8rem; color:var(--sub); }
+  .count strong{ color:var(--text); font-weight:700; }
+  .textbtn{
+    border:none;background:none;padding:0;
+    font-family:inherit;font-size:.8rem;font-weight:700;
+    color:var(--stamp);cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+  }
+
+  .toggle{ display:flex; align-items:flex-start; gap:10px; font-size:.82rem; line-height:1.55; cursor:pointer; }
+  .toggle input{ width:18px;height:18px;margin:2px 0 0;accent-color:var(--stamp-deep);flex:none; }
+
+  :focus-visible{ outline:2px solid var(--stamp); outline-offset:2px; }
+
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>出席番号からランダムに抽選</h1>
+  </header>
+
+  <div class="layout">
+
+    <section class="stage">
+      <p class="eyebrow">当たった番号</p>
+      <div class="numberbox">
+        <span class="number empty" id="number">まだ抽選していません</span>
+      </div>
+      <p class="elapsed" id="elapsed"></p>
+      <button class="spin" id="spin">抽選する</button>
+      <p class="notice" id="notice"></p>
+
+      <div class="history">
+        <h2>これまでに出た番号</h2>
+        <div class="chips" id="history"><span class="none">まだありません</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="field">
+        <p class="label">クラスの人数</p>
+        <p class="hint">1 〜 50 の範囲で設定できます。</p>
+        <div class="stepper">
+          <button type="button" id="minus" aria-label="人数を1減らす">−</button>
+          <input type="number" id="max" min="1" max="50" value="30" inputmode="numeric">
+          <button type="button" id="plus" aria-label="人数を1増やす">＋</button>
+          <span class="unit">人（1〜50）</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <p class="label">番号の一覧</p>
+        <p class="hint">欠席している人の番号をタップすると、抽選から外れます。もう一度タップすると戻ります。</p>
+        <div class="legend">
+          <span><i class="swatch"></i>未回答</span>
+          <span><i class="swatch absent"></i>欠席</span>
+          <span><i class="swatch done"></i>回答済</span>
+          <span><i class="swatch current"></i>今回</span>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="rowline">
+          <span class="count">抽選の対象：<strong id="target">30</strong> 人 ／ 欠席 <strong id="absent">0</strong> 人 ／ 回答済 <strong id="done">0</strong> 人</span>
+          <button type="button" class="textbtn" id="clearAbsent">欠席をすべて解除</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="toggle">
+          <input type="checkbox" id="avoid">
+          <span>一度出た番号は当てない（全員に一巡したら自動で元に戻ります）</span>
+        </label>
+        <div class="rowline">
+          <span class="count">同じ人が続けて当たらないようにする設定です。</span>
+          <button type="button" class="textbtn" id="clearHistory">回答済をリセット</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  const STALE_MS = 30 * 1000;   // ← ここを変えると灰色になるまでの時間を調整できます
+
+  const el = {
+    number:  document.getElementById('number'),
+    elapsed: document.getElementById('elapsed'),
+    spin:    document.getElementById('spin'),
+    notice:  document.getElementById('notice'),
+    history: document.getElementById('history'),
+    grid:    document.getElementById('grid'),
+    max:     document.getElementById('max'),
+    minus:   document.getElementById('minus'),
+    plus:    document.getElementById('plus'),
+    target:  document.getElementById('target'),
+    absent:  document.getElementById('absent'),
+    done:    document.getElementById('done'),
+    clearAbsent:  document.getElementById('clearAbsent'),
+    clearHistory: document.getElementById('clearHistory'),
+    avoid:   document.getElementById('avoid')
+  };
+
+  let maxNum   = 30;
+  let absent   = new Set();   // 欠席番号
+  let history  = [];          // 出た順（新しいものが末尾）
+  let current  = null;
+  let drawnAt  = null;
+  let spinning = false;
+  let buttons  = [];
+
+  /* ---------- 番号ボタンを並べ直す ---------- */
+  function buildGrid(){
+    el.grid.innerHTML = '';
+    buttons = [];
+    for(let i = 1; i <= maxNum; i++){
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'num';
+      b.textContent = i;
+      b.addEventListener('click', () => {
+        if(absent.has(i)) absent.delete(i); else absent.add(i);
+        paintGrid();
+      });
+      buttons.push(b);
+      el.grid.appendChild(b);
+    }
+    paintGrid();
+  }
+
+  /* ---------- 欠席・回答済・今回 の見た目を反映 ---------- */
+  function paintGrid(){
+    let a = 0, d = 0;
+    buttons.forEach((b, idx) => {
+      const n = idx + 1;
+      const isAbsent = absent.has(n);
+      const isDone   = history.includes(n);
+      const isNow    = (n === current);
+      b.classList.toggle('absent', isAbsent);
+      b.classList.toggle('done',  !isAbsent && isDone && !isNow);
+      b.classList.toggle('current', !isAbsent && isNow);
+      b.setAttribute('aria-label',
+        n + '番' + (isAbsent ? '（欠席）' : isNow ? '（今回当選）' : isDone ? '（回答済）' : ''));
+      if(isAbsent) a++;
+      if(!isAbsent && isDone) d++;
+    });
+    el.absent.textContent = a;
+    el.done.textContent   = d;
+    el.target.textContent = maxNum - a;
+  }
+
+  /* ---------- 抽選の対象を作る ---------- */
+  function candidates(){
+    const base = [];
+    for(let i = 1; i <= maxNum; i++) if(!absent.has(i)) base.push(i);
+    if(!el.avoid.checked) return { list: base, wrapped: false };
+
+    const rest = base.filter(n => !history.includes(n));
+    if(rest.length) return { list: rest, wrapped: false };
+    history = [];                      // 全員に一巡したので履歴をリセット
+    renderHistory();
+    return { list: base, wrapped: true };
+  }
+
+  /* ---------- 抽選 ---------- */
+  function spin(){
+    if(spinning) return;
+    const res = candidates();
+    if(!res.list.length){
+      el.notice.textContent = '抽選できる番号がありません。人数か欠席の設定を見直してください。';
+      return;
+    }
+    el.notice.textContent = res.wrapped ? '全員に一巡したので、回答済をリセットしました。' : '';
+    spinning = true;
+    el.spin.disabled = true;
+    el.number.classList.remove('empty', 'dried', 'press');
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pick = () => res.list[Math.floor(Math.random() * res.list.length)];
+
+    if(reduced){ land(pick()); return; }
+
+    let delay = 45;
+    (function tick(){
+      el.number.textContent = pick();
+      delay *= 1.14;
+      if(delay < 190) setTimeout(tick, delay);
+      else land(pick());
+    })();
+  }
+
+  function land(n){
+    current = n;
+    drawnAt = Date.now();
+    history.push(n);
+    if(history.length > 60) history.shift();
+
+    el.number.textContent = n;
+    el.number.classList.remove('empty', 'dried');
+    void el.number.offsetWidth;          // アニメーションをやり直すためのおまじない
+    el.number.classList.add('press');
+
+    spinning = false;
+    el.spin.disabled = false;
+    renderHistory();
+    paintGrid();
+    refreshFreshness();
+  }
+
+  /* ---------- 経過時間の表示と色 ---------- */
+  function refreshFreshness(){
+    if(drawnAt === null){ el.elapsed.textContent = ''; return; }
+
+    const passed = Date.now() - drawnAt;
+    const sec    = Math.floor(passed / 1000);
+    const dried  = passed >= STALE_MS;
+
+    el.number.classList.toggle('dried', dried);
+    el.elapsed.classList.toggle('dried', dried);
+
+    if(dried){
+      el.elapsed.innerHTML = '<b>30秒以上前</b>に決めた番号です';
+    }else if(sec < 5){
+      el.elapsed.innerHTML = '<b>たった今</b>決まりました';
+    }else{
+      el.elapsed.innerHTML = '<b>' + sec + '秒前</b>に決まりました';
+    }
+  }
+
+  function renderHistory(){
+    if(!history.length){
+      el.history.innerHTML = '<span class="none">まだありません</span>';
+      return;
+    }
+    const recent = history.slice(-12).reverse();
+    el.history.innerHTML = recent.map((n, i) =>
+      '<span class="chip' + (i === 0 ? ' latest' : '') + '">' + n + '</span>'
+    ).join('');
+  }
+
+  /* ---------- 人数の変更 ---------- */
+  function setMax(v){
+    v = Math.min(50, Math.max(1, Math.round(v || 1)));
+    maxNum = v;
+    el.max.value = v;
+    buildGrid();
+  }
+
+  el.max.addEventListener('change', () => setMax(Number(el.max.value)));
+  el.minus.addEventListener('click', () => setMax(maxNum - 1));
+  el.plus .addEventListener('click', () => setMax(maxNum + 1));
+  el.clearAbsent.addEventListener('click', () => { absent.clear(); paintGrid(); });
+  el.clearHistory.addEventListener('click', () => {
+    history = []; current = null;
+    renderHistory(); paintGrid(); el.notice.textContent = '';
+  });
+  el.spin.addEventListener('click', spin);
+
+  document.addEventListener('keydown', e => {
+    if(e.code === 'Space' && e.target === document.body){ e.preventDefault(); spin(); }
+  });
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) refreshFreshness(); });
+  setInterval(refreshFreshness, 1000);
+
+  buildGrid();
+})();
+</script>
+</body>
+</html>
