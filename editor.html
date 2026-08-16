@@ -162,6 +162,15 @@
     padding: 12px 16px; margin-bottom: 20px;
   }
   details.notes-details summary{ font-size: 13px; font-weight: 700; cursor: pointer; }
+  .preview-details{ background: var(--accent-soft); border-color: var(--accent); }
+  .preview-box{
+    width: 100%; margin-top: 10px; padding: 12px 14px;
+    font-family: ui-monospace, "SF Mono", "Roboto Mono", monospace;
+    font-size: 12.5px; line-height: 1.7; white-space: pre;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper-raised); color: var(--ink);
+    resize: vertical;
+  }
   .topic-note-row{ margin-top: 12px; }
   .topic-note-row label{ font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
   .topic-note-row textarea{ min-height: 60px; }
@@ -269,6 +278,10 @@
   </div>
 
   <div class="view" id="view-outline">
+    <details class="notes-details preview-details" open>
+      <summary>全体を文章で確認(編集内容が自動的に反映されます)</summary>
+      <textarea id="outlinePreviewBox" class="preview-box" readonly rows="12"></textarea>
+    </details>
     <div id="outlineList"></div>
     <details class="notes-details">
       <summary>疾患ごとの共通メモ(POINTなど・任意)</summary>
@@ -740,8 +753,27 @@
     return JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
 
-  var state = loadState();
+  function makeId(prefix){
+    return prefix + '-' + Math.random().toString(36).slice(2, 9);
+  }
+
+  function ensureGroupIds(data){
+    if(data && data.lectures){
+      data.lectures.forEach(function(lec){
+        (lec.items || []).forEach(function(group){
+          if(!group.id){ group.id = makeId('grp'); }
+        });
+      });
+    }
+    return data;
+  }
+
+  var state = ensureGroupIds(loadState());
   var saveTimer = null;
+
+  // アコーディオンの開閉状態(再描画をまたいで保持する。ページ再読み込みでは初期化される)
+  var openLectures = {};   // { lectureNum: true }
+  var openGroups = {};     // { groupId: true }
 
   function persist(){
     try {
@@ -936,7 +968,7 @@
 
     state.lectures.forEach(function(lec){
       var card = document.createElement('div');
-      card.className = 'lecture-card';
+      card.className = 'lecture-card' + (openLectures[lec.num] ? ' open' : '');
 
       var head = document.createElement('div');
       head.className = 'lecture-head';
@@ -948,9 +980,11 @@
         lec.topicId = e.target.value;
         scheduleSave();
         renderSessions();
+        renderOutlinePreview();
       });
       head.querySelector('.lecture-toggle').addEventListener('click', function(){
         card.classList.toggle('open');
+        if(card.classList.contains('open')){ openLectures[lec.num] = true; } else { delete openLectures[lec.num]; }
       });
       card.appendChild(head);
 
@@ -962,7 +996,7 @@
 
       lec.items.forEach(function(group, gi){
         var gBlock = document.createElement('div');
-        gBlock.className = 'group-block';
+        gBlock.className = 'group-block' + (openGroups[group.id] ? ' open' : '');
         gBlock.draggable = true;
         gBlock.dataset.index = gi;
 
@@ -978,15 +1012,18 @@
         gHead.querySelector('input[type=text]').addEventListener('input', function(e){
           group.text = e.target.value;
           scheduleSave();
+          renderOutlinePreview();
         });
         gHead.querySelector('.group-toggle').addEventListener('click', function(){
           gBlock.classList.toggle('open');
+          if(gBlock.classList.contains('open')){ openGroups[group.id] = true; } else { delete openGroups[group.id]; }
         });
         gHead.querySelector('[data-action="del-group"]').addEventListener('click', function(){
           var msg = group.children.length > 0
             ? 'この項目と、その下の内容' + group.children.length + '件をまとめて削除しますか?\n「' + group.text + '」'
             : 'この項目を削除しますか?\n「' + group.text + '」';
           if(!confirm(msg)) return;
+          delete openGroups[group.id];
           lec.items.splice(gi, 1);
           scheduleSave();
           renderOutline();
@@ -1015,6 +1052,7 @@
             group.children[ci] = e.target.value;
             autoGrow(e.target);
             scheduleSave();
+            renderOutlinePreview();
           });
           cRow.querySelector('[data-action="del-child"]').addEventListener('click', function(){
             if(!confirm('この内容を削除しますか?\n「' + childText + '」')) return;
@@ -1033,7 +1071,8 @@
         addChildBtn.textContent = '+ 内容を追加';
         addChildBtn.addEventListener('click', function(){
           group.children.push('新しい内容');
-          gBlock.classList.add('open');
+          openLectures[lec.num] = true;
+          openGroups[group.id] = true;
           scheduleSave();
           renderOutline();
         });
@@ -1053,8 +1092,10 @@
       addGroupBtn.className = 'add-row-btn';
       addGroupBtn.textContent = '+ 項目を追加';
       addGroupBtn.addEventListener('click', function(){
-        lec.items.push({text: '新しい項目', children: []});
-        card.classList.add('open');
+        var newGroup = {id: makeId('grp'), text: '新しい項目', children: []};
+        lec.items.push(newGroup);
+        openLectures[lec.num] = true;
+        openGroups[newGroup.id] = true;
         scheduleSave();
         renderOutline();
       });
@@ -1065,6 +1106,32 @@
 
       enableDragReorder(groupsWrap, lec.items, '.group-block', function(){ scheduleSave(); renderOutline(); });
     });
+
+    renderOutlinePreview();
+  }
+
+  function buildOutlineText(){
+    var lines = [];
+    state.lectures.forEach(function(lec){
+      lines.push('■ 第' + parseInt(lec.num,10) + '回　' + topicName(lec.topicId));
+      if(lec.items.length === 0){
+        lines.push('  (項目なし)');
+      }
+      lec.items.forEach(function(group){
+        lines.push('　・' + group.text);
+        group.children.forEach(function(child){
+          lines.push('　　- ' + child);
+        });
+      });
+      lines.push('');
+    });
+    return lines.join('\n');
+  }
+
+  function renderOutlinePreview(){
+    var box = document.getElementById('outlinePreviewBox');
+    if(!box) return;
+    box.value = buildOutlineText();
   }
 
   /* ---------- ④ 疾患一覧 ---------- */
