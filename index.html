@@ -291,24 +291,6 @@
     font-size: 22px; font-weight: 700; color: var(--ink); margin: 0 0 8px;
   }
 
-  /* ---------- Rhythm bar ---------- */
-  .rhythm{
-    display: flex;
-    align-items: flex-end;
-    gap: 18px;
-    margin: 28px 0 8px;
-    padding: 20px 4px 14px;
-    border-bottom: 1px solid var(--line);
-    overflow-x: auto;
-  }
-  .rhythm-group{ display:flex; align-items:flex-end; gap: 5px; padding-bottom: 4px; }
-  .rhythm-tick{
-    width: 7px; border-radius: 3px 3px 1px 1px; cursor: pointer; border: none;
-    display:block; transition: transform .15s ease;
-  }
-  .rhythm-tick:hover{ transform: translateY(-3px); }
-  .rhythm-tick:focus-visible{ outline: 2px solid var(--ink); outline-offset: 2px; }
-
   /* ---------- Usage note ---------- */
   .note{
     background: var(--paper-raised);
@@ -356,7 +338,112 @@
   .session.open .chevron{ transform: rotate(180deg); }
 
   .session-panel{ max-height: 0; overflow: hidden; transition: max-height .22s ease; }
-  .session-panel-inner{ padding: 4px 18px 18px 68px; display:flex; flex-direction: column; gap: 8px; }
+  .session-panel-inner{ padding: 6px 20px 20px 20px; }
+  .session-outline .outline{ margin-top: 0; }
+  .session-res{
+    margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .session-res.top{
+    margin-top: 0; margin-bottom: 18px;
+    padding-top: 0; padding-bottom: 16px;
+    border-top: none; border-bottom: 1px dashed var(--line);
+  }
+  .res-head{
+    font-size: 11px; font-weight: 700; color: var(--ink-soft);
+    letter-spacing: 0.06em; margin-bottom: 2px;
+  }
+
+  /* ---------- ツールバー ---------- */
+  .toolbar-title{
+    flex: 1 1 auto; min-width: 0; align-self: center;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .menu-link{ display: flex; align-items: baseline; gap: 10px; }
+  .menu-link-round{
+    flex: 0 0 auto; font-size: 10.5px; font-weight: 700; color: var(--accent);
+    background: var(--accent-soft); border-radius: 4px; padding: 1px 6px;
+  }
+
+  /* ---------- 救急車レーン ---------- */
+  .ambulance-lane{
+    position: relative;
+    height: 110px;
+    overflow: hidden;
+    margin: 26px -24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  /* 建物イラスト:道路帯の真上・右寄せ */
+  .ambulance-lane .building-bg{
+    position: absolute;
+    bottom: 16px;
+    right: 6%;
+    width: 480px;
+    max-width: 88%;
+    height: auto;
+    opacity: 0.85;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* 道路帯 */
+  .ambulance-lane .road-strip{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 16px;
+    background: #00A8A3;
+  }
+  /* 救急車:タイヤが道路帯の上に乗る位置 */
+  #ambulance-el{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 110px;
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    will-change: left, opacity;
+  }
+
+  /* 救急車が右に近づいたときに目次ボタンを強調する */
+  .menu-btn.amb-pulse{
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+    animation: menuPulse 1.2s ease-in-out infinite;
+  }
+  @keyframes menuPulse{
+    0%, 100%{ box-shadow: 0 4px 16px rgba(47,111,154,0.30); transform: translateY(0) scale(1); }
+    50%{ box-shadow: 0 8px 24px rgba(47,111,154,0.55); transform: translateY(-2px) scale(1.05); }
+  }
+
+  @media (max-width: 560px){
+    .ambulance-lane{ height: 78px; margin: 20px -16px 0; }
+    .ambulance-lane .building-bg{ width: 280px; bottom: 12px; }
+    .ambulance-lane .road-strip{ height: 12px; }
+    #ambulance-el{ width: 75px; bottom: 7px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .menu-btn.amb-pulse{ animation: none; }
+  }
+
+  /* ---------- 疾患見出しのコマ数バッジ ---------- */
+  .disease-koma{
+    margin-left: auto; flex: 0 0 auto;
+    font-size: 11px; font-weight: 700; color: #fff; background: var(--dot);
+    border-radius: 999px; padding: 2px 10px; letter-spacing: 0.02em;
+  }
+  .pending-note{ margin-top: 12px; }
+
+  /* I / II / V は単独で見出しを兼ねる大きめのアコーディオン */
+  .subacc-major{
+    margin-top: 18px;
+    background: var(--paper-raised);
+    border-left: 4px solid var(--dot);
+  }
+  .subacc-major .subacc-trigger{ padding: 15px 16px; }
+  .subacc-major .subacc-title{ font-size: 14.5px; }
 
   .res-link{
     display:flex; align-items:center; gap: 10px; padding: 10px 14px;
@@ -581,6 +668,68 @@
   .callout-point ul{ list-style: disc; margin: 6px 0 0; padding-left: 20px; }
   .callout-point li{ margin: 4px 0; }
 
+  /* ---------- 授業内容:大見出し(I / II / III ...) ---------- */
+  .sect-head{
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 26px 0 10px; padding-bottom: 7px;
+    border-bottom: 2px solid var(--dot);
+  }
+  .disease .sect-head{ margin-top: 24px; }
+  .sect-num{ flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--dot); letter-spacing: 0.06em; }
+  .sect-title{ flex: 1 1 auto; font-size: 15px; font-weight: 700; }
+  .sect-note{ flex: 0 0 auto; font-size: 11.5px; color: var(--ink-soft); }
+
+  /* ---------- 授業内容:入れ子アコーディオン ---------- */
+  .subacc{
+    margin-top: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .subacc-trigger{
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; background: none; border: none; text-align: left;
+    cursor: pointer; font: inherit; color: inherit;
+  }
+  .subacc-trigger:hover{ background: var(--bg-tint); }
+  .subacc-trigger:focus-visible{ outline: 2px solid var(--dot); outline-offset: -2px; }
+  .subacc-num{
+    flex: 0 0 auto; min-width: 30px; text-align: center;
+    font-size: 11px; font-weight: 700; color: #fff; background: var(--dot);
+    border-radius: 5px; padding: 2px 4px; letter-spacing: 0.02em;
+  }
+  .subacc-title{ flex: 1 1 auto; font-size: 13.5px; font-weight: 700; }
+  .subacc-count{ flex: 0 0 auto; font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+  .subacc-trigger .chevron{ flex: 0 0 auto; width: 17px; height: 17px; }
+  .subacc.open .chevron{ transform: rotate(180deg); }
+  .subacc-panel{ max-height: 0; overflow: hidden; transition: max-height .22s ease; }
+  .subacc-panel-inner{ padding: 2px 16px 14px; }
+  .subacc-panel-inner.scrollable{ max-height: 360px; overflow-y: auto; }
+  .subacc-lead{
+    font-size: 12.5px; color: var(--ink-soft); margin: 4px 0 10px;
+  }
+  .subacc .check-item{ font-size: 13px; }
+  .subacc .outline{ margin-top: 4px; }
+
+  /* 大見出し直後の講義1は二重線にならないようにする */
+  .sect-head + .lecture-block{ margin-top: 14px; padding-top: 0; border-top: none; }
+
+  /* ---------- アウトライン第3・第4階層 ---------- */
+  li.l3{
+    font-size: 13px; font-weight: 500; color: var(--ink);
+    margin: 5px 0; padding-left: 15px; position: relative;
+  }
+  li.l3::before{
+    content: ""; position: absolute; left: 2px; top: 10px;
+    width: 7px; height: 1px; background: var(--ink-soft);
+  }
+  li.l4{
+    font-size: 12.5px; font-weight: 400; color: var(--ink-soft);
+    margin: 3px 0; padding-left: 14px; position: relative;
+  }
+  li.l4::before{ content: "・"; position: absolute; left: 0; }
+
   .lecture-block{ margin-top: 26px; padding-top: 16px; border-top: 3px solid var(--dot); }
   .lecture-block:first-of-type{ margin-top: 12px; border-top: none; padding-top: 0; }
   .lecture-label{
@@ -621,14 +770,7 @@
 
 <div class="tabbar">
   <div class="tabbar-inner">
-    <button class="tab-btn active" data-view="view-plan">
-      <span class="tab-num mono">01</span>
-      <span class="tab-label">講義計画(資料)</span>
-    </button>
-    <button class="tab-btn" data-view="view-outline">
-      <span class="tab-num mono">02</span>
-      <span class="tab-label">授業内容</span>
-    </button>
+    <div class="toolbar-title">神経・筋疾患理学療法　講義計画</div>
     <button class="menu-btn" id="menuBtn" aria-label="メニュー" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <span class="menu-btn-label">目次</span>
@@ -636,32 +778,22 @@
   </div>
 </div>
 
+<!-- ============ ここから 目次(menu-panel) ============ -->
 <div class="menu-panel" id="menuPanel">
   <div class="menu-group">
-    <div class="menu-group-title">01　講義計画(資料)</div>
-    <button class="menu-link" data-view="view-plan" data-target="plan-overview">神経系理学療法の概要</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-parkinson">パーキンソン病</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-ms">多発性硬化症／視神経脊髄炎</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-gbs">多発ニューロパチー(ギランバレー症候群など)</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-als">筋萎縮性側索硬化症</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-mg">その他(筋ジストロフィー／重症筋無力症など)</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-practical">実技(評価・治療等のまとめ）</button>
-    <button class="menu-link" data-view="view-plan" data-target="plan-review">総復習(知識・理解度チェック)</button>
-  </div>
-  <div class="menu-group">
-    <div class="menu-group-title">02　授業内容</div>
-    <button class="menu-link" data-view="view-outline" data-target="outline-overview">神経系理学療法の概要</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-parkinson">パーキンソン病</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-scd_msa">脊髄小脳変性症(多系統萎縮症／それ以外)</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-ms">多発性硬化症／視神経脊髄炎</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-gbs">多発ニューロパチー(ギランバレー症候群など)</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-als">筋萎縮性側索硬化症</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-mg">その他(筋ジストロフィー／重症筋無力症など)</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-practical">実技(評価・治療等のまとめ）</button>
-    <button class="menu-link" data-view="view-outline" data-target="outline-review">総復習(知識・理解度チェック)</button>
+    <div class="menu-group-title">目次(全15回)</div>
+    <button class="menu-link" data-target="plan-overview"><span class="menu-link-round mono">第1回</span>神経系理学療法の概要</button>
+    <button class="menu-link" data-target="plan-parkinson"><span class="menu-link-round mono">第2〜4回</span>パーキンソン病</button>
+    <button class="menu-link" data-target="plan-scd_msa"><span class="menu-link-round mono">第5〜6回</span>脊髄小脳変性症(多系統萎縮症／それ以外)</button>
+    <button class="menu-link" data-target="plan-ms"><span class="menu-link-round mono">第7〜8回</span>多発性硬化症／視神経脊髄炎</button>
+    <button class="menu-link" data-target="plan-gbs"><span class="menu-link-round mono">第9〜10回</span>多発ニューロパチー(ギランバレー症候群など)</button>
+    <button class="menu-link" data-target="plan-als"><span class="menu-link-round mono">第11〜12回</span>筋萎縮性側索硬化症</button>
+    <button class="menu-link" data-target="plan-mg"><span class="menu-link-round mono">第13回</span>その他(筋ジストロフィー／重症筋無力症など)</button>
+    <button class="menu-link" data-target="plan-practical"><span class="menu-link-round mono">第14回</span>実技(評価・治療等のまとめ）</button>
+    <button class="menu-link" data-target="plan-review"><span class="menu-link-round mono">第15回</span>総復習(知識・理解度チェック)</button>
   </div>
 </div>
+<!-- ============ 目次ここまで ============ -->
 
 <button class="to-top-btn" id="toTopBtn" aria-label="ページトップに戻る">
   <svg viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -672,46 +804,28 @@
   <!-- ========================= VIEW 1: 講義計画 ========================= -->
   <div class="view active" id="view-plan">
 
-    <nav class="rhythm" aria-label="全15回のナビゲーション">
-    <div class="rhythm-group" data-target="plan-overview">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-overview)" data-target="plan-overview" aria-label="第1回へ"></button>
+    <!-- ============ ここから 救急車レーン ============ -->
+    <div class="ambulance-lane" id="ambulanceLane">
+      <img class="building-bg" src="images/building-bg.png" alt="">
+      <div class="road-strip"></div>
+      <img id="ambulance-el" src="images/ambulance.png" alt="救急車">
     </div>
-    <div class="rhythm-group" data-target="plan-parkinson">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-parkinson)" data-target="plan-parkinson" aria-label="第2回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-parkinson)" data-target="plan-parkinson" aria-label="第3回へ"></button>
-      <button class="rhythm-tick" style="height:26px;background:var(--c-parkinson)" data-target="plan-parkinson" aria-label="第4回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-scd_msa">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-scd_msa)" data-target="plan-scd_msa" aria-label="第5回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-scd_msa)" data-target="plan-scd_msa" aria-label="第6回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-ms">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-ms)" data-target="plan-ms" aria-label="第7回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-ms)" data-target="plan-ms" aria-label="第8回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-gbs">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第9回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-gbs)" data-target="plan-gbs" aria-label="第10回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-als">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-als)" data-target="plan-als" aria-label="第11回へ"></button>
-      <button class="rhythm-tick" style="height:34px;background:var(--c-als)" data-target="plan-als" aria-label="第12回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-mg">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-mg)" data-target="plan-mg" aria-label="第13回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-practical">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-practical)" data-target="plan-practical" aria-label="第14回へ"></button>
-    </div>
-    <div class="rhythm-group" data-target="plan-review">
-      <button class="rhythm-tick" style="height:22px;background:var(--c-review)" data-target="plan-review" aria-label="第15回へ"></button>
-    </div>
-    </nav>
+    <!-- ============ 救急車レーンここまで ============ -->
 
+  <div class="note">
+    <strong>初回</strong>：講師の経歴紹介、講義で学ぶ疾患や到達目標の紹介、使用する教材や復習が可能な専用サイトの利用方法についての説明(15分程度)<br>
+    各疾患のカードは <strong>I. 学習目標 → II. 予習課題 → III. 講義内容(各回) → IV. アクティブ・ラーニング → V. 到達度評価</strong> の順に並んでいます。
+  </div>
+
+  <!-- ============ ここから 疾患セクション ============ -->
   <section class="disease" id="plan-overview" style="--dot:var(--c-overview); --bg-tint:var(--c-overview-bg)">
     <div class="disease-head">
       <span class="disease-num mono">01</span>
       <span class="disease-name">神経系理学療法の概要<span class="latin">Overview</span></span>
+      <span class="disease-koma mono">1コマ</span>
+    </div>
+    <div class="sect-head">
+      <span class="sect-title">講義内容(全1コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -723,23 +837,76 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/01_overview/01_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">01_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/01_overview/01_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">01_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/01_overview/01_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">01_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/01_overview/01_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">01_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/01_overview/01_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">01_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <ul class="outline">
+              <li class="l1">挨拶・講師の自己紹介
+                <ul class="outline">
+                  <li class="l2">経歴や、これまでにやってきたこと、現在取り組んでいること</li>
+                  <li class="l2">普段神経系の疾患を有する患者様とどのような関りがあるか</li>
+                </ul>
+              </li>
+              <li class="l1">神経系理学療法の講義で何を目標にするか
+                <ul class="outline">
+                  <li class="l2">★重要：疾患の概要を理解でき、かつ説明できる</li>
+                  <li class="l2">各疾患の関係性や、違いなどを理解できる</li>
+                  <li class="l2">疾患の特性を踏まえた理学療法評価をイメージ・列挙できる（実習で困らない）</li>
+                  <li class="l2">どのような理学療法を提供すれば良いのか基本的なものをイメージできる</li>
+                  <li class="l2">★関わるうえでの注意点、リスク管理をできるようにする</li>
+                  <li class="l2">疾患への理解を深めることで、解剖学や生理学などの基本知識を見直しする</li>
+                  <li class="l2">★神経系に関連した国家試験の問題を回答できるようになる</li>
+                </ul>
+              </li>
+              <li class="l1">神経系の疾患にはどのようなものがあるのか
+                <ul class="outline">
+                  <li class="l2">発症率など、頻度の多い疾患・稀な疾患について理解する</li>
+                  <li class="l2">パーキンソン病</li>
+                  <li class="l2">脊髄小脳変性症(多系統萎縮症／それ以外)</li>
+                  <li class="l2">多発性硬化症／視神経脊髄炎</li>
+                  <li class="l2">多発ニューロパチー(ギランバレー症候群など)</li>
+                  <li class="l2">筋萎縮性側索硬化症</li>
+                  <li class="l2">その他(筋ジストロフィー／重症筋無力症など)</li>
+                </ul>
+              </li>
+              <li class="l1">どのような場面（急性期・回復期・生活期）で神経系の疾患と関わるのか
+                <ul class="outline">
+                  <li class="l2">脳血管リハビリテーション料</li>
+                  <li class="l2">一般病棟の対象疾患</li>
+                  <li class="l2">回復期リハビリテーション病棟の対象疾患</li>
+                  <li class="l2">難病リハビリテーション料</li>
+                </ul>
+              </li>
+              <li class="l1">神経系疾患に対する理学療法士の役割とは？</li>
+              <li class="l1">現在、学校で習っていて、使える武器（理学療法評価）は何でしょう？
+                <ul class="outline">
+                  <li class="l2">運動機能障害（運動麻痺）に対する検査項目は何がありますか？</li>
+                  <li class="l2">感覚障害に対する検査項目には何がありますか？</li>
+                  <li class="l2">異常筋緊張に対する検査項目には何がありますか？</li>
+                  <li class="l2">運動失調に対する検査項目には何がありますか？</li>
+                  <li class="l2">姿勢・バランス障害に対する検査項目には何がありますか？</li>
+                  <li class="l2">ADL評価には何がありますか？</li>
+                  <li class="l2">動作分析の項目は何がありますか？</li>
+                  <li class="l2">高次脳機能障害に対する評価は何がありますか？</li>
+                  <li class="l2">運動耐容能を評価するものは何がありますか？</li>
+                </ul>
+              </li>
+              <li class="l1">本日の復習</li>
+            </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -797,6 +964,265 @@
     <div class="disease-head">
       <span class="disease-num mono">02</span>
       <span class="disease-name">パーキンソン病<span class="latin">Parkinson's Disease</span></span>
+      <span class="disease-koma mono">3コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/parkinson.webp" alt="パーキンソン病 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/parkinson.webp)</div>
+    </div>
+    <div class="subacc subacc-major">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">I</span>
+        <span class="subacc-title">学習目標</span>
+        <span class="subacc-count mono">18項目 / P.165</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <p class="subacc-lead">この講義を終えたときに，自分の言葉で説明できるようになっていたい項目です。</p>
+          <ul class="outline">
+            <li class="l1">1　Parkinson病(PD)について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) PDの原因</li>
+                <li class="l2">(2) PDの診断基準</li>
+                <li class="l2">(3) PDの重症度分類</li>
+                <li class="l2">(4) PDの症状</li>
+                <li class="l2">(5) PDの①薬物治療と②外科治療</li>
+              </ul>
+            </li>
+            <li class="l1">2　PDに対する理学療法について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) 理学療法の実施に際して収集すべき医学的情報</li>
+                <li class="l2">(2) 医療面接，問診の方法</li>
+                <li class="l2">(3) 姿勢の観察と評価方法</li>
+                <li class="l2">(4) 動作の観察と評価方法</li>
+                <li class="l2">(5) バランス能力の評価方法</li>
+                <li class="l2">(6) ROMおよび筋力測定の方法</li>
+                <li class="l2">(7) 筋緊張検査の評価方法</li>
+                <li class="l2">(8) 深部腱反射の評価方法</li>
+                <li class="l2">(9) 歩行の観察と評価方法</li>
+                <li class="l2">(10) ADLの評価方法</li>
+                <li class="l2">(11) 転倒のリスク管理</li>
+                <li class="l2">(12) 理学療法のポイント</li>
+                <li class="l2">(13) 環境設定と在宅生活</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="完了">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">II</span>
+        <span class="subacc-title">予習課題</span>
+        <span class="subacc-count mono">全47問 / P.165</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">すでに学んだ知識を思い出そう。答えられた項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 47 完了(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-0">
+            <span>問1：中脳の位置は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-1">
+            <span>問2：錐体外路の①経路と②損傷した場合の症状とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-2">
+            <span>問3：黒質が変性すると起こる症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-3">
+            <span>問4：大脳基底核を構成するものは？またその働きは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-4">
+            <span>問5：ドパミンとは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-5">
+            <span>問6：姿勢とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-6">
+            <span>問7：重心と重心投影線について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-7">
+            <span>問8：重心投影線と支持基底面の関係(安定性)について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-8">
+            <span>問9：立位時の重心投影線と床反力の関係について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-9">
+            <span>問10：立位姿勢を保持するための筋活動について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-10">
+            <span>問11：正常歩行周期とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-11">
+            <span>問12：体幹のROMの参考角度は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-12">
+            <span>問13：膝関節，足関節，股関節のROMの参考角度は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-13">
+            <span>問14：肩関節の可動域の参考角度は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-14">
+            <span>問15：筋緊張の検査方法について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-15">
+            <span>問16：無動とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-16">
+            <span>問17：腱反射の①検査方法，②判定基準について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-17">
+            <span>問18：立位の重心の位置はどこか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-18">
+            <span>問19：歩行中の重心の位置はどのように移動するのか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-19">
+            <span>問20：歩行中の遊脚期に働く下肢の筋は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-20">
+            <span>問21：歩行中の遊脚期に働く体幹の筋は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-21">
+            <span>問22：歩行中の立脚期に働く下肢の筋は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-22">
+            <span>問23：歩行中の立脚期に働く体幹の筋は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-23">
+            <span>問24：体幹は水平面でどのくらい回旋するか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-24">
+            <span>問25：歩行における股関節の逸脱運動とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-25">
+            <span>問26：歩行における膝関節の逸脱運動とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-26">
+            <span>問27：歩行における足関節の逸脱運動とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-27">
+            <span>問28：PDに特徴的なすくみ足とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-28">
+            <span>問29：PDに特徴的な小刻み歩行とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-29">
+            <span>問30：PDに特徴的な加速歩行とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-30">
+            <span>問31：Hoehn-Yahrの重症度分類について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-31">
+            <span>問32：MDS-UPDRSについて説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-32">
+            <span>問33：PDの服薬による副作用について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-33">
+            <span>問34：FRTの①目的と②方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-34">
+            <span>問35：TUGの①目的と②方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-35">
+            <span>問36：開眼片足立ちテストの①目的と②方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-36">
+            <span>問37：10m歩行テストの①目的と②方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-37">
+            <span>問38：pull testの①目的と②方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-38">
+            <span>問39：PDのリスクについて説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-39">
+            <span>問40：転倒の要因は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-40">
+            <span>問41：転倒を防止するための装具やサポーターは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-41">
+            <span>問42：PDに対するROM運動はどのように行うのか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-42">
+            <span>問43：PDに対する筋力増強運動の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-43">
+            <span>問44：キュー(運動のきっかけ)について説明しなさい。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-44">
+            <span>問45：キューを用いた歩行練習の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-45">
+            <span>問46：階段昇降練習の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-parkinson-46">
+            <span>問47：バリアフリーな住宅環境とは？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全3コマ)</span>
+      <span class="sect-note">教科書 P.166〜186</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -808,27 +1234,78 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/02_parkinson/02_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">02_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/02_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">02_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/02_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">02_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/02_parkinson/02_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">02_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/02_parkinson/02_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">02_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <ul class="outline">
+              <li class="l1">前回のおさらい(神経系疾患にはどのようなものがあるか)</li>
+              <li class="l1">1　疾患の概要と障害の特徴・留意点
+                <ul class="outline">
+                  <li class="l2">1) 概要</li>
+                  <li class="l2">2) 原因</li>
+                  <li class="l2">3) 診断基準
+                    <ul class="outline">
+                      <li class="l3">① CT・MRI</li>
+                      <li class="l3">② SPECT</li>
+                      <li class="l3">③ MIBG心筋シンチグラフィ</li>
+                      <li class="l3">④ L-dopaテスト</li>
+                      <li class="l3">⑤ 初期PDとして考えにくい症状</li>
+                    </ul>
+                  </li>
+                  <li class="l2">4) 重症度分類
+                    <ul class="outline">
+                      <li class="l3">① 症状の進行形式</li>
+                      <li class="l3">② PDの進行</li>
+                      <li class="l3">③ サブタイプ</li>
+                    </ul>
+                  </li>
+                  <li class="l2">5) Braakの仮説</li>
+                  <li class="l2">6) 障害の特徴・留意点
+                    <ul class="outline">
+                      <li class="l3">① 基本的な病態</li>
+                      <li class="l3">② 運動ループ(ハイパー直接路，直接路，間接路)</li>
+                      <li class="l3">③ 症状
+                        <ul class="outline">
+                          <li class="l4">無動</li>
+                          <li class="l4">振戦</li>
+                          <li class="l4">筋強剛・固縮</li>
+                          <li class="l4">姿勢反射障害</li>
+                          <li class="l4">異常姿勢</li>
+                          <li class="l4">歩行障害</li>
+                          <li class="l4">転倒関連</li>
+                          <li class="l4">非運動症状：認知機能／レム睡眠行動異常(RBD)／血圧調整／嗅覚障害／便秘／流涎／頻尿／うつ</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">7) 進行と予後</li>
+                  <li class="l2">8) 治療
+                    <ul class="outline">
+                      <li class="l3">① 薬物療法</li>
+                      <li class="l3">② 外科的治療</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="l1">本日の復習</li>
+            </ul>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">03</span>
@@ -838,27 +1315,87 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/02_parkinson/03_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">03_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/03_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">03_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/03_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">03_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/02_parkinson/03_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">03_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/02_parkinson/03_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">03_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <ul class="outline">
+              <li class="l1">前回のおさらい</li>
+              <li class="l1">2　理学療法評価
+                <ul class="outline">
+                  <li class="l2">1) 評価の意義・目的</li>
+                  <li class="l2">2) 評価の実際
+                    <ul class="outline">
+                      <li class="l3">① 情報収集
+                        <ul class="outline">
+                          <li class="l4">医学的情報</li>
+                          <li class="l4">社会的情報</li>
+                        </ul>
+                      </li>
+                      <li class="l3">② 問診</li>
+                      <li class="l3">③ 全体像の把握
+                        <ul class="outline">
+                          <li class="l4">MDS-UPDRS</li>
+                          <li class="l4">Parkinson Activity Scale</li>
+                          <li class="l4">Parkinson's Disease Questionnaire-39(PDQ-39)</li>
+                        </ul>
+                      </li>
+                      <li class="l3">④ 運動機能検査
+                        <ul class="outline">
+                          <li class="l4">10m歩行テスト</li>
+                          <li class="l4">姿勢評価</li>
+                          <li class="l4">timed up and go test(TUG)</li>
+                          <li class="l4">freezing of gait questionnaire(FOG-Q)</li>
+                          <li class="l4">functional reach test(FRT)</li>
+                          <li class="l4">pull test</li>
+                          <li class="l4">balance evaluation systems(BESTest)</li>
+                        </ul>
+                      </li>
+                      <li class="l3">⑤ 筋緊張検査
+                        <ul class="outline">
+                          <li class="l4">筋強剛・固縮の評価</li>
+                        </ul>
+                      </li>
+                      <li class="l3">⑥ 不随意運動の評価
+                        <ul class="outline">
+                          <li class="l4">振戦</li>
+                          <li class="l4">ジスキネジア</li>
+                        </ul>
+                      </li>
+                      <li class="l3">⑦ ROM</li>
+                      <li class="l3">⑧ 筋力検査</li>
+                      <li class="l3">⑨ 自律神経機能障害の評価</li>
+                      <li class="l3">⑩ 体重・栄養(血液検査)</li>
+                      <li class="l3">⑪ ADL検査</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="l1">3　リスク管理
+                <ul class="outline">
+                  <li class="l2">1) 転倒</li>
+                  <li class="l2">2) 悪性症候群，PHS</li>
+                  <li class="l2">3) 誤嚥，窒息，肺炎</li>
+                </ul>
+              </li>
+              <li class="l1">本日の復習</li>
+            </ul>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">04</span>
@@ -868,23 +1405,68 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/02_parkinson/04_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">04_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/04_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">04_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/02_parkinson/04_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">04_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/02_parkinson/04_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">04_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/02_parkinson/04_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">04_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <ul class="outline">
+              <li class="l1">前回のおさらい</li>
+              <li class="l1">4　理学療法方針
+                <ul class="outline">
+                  <li class="l2">1) 予後予測</li>
+                  <li class="l2">2) 目標設定，理学療法方針</li>
+                  <li class="l2">3) 臨床推論(クリニカルリーズニング)と動作分析
+                    <ul class="outline">
+                      <li class="l3">① 概要</li>
+                      <li class="l3">② 具体的な進め方
+                        <ul class="outline">
+                          <li class="l4">問診</li>
+                          <li class="l4">動作の観察および誘導・介助</li>
+                          <li class="l4">動作と姿勢の共通点</li>
+                          <li class="l4">動作と症状との関連性をみる</li>
+                          <li class="l4">画像や検査データなど病態情報の確認</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="l1">5　理学療法の実践
+                <ul class="outline">
+                  <li class="l2">1) 運動療法
+                    <ul class="outline">
+                      <li class="l3">① ROM制限への運動療法</li>
+                      <li class="l3">② 基本動作，応用動作獲得へのアプローチ</li>
+                      <li class="l3">③ バランス障害への運動療法
+                        <ul class="outline">
+                          <li class="l4">課題特性</li>
+                        </ul>
+                      </li>
+                      <li class="l3">④ 歩行練習</li>
+                      <li class="l3">⑤ 筋力トレーニング</li>
+                      <li class="l3">⑥ 全身持久力</li>
+                    </ul>
+                  </li>
+                  <li class="l2">2) 環境調整</li>
+                  <li class="l2">3) 家族指導</li>
+                </ul>
+              </li>
+              <li class="l1">6　おわりに</li>
+              <li class="l1">パーキンソン病の講義全体の復習</li>
+            </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -909,10 +1491,15 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+      <span class="sect-note">教科書 P.187〜188</span>
+    </div>
     <div class="disease-refs checklist" data-topic="parkinson">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -939,7 +1526,7 @@
           </label>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="parkinson-4">
-            <span>PDに対する一般的な運動療法の項目は？</span>
+            <span>PDに対する一般的な理学療法の項目は？</span>
           </label>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="parkinson-5">
@@ -971,7 +1558,7 @@
           </label>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="parkinson-12">
-            <span>PDの理学療法評価において緊張検査はどのように行うか？</span>
+            <span>PDの理学療法評価において筋緊張検査はどのように行うか？</span>
           </label>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="parkinson-13">
@@ -1016,12 +1603,184 @@
         </div>
       </div>
     </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL2</span>
+        <span class="subacc-title">グループで考える(7問)</span>
+        
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">PDの症例で時間帯によって動きの良い時間と，動きの悪い時間があると考えられる原因は何か？</li>
+            <li class="l1">PDの症例で歩行時によくみられるすくみ足，方向転換は，なぜ不十分となっているのか，その原因は？</li>
+            <li class="l1">PDの突進現象は転倒のリスクとなるが，どのような反応が不十分となっていることに原因があるのか？</li>
+            <li class="l1">ある症例において椅座位から立ち上がり歩行を開始すると，顔面蒼白となりふらつき転倒しそうになった。このときに考えられるリスクは何か？</li>
+            <li class="l1">歩行開始時にすくみ足症状が著明にみられている症例に対して，前方に目標物を置き，またぐように指示するとスムーズに1歩を出すことができた。これはなぜか？</li>
+            <li class="l1">医療面接の際に表情乏しく，声も小さい症例に対して，どのように医療面接を進めればよいか？</li>
+            <li class="l1">寝返りから起き上がりが困難で家族の介護量が増えている症例の場合，どのようなROM確保が必要か？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL3</span>
+        <span class="subacc-title">理学療法の一般原則をまとめる</span>
+        
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <ul class="outline">
+            <li class="l1">PDの病態や原因，進行状況を踏まえ，本疾患に対する理学療法の一般原則をまとめなさい。
+              <ul class="outline">
+                <li class="l2">① 評価(カルテ情報収集，医療面接を含む)</li>
+                <li class="l2">② 理学療法介入</li>
+                <li class="l2">③ リスク管理</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL4</span>
+        <span class="subacc-title">症例課題に答える(6問)</span>
+        
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">本症例の理学療法目標は？</li>
+            <li class="l1">本症例の問題点は？</li>
+            <li class="l1">本症例の治療プランは？</li>
+            <li class="l1">本症例における理学療法実施におけるリスク管理の方法は？</li>
+            <li class="l1">本症例が退院する際の環境設備や生活指導について</li>
+            <li class="l1">本症例に対する理学療法における評価と治療を行ってみましょう。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="達成">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">V</span>
+        <span class="subacc-title">到達度チェック</span>
+        <span class="subacc-count mono">全18項目 / P.190</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">説明できるようになった項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 18 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-0">
+            <span>PDの原因とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-1">
+            <span>PDの診断基準とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-2">
+            <span>PDの重症度分類とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-3">
+            <span>PDの症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-4">
+            <span>PDの①薬物治療と②外科治療とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-5">
+            <span>理学療法の実施に際して収集すべき医学的情報は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-6">
+            <span>医療面接，問診の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-7">
+            <span>姿勢の観察と評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-8">
+            <span>動作の観察と評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-9">
+            <span>バランス能力の評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-10">
+            <span>ROMおよび筋力測定の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-11">
+            <span>筋緊張検査の評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-12">
+            <span>深部腱反射の評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-13">
+            <span>歩行の観察と評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-14">
+            <span>ADLの評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-15">
+            <span>転倒のリスク管理は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-16">
+            <span>理学療法のポイントは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-parkinson-17">
+            <span>環境設定と在宅生活は？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>パーキンソン病の病理を理解することで、多彩な症状を「暗記」するのではなく理解してイメージできるようになる(特にパーキンソン病パンデミックといわれるほど今後増加することが予想されており、遭遇する頻度も高いためここをおさえておくことは非常に重要)</li>
+        <li>大脳基底核の機能を理解することで脳血管疾患に対する理解も深めることができる</li>
+        <li>鑑別のための脳画像の評価も他の疾患の理解につながる</li>
+        <li>理学療法介入が実際にできることまで目指す(特に起居動作の評価・治療(体位変換の介助方法も含めて)、起立動作、歩行介入の部分は実践できることを目指す)</li>
+      </ul>
+    </div>
   </section>
 
   <section class="disease" id="plan-scd_msa" style="--dot:var(--c-scd_msa); --bg-tint:var(--c-scd_msa-bg)">
     <div class="disease-head">
       <span class="disease-num mono">03</span>
       <span class="disease-name">脊髄小脳変性症(多系統萎縮症／それ以外)<span class="latin">SCD (incl. MSA)</span></span>
+      <span class="disease-koma mono">2コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/scd_msa.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/scd_msa.webp)</div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全2コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -1033,27 +1792,27 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/03_scd_msa/05_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">05_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/03_scd_msa/05_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">05_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/03_scd_msa/05_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">05_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/03_scd_msa/05_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">05_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/03_scd_msa/05_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">05_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">06</span>
@@ -1063,23 +1822,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/03_scd_msa/06_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">06_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/03_scd_msa/06_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">06_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/03_scd_msa/06_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">06_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/03_scd_msa/06_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">06_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/03_scd_msa/06_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">06_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1100,10 +1860,14 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
     <div class="disease-refs checklist" data-topic="scd_msa">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -1114,7 +1878,7 @@
           </div>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="scd_msa-0">
-            <span>多系統萎縮症（MS）に含まれる疾患とそれぞれの代表的な症状は？</span>
+            <span>多系統萎縮症（MSA）に含まれる疾患とそれぞれの代表的な症状は？</span>
           </label>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="scd_msa-1">
@@ -1187,12 +1951,31 @@
         </div>
       </div>
     </div>
+    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>複雑な名称にまどわされず、まず分類を整理すること</li>
+        <li>「診断」するわけではないので、どのような症状が出るのかを理解し、それに対するリハビリの評価・方針を考えられることが重要</li>
+        <li>MSA-Pについては、Parkinson病との違いを理解することで、Parkinson病の理解も深められる</li>
+        <li>シャイドレーガー症候群については、自律神経症状(起立性低血圧)への対応も理解するきっかけとする</li>
+      </ul>
+    </div>
   </section>
 
   <section class="disease" id="plan-ms" style="--dot:var(--c-ms); --bg-tint:var(--c-ms-bg)">
     <div class="disease-head">
       <span class="disease-num mono">04</span>
       <span class="disease-name">多発性硬化症／視神経脊髄炎<span class="latin">MS / NMOSD</span></span>
+      <span class="disease-koma mono">2コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/ms.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/ms.webp)</div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全2コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -1204,27 +1987,27 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/04_ms/07_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">07_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_ms/07_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">07_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_ms/07_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">07_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/04_ms/07_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">07_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/04_ms/07_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">07_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">08</span>
@@ -1234,23 +2017,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/04_ms/08_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">08_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_ms/08_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">08_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/04_ms/08_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">08_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/04_ms/08_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">08_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/04_ms/08_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">08_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1275,10 +2059,14 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
     <div class="disease-refs checklist" data-topic="ms">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -1382,12 +2170,22 @@
         </div>
       </div>
     </div>
+    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
   </section>
 
   <section class="disease" id="plan-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
     <div class="disease-head">
       <span class="disease-num mono">05</span>
       <span class="disease-name">多発ニューロパチー(ギランバレー症候群など)<span class="latin">Polyneuropathy (incl. Guillain-Barré Syndrome)</span></span>
+      <span class="disease-koma mono">2コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/gbs.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全2コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -1399,27 +2197,27 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/05_gbs/09_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">09_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_gbs/09_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">09_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_gbs/09_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">09_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/05_gbs/09_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">09_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/05_gbs/09_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">09_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">10</span>
@@ -1429,23 +2227,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/05_gbs/10_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">10_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_gbs/10_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">10_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/05_gbs/10_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">10_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/05_gbs/10_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">10_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/05_gbs/10_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">10_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1466,10 +2265,14 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
     <div class="disease-refs checklist" data-topic="gbs">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -1577,12 +2380,22 @@
         </div>
       </div>
     </div>
+    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
   </section>
 
   <section class="disease" id="plan-als" style="--dot:var(--c-als); --bg-tint:var(--c-als-bg)">
     <div class="disease-head">
       <span class="disease-num mono">06</span>
       <span class="disease-name">筋萎縮性側索硬化症<span class="latin">ALS</span></span>
+      <span class="disease-koma mono">2コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/als.webp" alt="筋萎縮性側索硬化症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/als.webp)</div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全2コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -1594,27 +2407,27 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/06_als/11_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">11_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/06_als/11_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">11_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/06_als/11_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">11_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/06_als/11_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">11_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/06_als/11_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">11_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="session">
         <button class="session-trigger">
           <span class="session-num mono">12</span>
@@ -1624,23 +2437,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/06_als/12_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">12_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/06_als/12_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">12_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/06_als/12_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">12_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/06_als/12_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">12_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/06_als/12_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">12_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1665,10 +2479,14 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
     <div class="disease-refs checklist" data-topic="als">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -1768,12 +2586,22 @@
         </div>
       </div>
     </div>
+    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
   </section>
 
   <section class="disease" id="plan-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
     <div class="disease-head">
       <span class="disease-num mono">07</span>
       <span class="disease-name">その他(筋ジストロフィー／重症筋無力症など)<span class="latin">Other Neuromuscular Diseases (incl. MG, MD)</span></span>
+      <span class="disease-koma mono">1コマ</span>
+    </div>
+    <div class="case-image-wrap">
+      <img class="case-image" src="images/case/mg.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
+      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">III</span>
+      <span class="sect-title">講義内容(全1コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -1785,23 +2613,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/07_mg/13_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">13_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/07_mg/13_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">13_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/07_mg/13_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">13_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/07_mg/13_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">13_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/07_mg/13_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">13_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1822,10 +2651,14 @@
         </div>
       </div>
     </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
     <div class="disease-refs checklist" data-topic="mg">
       <button class="refs-trigger">
         <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
-        <span class="refs-title">理解度チェック</span>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="refs-panel">
@@ -2049,12 +2882,17 @@
         </div>
       </div>
     </div>
+    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
   </section>
 
   <section class="disease" id="plan-practical" style="--dot:var(--c-practical); --bg-tint:var(--c-practical-bg)">
     <div class="disease-head">
       <span class="disease-num mono">08</span>
       <span class="disease-name">実技(評価・治療等のまとめ）<span class="latin">Practical Skills</span></span>
+      <span class="disease-koma mono">1コマ</span>
+    </div>
+    <div class="sect-head">
+      <span class="sect-title">講義内容(全1コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -2066,23 +2904,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/08_practical/14_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">14_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/08_practical/14_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">14_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/08_practical/14_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">14_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/08_practical/14_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">14_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/08_practical/14_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">14_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -2144,6 +2983,10 @@
     <div class="disease-head">
       <span class="disease-num mono">09</span>
       <span class="disease-name">総復習(知識・理解度チェック)<span class="latin">Comprehensive Review</span></span>
+      <span class="disease-koma mono">1コマ</span>
+    </div>
+    <div class="sect-head">
+      <span class="sect-title">講義内容(全1コマ)</span>
     </div>
     <div class="sessions">
       <div class="session">
@@ -2156,23 +2999,24 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="session-panel">
+                <div class="session-panel">
           <div class="session-panel-inner">
-            <a class="res-link" href="materials/09_review/15_slide.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">15_slide.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/09_review/15_handout.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <span class="res-label">配布資料</span><span class="res-path mono">15_handout.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
-            <a class="res-link" href="materials/09_review/15_summary.pdf">
-              <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-              <span class="res-label">要点のまとめ</span><span class="res-path mono">15_summary.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
-            </a>
+            <div class="session-res top">
+              <div class="res-head">この回の資料</div>
+              <a class="res-link" href="materials/09_review/15_slide.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">講義スライド(PDF)</span><span class="res-path mono">15_slide.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+              <a class="res-link" href="materials/09_review/15_handout.pdf">
+                <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span class="res-label">配布資料</span><span class="res-path mono">15_handout.pdf</span>
+                <span class="link-status mono" data-status="idle"></span>
+              </a>
+            </div>
+            <div class="session-outline">
+            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            </div>
           </div>
         </div>
       </div>
@@ -2225,6 +3069,7 @@
       </div>
     </div>
   </section>
+  <!-- ============ 疾患セクションここまで ============ -->
 
   <a class="policy-card" href="https://drive.google.com/drive/folders/1UK8W2pvkDiGbZ4YkqreBNWUIW5P18FHP?usp=drive_link" target="_blank" rel="noopener">
       <svg class="policy-icon" viewBox="0 0 24 24" fill="none"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -2245,403 +3090,6 @@
       </dl>
       <p class="credit">一般財団法人 三宅医学研究所/附属三宅リハビリテーション病院/新池 友希</p>
     </footer>
-
-  </div>
-
-  <!-- ========================= VIEW 2: 授業内容アウトライン ========================= -->
-  <div class="view" id="view-outline">
-
-    <header class="masthead">
-      <div class="outline-heading">神経・筋疾患理学療法　講義内容</div>
-      <p class="subtitle">初回)講師の経歴紹介、講義で学ぶ疾患や到達目標の紹介、使用する教材や復習が可能な専用サイトの利用方法についての説明(15分程度)</p>
-    </header>
-
-  <section class="topic" id="outline-overview" style="--dot:var(--c-overview); --bg-tint:var(--c-overview-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">神経系理学療法の概要<span class="topic-meta">(1コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <ul class="outline">
-          <li class="l1">挨拶・講師の自己紹介
-            <ul class="outline">
-              <li class="l2">経歴や、これまでにやってきたこと、現在取り組んでいること</li>
-              <li class="l2">普段神経系の疾患を有する患者様とどのような関りがあるか</li>
-            </ul>
-          </li>
-          <li class="l1">神経系理学療法の講義で何を目標にするか
-            <ul class="outline">
-              <li class="l2">★重要：疾患の概要を理解でき、かつ説明できる</li>
-              <li class="l2">各疾患の関係性や、違いなどを理解できる</li>
-              <li class="l2">疾患の特性を踏まえた理学療法評価をイメージ・列挙できる（実習で困らない）</li>
-              <li class="l2">どのような理学療法を提供すれば良いのか基本的なものをイメージできる</li>
-              <li class="l2">★関わるうえでの注意点、リスク管理をできるようにする</li>
-              <li class="l2">疾患への理解を深めることで、解剖学や生理学などの基本知識を見直しする</li>
-              <li class="l2">★神経系に関連した国家試験の問題を回答できるようになる</li>
-            </ul>
-          </li>
-          <li class="l1">神経系の疾患にはどのようなものがあるのか
-            <ul class="outline">
-              <li class="l2">発症率など、頻度の多い疾患・稀な疾患について理解する</li>
-              <li class="l2">パーキンソン病</li>
-              <li class="l2">脊髄小脳変性症(多系統萎縮症／それ以外)</li>
-              <li class="l2">多発性硬化症／視神経脊髄炎</li>
-              <li class="l2">多発ニューロパチー(ギランバレー症候群など)</li>
-              <li class="l2">筋萎縮性側索硬化症</li>
-              <li class="l2">その他(筋ジストロフィー／重症筋無力症など)</li>
-            </ul>
-          </li>
-          <li class="l1">どのような場面（急性期・回復期・生活期）で神経系の疾患と関わるのか
-            <ul class="outline">
-              <li class="l2">脳血管リハビリテーション料</li>
-              <li class="l2">一般病棟の対象疾患</li>
-              <li class="l2">回復期リハビリテーション病棟の対象疾患</li>
-              <li class="l2">難病リハビリテーション料</li>
-            </ul>
-          </li>
-          <li class="l1">神経系疾患に対する理学療法士の役割とは？</li>
-          <li class="l1">現在、学校で習っていて、使える武器（理学療法評価）は何でしょう？
-            <ul class="outline">
-              <li class="l2">運動機能障害（運動麻痺）に対する検査項目は何がありますか？</li>
-              <li class="l2">感覚障害に対する検査項目には何がありますか？</li>
-              <li class="l2">異常筋緊張に対する検査項目には何がありますか？</li>
-              <li class="l2">運動失調に対する検査項目には何がありますか？</li>
-              <li class="l2">姿勢・バランス障害に対する検査項目には何がありますか？</li>
-              <li class="l2">ADL評価には何がありますか？</li>
-              <li class="l2">動作分析の項目は何がありますか？</li>
-              <li class="l2">高次脳機能障害に対する評価は何がありますか？</li>
-              <li class="l2">運動耐容能を評価するものは何がありますか？</li>
-            </ul>
-          </li>
-          <li class="l1">本日の復習</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-parkinson" style="--dot:var(--c-parkinson); --bg-tint:var(--c-parkinson-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">パーキンソン病<span class="topic-meta">(3コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/parkinson.webp" alt="パーキンソン病 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/parkinson.webp)</div>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義1</span>
-        <ul class="outline">
-          <li class="l1">前回のおさらい（神経疾患にはどのようなものがあるのか等）</li>
-          <li class="l1">パーキンソン病の概要</li>
-          <li class="l1">パーキンソン病の原因</li>
-          <li class="l1">診断基準
-            <ul class="outline">
-              <li class="l2">CT・MRI</li>
-              <li class="l2">SPECT</li>
-              <li class="l2">鑑別診断（脳画像の診方）</li>
-              <li class="l2">新しい内容</li>
-            </ul>
-          </li>
-          <li class="l1">特徴的な問題と対処-非運動症状に対して-
-            <ul class="outline">
-              <li class="l2">便秘、血圧変動、構音障害、嚥下障害など</li>
-            </ul>
-          </li>
-          <li class="l1">CT/MRI</li>
-          <li class="l1">本日の復習</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義2</span>
-        <ul class="outline">
-          <li class="l1">前回のおさらい</li>
-          <li class="l1">理学療法評価について
-            <ul class="outline">
-              <li class="l2">UPDRS</li>
-            </ul>
-          </li>
-          <li class="l1">環境面でのサポート方法
-            <ul class="outline">
-              <li class="l2">家屋環境でのチェックポイント、アドバイス内容、利用したい福祉用具</li>
-              <li class="l2">「福祉住宅環境コーディネーター」の紹介</li>
-              <li class="l2">ご家族への説明(長期的に病気と関わる上でとても重要)</li>
-            </ul>
-          </li>
-          <li class="l1">リハビリテーションの「実践①」(パーキンソン病に特化したもの)
-            <ul class="outline">
-              <li class="l2">LSVTの紹介、ボクシングメニュー、卓球、水中運動、太極拳など</li>
-              <li class="l2">「LSVT(R)BIG認定療法士、パーキンソン病療養指導士」などの資格紹介
-                <div class="callout">
-                  <span class="callout-label">動画</span>
-                  動画で理解を深める
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="l1">指定難病について</li>
-          <li class="l1">指定難病医療費助成制度とは
-            <ul class="outline">
-              <li class="l2">データ収集の効率化と長期療養による経済的な負担の軽減</li>
-            </ul>
-          </li>
-          <li class="l1">本日の復習</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義3</span>
-        <ul class="outline">
-          <li class="l1">前回のおさらい</li>
-          <li class="l1">リハビリテーションの「実践②」
-            <ul class="outline">
-              <li class="l2">臥位で固縮の評価</li>
-            </ul>
-          </li>
-          <li class="l1">歩行介助の「実践」
-            <ul class="outline">
-              <li class="l2">歩行開始時の誘導方法、歩行時の介助(歩幅の調整方法)、介助者への注意点、視線の誘導、目標物の指示方法</li>
-              <li class="l2">重心の移動範囲、体幹回旋の角度、上肢swingについての考え方など</li>
-            </ul>
-          </li>
-          <li class="l1">パーキンソン病の講義全体の復習</li>
-        </ul>
-        </div>
-
-        <div class="callout callout-point">
-          <span class="callout-label">POINT</span>
-          <ul>
-            <li>パーキンソン病の病理を理解することで、多彩な症状を「暗記」するのではなく理解してイメージできるようになる(特にパーキンソン病パンデミックといわれるほど今後増加することが予想されており、遭遇する頻度も高いためここをおさえておくことは非常に重要)</li>
-            <li>大脳基底核の機能を理解することで脳血管疾患に対する理解も深めることができる</li>
-            <li>鑑別のための脳画像の評価も他の疾患の理解につながる</li>
-            <li>理学療法介入が実際にできることまで目指す(特に起居動作の評価・治療(体位変換の介助方法も含めて)、起立動作、歩行介入の部分は実践できることを目指す)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-scd_msa" style="--dot:var(--c-scd_msa); --bg-tint:var(--c-scd_msa-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">脊髄小脳変性症(多系統萎縮症／それ以外)<span class="topic-meta">(2コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/scd_msa.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/scd_msa.webp)</div>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義1</span>
-        <ul class="outline">
-          <li class="l1">脊髄小脳変性症とは
-            <span class="term-tag">SCD: Spinocerebellar Degeneration</span>
-            <ul class="outline">
-              <li class="l2">概念や症状の進行について</li>
-            </ul>
-          </li>
-          <li class="l1">代表的なもの:多系統萎縮症(MSA)
-            <ul class="outline">
-              <li class="l2">MSA-C(オリーブ橋小脳萎縮症[OPCA])
-                <div class="callout">
-                  <span class="callout-label">用語解説</span>
-                  「C」はCerebellum(小脳)を表す
-                </div>
-              </li>
-              <li class="l2">MSA-P(線条体黒質変性症[SND])
-                <div class="callout">
-                  <span class="callout-label">用語解説</span>
-                  「P」はパーキンソニズムを表す
-                </div>
-              </li>
-              <li class="l2">(シャイドレーガー症候群[SDS])
-                <div class="callout callout-note">
-                  <span class="callout-label">補足</span>
-                  欧米ではMSA-P、MSA-Cに統合されている
-                </div>
-              </li>
-            </ul>
-          </li>
-          <li class="l1">小脳の機能について</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義2</span>
-        <ul class="outline">
-          <li class="l1">MSA-C(オリーブ橋小脳萎縮症)について
-            <ul class="outline">
-              <li class="l2">①好発年齢、②症状(小脳の機能を踏まえて)、③確定診断、④治療方法</li>
-            </ul>
-          </li>
-          <li class="l1">MSA-P(線条体黒質変性症)について
-            <ul class="outline">
-              <li class="l2">①好発年齢、②症状(パーキンソニズムについて)、③確定診断、④治療方法</li>
-              <li class="l2">Parkinson病との違い:症状に左右差がない、安静時振戦が目立たない、進行が速い</li>
-              <li class="l2">Parkinson病との違い:小脳症状が出現、MIBG心筋シンチで初期は取り込み低下なし、L-dopa反応が低い</li>
-            </ul>
-          </li>
-          <li class="l1">シャイドレーガー症候群について
-            <ul class="outline">
-              <li class="l2">①好発年齢、②症状、③確定診断、④治療方法</li>
-              <li class="l2">自律神経症状とは?注意点(起立性低血圧に対するリスク管理など)や介入方法</li>
-            </ul>
-          </li>
-        </ul>
-        </div>
-
-        <div class="callout callout-point">
-          <span class="callout-label">POINT</span>
-          <ul>
-            <li>複雑な名称にまどわされず、まず分類を整理すること</li>
-            <li>「診断」するわけではないので、どのような症状が出るのかを理解し、それに対するリハビリの評価・方針を考えられることが重要</li>
-            <li>MSA-Pについては、Parkinson病との違いを理解することで、Parkinson病の理解も深められる</li>
-            <li>シャイドレーガー症候群については、自律神経症状(起立性低血圧)への対応も理解するきっかけとする</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-ms" style="--dot:var(--c-ms); --bg-tint:var(--c-ms-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">多発性硬化症／視神経脊髄炎<span class="topic-meta">(2コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/ms.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/ms.webp)</div>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義1</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義2</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">多発ニューロパチー(ギランバレー症候群など)<span class="topic-meta">(2コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/gbs.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義1</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義2</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-als" style="--dot:var(--c-als); --bg-tint:var(--c-als-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">筋萎縮性側索硬化症<span class="topic-meta">(2コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/als.webp" alt="筋萎縮性側索硬化症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/als.webp)</div>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義1</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-
-        <div class="lecture-block">
-          <span class="lecture-label">講義2</span>
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">その他(筋ジストロフィー／重症筋無力症など)<span class="topic-meta">(1コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <div class="case-image-wrap">
-          <img class="case-image" src="images/case/mg.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-          <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
-        </div>
-
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-practical" style="--dot:var(--c-practical); --bg-tint:var(--c-practical-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">実技(評価・治療等のまとめ）<span class="topic-meta">(1コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="topic" id="outline-review" style="--dot:var(--c-review); --bg-tint:var(--c-review-bg)">
-    <button class="topic-trigger">
-      <span class="topic-name">総復習(知識・理解度チェック)<span class="topic-meta">(1コマ)</span></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="topic-panel">
-      <div class="topic-panel-inner">
-        <ul class="outline">
-          <li class="l1">内容準備中</li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
   </div>
 
@@ -2687,7 +3135,10 @@
     });
   }
 
-  function wireAccordion(triggerSelector, itemClass, panelSelector, innerSelector, capPx){
+  /* 入れ子アコーディオン対応:
+     開き終わったら max-height を none にすることで、
+     中のアコーディオンを開いても親の高さが足りなくなる問題を防ぐ。 */
+  function wireAccordion(triggerSelector, itemClass, panelSelector, innerSelector, capPx, freeAfterOpen){
     document.querySelectorAll(triggerSelector).forEach(function(btn){
       if(btn.dataset.wired) return;
       btn.dataset.wired = "1";
@@ -2696,23 +3147,37 @@
         var panel = item.querySelector(panelSelector);
         var inner = item.querySelector(innerSelector);
         var isOpen = item.classList.contains('open');
+
+        if(panel._freeTimer){ clearTimeout(panel._freeTimer); panel._freeTimer = null; }
+
         if(isOpen){
+          if(panel.style.maxHeight === 'none' || panel.style.maxHeight === ''){
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+            void panel.offsetHeight; /* 強制的に再計算させる */
+          }
           panel.style.maxHeight = '0px';
           item.classList.remove('open');
         } else {
           item.classList.add('open');
           checkLinksIn(inner);
-          var height = inner.scrollHeight;
+          var height = inner.offsetHeight || inner.scrollHeight;
           if(capPx){ height = Math.min(height, capPx); }
           panel.style.maxHeight = height + 'px';
+          if(freeAfterOpen){
+            panel._freeTimer = setTimeout(function(){
+              panel._freeTimer = null;
+              if(item.classList.contains('open')){ panel.style.maxHeight = 'none'; }
+            }, 260);
+          }
         }
       });
     });
   }
 
-  wireAccordion('.session-trigger', 'session', '.session-panel', '.session-panel-inner', null);
-  wireAccordion('.refs-trigger', 'disease-refs', '.refs-panel', '.refs-panel-inner', 300);
-  wireAccordion('.topic-trigger', 'topic', '.topic-panel', '.topic-panel-inner', null);
+  wireAccordion('.session-trigger', 'session', '.session-panel', '.session-panel-inner', null, false);
+  wireAccordion('.refs-trigger', 'disease-refs', '.refs-panel', '.refs-panel-inner', 300, false);
+  wireAccordion('.topic-trigger', 'topic', '.topic-panel', '.topic-panel-inner', null, true);
+  wireAccordion('.subacc-trigger', 'subacc', '.subacc-panel', '.subacc-panel-inner', null, false);
 
   /* ---------- 理解度チェック(localStorageで端末内に保存) ---------- */
   var CHECK_STORAGE_KEY = 'neuro-pt-checklist-v1';
@@ -2738,7 +3203,8 @@
     var fill = group.querySelector('.check-progress-fill');
     var label = group.querySelector('.check-progress-label');
     if(fill){ fill.style.width = pct + '%'; }
-    if(label){ label.textContent = checked + ' / ' + total + ' 達成(' + pct + '%)'; }
+    var word = group.dataset.progressWord || '達成';
+    if(label){ label.textContent = checked + ' / ' + total + ' ' + word + '(' + pct + '%)'; }
   }
 
   function initChecklists(){
@@ -2784,34 +3250,131 @@
   }
   initChecklists();
 
-  document.querySelectorAll('.rhythm-tick').forEach(function(tick){
-    tick.addEventListener('click', function(){
-      var target = document.getElementById(tick.dataset.target);
-      if(target){ target.scrollIntoView({behavior: 'smooth', block: 'start'}); }
-    });
-  });
-
-  document.querySelectorAll('.tab-btn').forEach(function(tab){
-    tab.addEventListener('click', function(){
-      document.querySelectorAll('.tab-btn').forEach(function(t){ t.classList.remove('active'); });
-      document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.view).classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      try {
-        history.replaceState(null, '', '#' + tab.dataset.view);
-      } catch (e) {
-        // プレビュー環境(about:srcdoc等)ではURL履歴を書き換えられないため無視する
-      }
-    });
-  });
-
+  /* ============================================
+     救急車演出 ― 自動走行モード
+     ・レーンが画面に入った瞬間に自動スタート
+     ・約5秒かけて左から右(目次ボタンの下)へ走る
+     ・レーンが画面外に出たらリセット、再度入ると再走行
+     ============================================ */
   (function(){
-    var hash = window.location.hash.replace('#', '');
-    if(hash){
-      var target = document.querySelector('.tab-btn[data-view="' + hash + '"]');
-      if(target){ target.click(); }
+    var amb  = document.getElementById('ambulance-el');
+    var lane = document.getElementById('ambulanceLane');
+    var menuBtn = document.getElementById('menuBtn');
+    if(!amb || !lane) return;
+
+    var DURATION_MS = 5000;   /* 走行時間。大きくするほどゆっくり */
+    var FADEIN_MS   = 700;    /* ふわっと現れる時間 */
+    var PULSE_AT    = 0.72;   /* この進み具合で目次を強調しはじめる */
+
+    var laneW = 0, ambW = 0, startX = 0, endX = 0;
+    var rafId = null, startTime = null;
+    var running = false, visible = false, pulsing = false, offTimer = null;
+
+    var reduce = window.matchMedia &&
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function recalc(){
+      laneW = lane.offsetWidth;
+      ambW  = amb.offsetWidth || 110;
+      startX = -Math.round(ambW * 1.25);
+      var lr = lane.getBoundingClientRect();
+      if(menuBtn){
+        var mr = menuBtn.getBoundingClientRect();
+        endX = Math.round(mr.left - lr.left + mr.width / 2 - ambW / 2);
+      } else {
+        endX = laneW - ambW - 20;
+      }
+      endX = Math.max(0, Math.min(endX, laneW - ambW));
     }
+
+    function laneVisible(){
+      var r = lane.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
+    }
+
+    function setPulse(on){
+      if(!menuBtn || on === pulsing) return;
+      pulsing = on;
+      if(on){ menuBtn.classList.add('amb-pulse'); }
+      else { menuBtn.classList.remove('amb-pulse'); }
+    }
+
+    function reset(){
+      running = false;
+      startTime = null;
+      if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+      clearTimeout(offTimer);
+      setPulse(false);
+      amb.style.left = startX + 'px';
+      amb.style.opacity = '0';
+    }
+
+    /* 前半加速・後半減速 */
+    function eio(t){ return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+    function tick(now){
+      if(!startTime) startTime = now;
+      var elapsed = now - startTime;
+      var t = Math.min(1, elapsed / DURATION_MS);
+      var x = startX + (endX - startX) * eio(t);
+
+      amb.style.left = x.toFixed(2) + 'px';
+      amb.style.opacity = Math.min(1, elapsed / FADEIN_MS).toFixed(3);
+
+      if(t >= PULSE_AT) setPulse(true);
+
+      if(t >= 1){
+        running = false; rafId = null;
+        setPulse(true);
+        clearTimeout(offTimer);
+        offTimer = setTimeout(function(){ setPulse(false); }, 3000);
+        return;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startRun(){
+      if(running) return;
+      running = true;
+      startTime = null;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function park(){
+      recalc();
+      amb.style.left = endX + 'px';
+      amb.style.opacity = '1';
+    }
+
+    function boot(){
+      recalc();
+      if(reduce){ park(); return; }
+      visible = laneVisible();
+      amb.style.left = startX + 'px';
+      amb.style.opacity = '0';
+      if(visible) startRun();
+    }
+
+    if(!reduce){
+      window.addEventListener('scroll', function(){
+        var now = laneVisible();
+        if(now && !visible){ recalc(); reset(); startRun(); }
+        else if(!now && visible){ reset(); }
+        visible = now;
+      }, {passive: true});
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){
+        recalc();
+        if(reduce || !running) park();
+      }, 150);
+    });
+
+    window.addEventListener('load', boot);
+    boot();
   })();
 
   /* ---------- Hamburger menu ---------- */
@@ -2839,12 +3402,7 @@
 
   document.querySelectorAll('.menu-link').forEach(function(link){
     link.addEventListener('click', function(){
-      var viewId = link.dataset.view;
       var targetId = link.dataset.target;
-      var tabBtn = document.querySelector('.tab-btn[data-view="' + viewId + '"]');
-      if(tabBtn && !tabBtn.classList.contains('active')){
-        tabBtn.click();
-      }
       closeMenu();
       setTimeout(function(){
         var target = document.getElementById(targetId);

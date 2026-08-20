@@ -18,22 +18,17 @@
   }
   *{ box-sizing: border-box; }
   body{
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
+    margin: 0; background: var(--paper); color: var(--ink);
     font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
     line-height: 1.6;
   }
+  .mono{ font-family: ui-monospace, "SF Mono", "Roboto Mono", monospace; }
+
   .topbar{
-    position: sticky; top: 0; z-index: 10;
-    background: var(--paper-raised);
-    border-bottom: 1px solid var(--line);
-    padding: 14px 20px;
+    position: sticky; top: 0; z-index: 30;
+    background: var(--paper-raised); border-bottom: 1px solid var(--line); padding: 14px 20px;
   }
-  .topbar-inner{
-    max-width: 900px; margin: 0 auto;
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-  }
+  .topbar-inner{ max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .topbar h1{ font-size: 16px; margin: 0; flex: 1 1 auto; min-width: 0; }
   .btn{
     font: inherit; font-size: 12.5px; font-weight: 600;
@@ -44,25 +39,11 @@
   .btn:hover{ border-color: var(--accent); background: var(--accent-soft); }
   .btn.primary{ background: var(--accent); color: #fff; border-color: var(--accent); }
   .btn.primary:hover{ opacity: .9; }
-  input[type=file]{ display:none; }
-
+  .btn.ghost{ background: none; }
+  input[type=file]{ display: none; }
   .save-status{ font-size: 11px; color: var(--ink-soft); flex: 0 0 auto; }
 
-  @media (max-width: 560px){
-    .topbar{ padding: 10px 14px; }
-    .topbar-inner{ gap: 8px; }
-    .topbar h1{ flex: 1 1 100%; font-size: 14px; }
-    .save-status{ flex: 1 1 100%; font-size: 10.5px; }
-    .btn{ font-size: 11.5px; padding: 6px 9px; }
-    .tabs{ padding: 0 14px; flex-wrap: wrap; }
-    .tab-btn{ flex: 1 1 calc(50% - 4px); font-size: 12px; }
-    .wrap{ padding: 14px; }
-  }
-
-  .tabs{
-    max-width: 900px; margin: 14px auto 0; padding: 0 20px;
-    display: flex; gap: 8px;
-  }
+  .tabs{ max-width: 960px; margin: 14px auto 0; padding: 0 20px; display: flex; gap: 8px; }
   .tab-btn{
     flex: 1 1 0; font: inherit; font-size: 13px; font-weight: 700;
     padding: 10px; border-radius: 8px; cursor: pointer;
@@ -70,7 +51,7 @@
   }
   .tab-btn.active{ border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
 
-  .wrap{ max-width: 900px; margin: 0 auto; padding: 20px; }
+  .wrap{ max-width: 960px; margin: 0 auto; padding: 20px; }
   .view{ display: none; }
   .view.active{ display: block; }
 
@@ -81,169 +62,141 @@
   .note-box strong{ color: var(--ink); }
   .note-box code{ background: var(--accent-soft); color: var(--accent); padding: 1px 5px; border-radius: 4px; }
 
-  .session-card{
+  /* ---------- 共通カード ---------- */
+  .card{
     background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
     padding: 14px 16px; margin-bottom: 12px;
   }
-  .session-card-head{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-  .session-card-head .session-num-badge{
-    font-size: 14px; padding: 5px 10px;
-  }
-  .session-card-head select.topic-select{
-    font-size: 16px; font-weight: 700; color: var(--ink);
-    padding: 8px 10px; min-width: 0; flex: 1 1 140px;
-  }
-  .session-num-badge{
+  .card-head{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .num-badge{
     font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700;
     color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 6px;
     flex: 0 0 auto; white-space: nowrap;
   }
-  .field-row{ display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-  .field-row:last-child{ margin-bottom: 0; }
+  .dot-badge{
+    width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto;
+  }
+  .card-title{ flex: 1 1 auto; min-width: 0; font-size: 15px; font-weight: 700; }
+  .card-sub{ font-size: 11.5px; color: var(--ink-soft); }
+
+  .field-row{ display: flex; flex-direction: column; gap: 4px; margin: 10px 0 0; }
   .field-row label{ font-size: 11px; font-weight: 600; color: var(--ink-soft); }
-  .field-row input[type=text], .field-row select{
+  .field-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  input[type=text], select, textarea{
     font: inherit; font-size: 13.5px; padding: 8px 10px;
     border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
     color: var(--ink); width: 100%;
   }
-  textarea.autogrow{
+  input[type=number]{
     font: inherit; font-size: 13.5px; padding: 8px 10px;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--paper); width: 100%;
+  }
+  textarea.autogrow{ resize: none; overflow: hidden; min-height: 38px; }
+  textarea.big{ min-height: 120px; resize: vertical; }
+
+  .toggle-btn{
+    font: inherit; font-size: 12px; font-weight: 700; padding: 6px 12px;
     border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
-    color: var(--ink); width: 100%; resize: none; overflow: hidden;
-    min-height: 38px;
+    color: var(--ink-soft); cursor: pointer; flex: 0 0 auto;
   }
-  select.topic-select{
-    flex: 1 1 auto; font: inherit; font-size: 13.5px;
-    padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px;
-    background: var(--paper-raised); color: var(--ink);
-  }
+  .toggle-btn:hover{ border-color: var(--accent); }
+  .card-body{ display: none; margin-top: 12px; }
+  .card.open > .card-body{ display: block; }
+  .card.open .toggle-btn{ color: var(--accent); border-color: var(--accent); }
 
-  .topic-group{
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 14px 16px; margin-bottom: 12px;
-  }
-  .topic-group-title{ font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-
-  .item-row{
-    display: flex; align-items: flex-start; gap: 6px; margin-bottom: 6px;
-    background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 6px;
-  }
-  .item-row.drag-over{ border-color: var(--accent); background: var(--accent-soft); }
-  .item-row.dragging{ opacity: .4; }
-  .drag-handle{
-    flex: 0 0 auto; width: 20px; height: 32px; display:flex; align-items:center; justify-content:center;
-    cursor: grab; color: var(--ink-soft); font-size: 14px; user-select: none; touch-action: none;
-  }
-  .drag-handle:active{ cursor: grabbing; }
-  .item-row input[type=text]{
-    flex: 1 1 auto; font: inherit; font-size: 13px; padding: 7px 9px;
-    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
-  }
-  .item-row textarea{
-    flex: 1 1 auto; font: inherit; font-size: 13px; padding: 7px 9px;
-    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
-    resize: none; overflow: hidden; min-height: 32px;
-  }
   .icon-btn{
-    flex: 0 0 auto; width: 28px; height: 32px; border-radius: 6px;
-    border: 1px solid var(--line); background: var(--paper-raised); color: var(--danger);
-    cursor: pointer; font-size: 14px; line-height: 1;
+    font: inherit; font-size: 13px; line-height: 1; width: 26px; height: 26px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--paper);
+    color: var(--ink-soft); cursor: pointer; flex: 0 0 auto;
   }
-  .icon-btn:hover{ border-color: var(--danger); background: var(--danger-soft); }
+  .icon-btn:hover{ border-color: var(--danger); color: var(--danger); background: var(--danger-soft); }
   .add-row-btn{
-    font: inherit; font-size: 12px; font-weight: 600; color: var(--accent);
-    background: none; border: 1px dashed var(--accent); border-radius: 7px;
-    padding: 6px 10px; cursor: pointer; margin-top: 4px;
+    font: inherit; font-size: 12.5px; font-weight: 600; padding: 7px 12px;
+    border: 1px dashed var(--line); border-radius: 7px; background: none;
+    color: var(--accent); cursor: pointer; margin-top: 8px;
   }
-  .add-row-btn:hover{ background: var(--accent-soft); }
+  .add-row-btn:hover{ border-color: var(--accent); background: var(--accent-soft); }
 
-  details.notes-details{
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 20px;
+  /* ---------- ツリー(アウトライン)編集 ---------- */
+  .tree-node{ margin-top: 6px; }
+  .node-row{ display: flex; align-items: flex-start; gap: 6px; }
+  .node-row .drag-handle{
+    flex: 0 0 auto; cursor: grab; color: var(--ink-soft); font-size: 12px;
+    padding: 9px 3px 0; user-select: none; letter-spacing: -1px;
   }
-  details.notes-details summary{ font-size: 13px; font-weight: 700; cursor: pointer; }
-  .preview-details{ background: var(--accent-soft); border-color: var(--accent); }
-  .preview-box{
-    width: 100%; margin-top: 10px; padding: 12px 14px;
-    font-family: ui-monospace, "SF Mono", "Roboto Mono", monospace;
-    font-size: 12.5px; line-height: 1.7; white-space: pre;
-    border: 1px solid var(--line); border-radius: 8px;
-    background: var(--paper-raised); color: var(--ink);
-    resize: vertical;
+  .node-row textarea{ flex: 1 1 auto; }
+  .node-children{ padding-left: 22px; border-left: 2px solid var(--line); margin-left: 9px; }
+  .lv1 > .node-row textarea{ font-weight: 700; }
+  .lv4 > .node-row textarea{ font-size: 12.5px; color: var(--ink-soft); }
+  .node-add{
+    font: inherit; font-size: 11.5px; font-weight: 600; padding: 4px 10px;
+    border: 1px dashed var(--line); border-radius: 6px; background: none;
+    color: var(--accent); cursor: pointer; margin: 4px 0 0 31px;
   }
-  .topic-note-row{ margin-top: 12px; }
-  .topic-note-row label{ font-size: 12px; font-weight: 700; display: block; margin-bottom: 4px; }
-  .topic-note-row textarea{ min-height: 60px; }
+  .node-add:hover{ border-color: var(--accent); background: var(--accent-soft); }
+  .drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
 
-  /* ---------- ③ 授業内容:2段階アコーディオン ---------- */
-  .lecture-card{
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px;
-    margin-bottom: 12px; overflow: hidden;
+  /* ---------- リスト編集 ---------- */
+  .list-row{ display: flex; align-items: flex-start; gap: 6px; margin-top: 6px; }
+  .list-row .list-num{
+    flex: 0 0 auto; font-family: ui-monospace, monospace; font-size: 11px;
+    color: var(--ink-soft); padding-top: 10px; min-width: 24px; text-align: right;
   }
-  .lecture-head{
-    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
-    flex-wrap: wrap;
-  }
-  .lecture-head .session-num-badge{
-    font-size: 14px; padding: 5px 10px;
-  }
-  .lecture-head select.topic-select{
-    font-size: 16px; font-weight: 700; color: var(--ink);
-    padding: 8px 10px; border-color: var(--line);
-    min-width: 0; flex: 1 1 140px;
-  }
-  .lecture-toggle{
-    flex: 0 0 auto; height: 34px; padding: 0 12px; border-radius: 6px;
-    border: 1px solid var(--line); background: var(--paper); color: var(--ink-soft);
-    cursor: pointer; font-size: 12px; white-space: nowrap; margin-left: auto;
-  }
-  .lecture-toggle:hover{ border-color: var(--accent); }
-  .lecture-body{ display: none; padding: 0 14px 14px; border-top: 1px solid var(--line); padding-top: 12px; }
-  .lecture-card.open .lecture-body{ display: block; }
-  .lecture-card.open .lecture-toggle{ color: var(--accent); border-color: var(--accent); }
+  .list-row textarea{ flex: 1 1 auto; }
 
-  .group-block{
-    background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
-    margin-bottom: 8px; overflow: hidden;
+  /* ---------- セクション(教科書パート) ---------- */
+  .part{ border: 1px solid var(--line); border-radius: 9px; margin-top: 12px; background: var(--paper); }
+  .part-head{
+    display: flex; align-items: center; gap: 10px; padding: 11px 13px; cursor: pointer;
   }
-  .group-block.drag-over{ border-color: var(--accent); }
-  .group-block.dragging{ opacity: .4; }
-  .group-head{ display: flex; align-items: center; gap: 6px; padding: 6px; }
-  .group-head input[type=text]{
-    flex: 1 1 auto; font: inherit; font-size: 13px; font-weight: 700; padding: 7px 9px;
-    border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); color: var(--ink);
+  .part-head:hover{ background: var(--accent-soft); }
+  .part-tag{
+    flex: 0 0 auto; min-width: 34px; text-align: center;
+    font-family: ui-monospace, monospace; font-size: 11px; font-weight: 700;
+    color: #fff; background: var(--accent); border-radius: 5px; padding: 2px 5px;
   }
-  .group-count{
-    flex: 0 0 auto; font-size: 10.5px; color: var(--ink-soft);
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px;
-    white-space: nowrap;
+  .part-title{ flex: 1 1 auto; font-size: 13.5px; font-weight: 700; }
+  .part-count{ flex: 0 0 auto; font-size: 11px; color: var(--ink-soft); }
+  .part-body{ display: none; padding: 4px 14px 14px; }
+  .part.open .part-body{ display: block; }
+  .part-lead{ font-size: 11.5px; color: var(--ink-soft); margin: 2px 0 8px; }
+
+  .pill{
+    font-size: 11px; font-weight: 700; border-radius: 999px; padding: 2px 9px;
+    background: var(--accent-soft); color: var(--accent); flex: 0 0 auto;
   }
-  .group-toggle{
-    flex: 0 0 auto; width: 26px; height: 30px; border-radius: 6px;
-    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft);
-    cursor: pointer; font-size: 11px;
+  .pill.off{ background: var(--paper); color: var(--ink-soft); }
+
+  .check-line{ display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin-top: 10px; }
+  .check-line input[type=checkbox]{ width: 16px; height: 16px; accent-color: var(--accent); }
+
+  .export-box{
+    width: 100%; min-height: 260px; font-family: ui-monospace, monospace; font-size: 11.5px;
+    white-space: pre; overflow: auto; resize: vertical;
   }
-  .group-toggle:hover{ border-color: var(--accent); }
-  .group-body{ display: none; padding: 0 8px 8px 30px; }
-  .group-block.open .group-body{ display: block; }
-  .group-block.open .group-toggle{ color: var(--accent); border-color: var(--accent); }
-  .child-row{
-    display: flex; align-items: flex-start; gap: 6px; margin-top: 6px;
-    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 7px; padding: 6px;
+  .modal-back{
+    position: fixed; inset: 0; background: rgba(20,24,28,.5); z-index: 50;
+    display: none; align-items: center; justify-content: center; padding: 20px;
   }
-  .child-row.drag-over{ border-color: var(--accent); background: var(--accent-soft); }
-  .child-row.dragging{ opacity: .4; }
-  .child-row textarea{
-    flex: 1 1 auto; font: inherit; font-size: 12.5px; padding: 6px 8px;
-    border: 1px solid var(--line); border-radius: 6px; background: var(--paper); color: var(--ink);
-    resize: none; overflow: hidden; min-height: 30px;
+  .modal-back.open{ display: flex; }
+  .modal{
+    background: var(--paper-raised); border-radius: 12px; padding: 18px;
+    width: min(900px, 100%); max-height: 88vh; overflow: auto;
   }
-  .add-child-btn{
-    font: inherit; font-size: 11.5px; font-weight: 600; color: var(--accent);
-    background: none; border: 1px dashed var(--accent); border-radius: 6px;
-    padding: 5px 9px; cursor: pointer; margin-top: 6px;
+  .modal h2{ font-size: 15px; margin: 0 0 8px; }
+  .modal-actions{ display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 640px){
+    .topbar{ padding: 10px 14px; }
+    .topbar h1{ flex: 1 1 100%; font-size: 14px; }
+    .save-status{ flex: 1 1 100%; font-size: 10.5px; }
+    .btn{ font-size: 11.5px; padding: 6px 9px; }
+    .tabs{ padding: 0 14px; flex-wrap: wrap; }
+    .tab-btn{ flex: 1 1 calc(50% - 4px); font-size: 12px; }
+    .wrap{ padding: 14px; }
+    .field-grid{ grid-template-columns: 1fr; }
+    .node-children{ padding-left: 12px; margin-left: 5px; }
   }
-  .add-child-btn:hover{ background: var(--accent-soft); }
 </style>
 </head>
 <body>
@@ -256,42 +209,47 @@
     <button class="btn" id="resetBtn">設定をリセット</button>
     <button class="btn" id="importBtn">JSON読み込み</button>
     <input type="file" id="importFile" accept="application/json">
-    <button class="btn primary" id="exportBtn">JSON書き出し</button>
+    <button class="btn" id="exportBtn">JSON書き出し</button>
+    <button class="btn primary" id="htmlBtn">HTML書き出し</button>
   </div>
 </div>
 
 <div class="tabs">
   <button class="tab-btn active" data-view="view-sessions">① 講義計画(15コマ)</button>
-  <button class="tab-btn" data-view="view-checklists">② 理解度チェック</button>
-  <button class="tab-btn" data-view="view-outline">③ 授業内容(講義1-15)</button>
+  <button class="tab-btn" data-view="view-outline">② 講義内容</button>
+  <button class="tab-btn" data-view="view-textbook">③ 教科書パート</button>
   <button class="tab-btn" data-view="view-topics">④ 疾患一覧</button>
 </div>
 
 <div class="wrap">
 
   <div class="view active" id="view-sessions">
+    <div class="note-box">
+      各回の<strong>担当疾患・テーマ・説明文</strong>を編集します。並び順(第1回〜第15回)は固定です。
+    </div>
     <div id="sessionsList"></div>
   </div>
 
-  <div class="view" id="view-checklists">
-    <div id="checklistsList"></div>
+  <div class="view" id="view-outline">
+    <div class="note-box">
+      各回で扱う<strong>講義内容</strong>を編集します。項目は<strong>4階層</strong>まで入れ子にできます。
+      「+ 下の階層」でひとつ内側の項目を追加、行頭の <code>::</code> をつかんで並べ替えできます。
+    </div>
+    <div id="outlineList"></div>
   </div>
 
-  <div class="view" id="view-outline">
-    <details class="notes-details preview-details" open>
-      <summary>全体を文章で確認(編集内容が自動的に反映されます)</summary>
-      <textarea id="outlinePreviewBox" class="preview-box" readonly rows="12"></textarea>
-    </details>
-    <div id="outlineList"></div>
-    <details class="notes-details">
-      <summary>疾患ごとの共通メモ(POINTなど・任意)</summary>
-      <div id="topicNotesList"></div>
-    </details>
+  <div class="view" id="view-textbook">
+    <div class="note-box">
+      教科書に対応する部分(<strong>I 学習目標 / II 予習課題 / AL1〜AL4 / V 到達度チェック</strong>)と、
+      <strong>POINT欄</strong>を疾患ごとに編集します。「教科書の章として扱う」がオフの疾患は、
+      I・II・V・AL2〜4を出力せず、番号(I〜V)も付けません。
+    </div>
+    <div id="textbookList"></div>
   </div>
 
   <div class="view" id="view-topics">
     <div class="note-box">
-      疾患・項目の名称はここで自由に変更できます。「+ 疾患を追加」で新しい項目を増やせます。削除は、①③でその疾患が使われていない場合のみ可能です(使われている場合は、先に他の疾患へ変更してから削除してください)。
+      疾患・項目の名称や色を編集します。削除は、①②でその疾患が使われていない場合のみ可能です。
     </div>
     <div id="topicsList"></div>
     <button class="add-row-btn" id="addTopicBtn">+ 疾患を追加</button>
@@ -299,122 +257,359 @@
 
 </div>
 
+<div class="modal-back" id="modalBack">
+  <div class="modal">
+    <h2 id="modalTitle">書き出し</h2>
+    <p class="part-lead" id="modalLead"></p>
+    <textarea class="export-box" id="modalBox" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn primary" id="modalCopy">クリップボードにコピー</button>
+      <button class="btn" id="modalDownload">ファイルとして保存</button>
+      <button class="btn ghost" id="modalClose">閉じる</button>
+    </div>
+  </div>
+</div>
+
 <script>
   var DEFAULT_STATE = {
-  "version": 3,
+  "version": 4,
   "topics": [
     {
-      "id": "topic-msv2xol5",
-      "name": "神経系理学療法の概要"
+      "id": "overview",
+      "name": "神経系理学療法の概要",
+      "latin": "Overview",
+      "textbook": false,
+      "color": "#4E7DBF",
+      "tint": "#EAF0F9",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "parkinson",
-      "name": "パーキンソン病"
+      "name": "パーキンソン病",
+      "latin": "Parkinson's Disease",
+      "textbook": true,
+      "color": "#5C6BB8",
+      "tint": "#EEEFF8",
+      "worksheets": 2,
+      "al3Title": "理学療法の一般原則をまとめる",
+      "pages": {
+        "goals": "P.165",
+        "lecture": "教科書 P.166〜186",
+        "al": "教科書 P.187〜188",
+        "goalCheck": "P.190"
+      }
     },
     {
       "id": "scd_msa",
-      "name": "脊髄小脳変性症(多系統萎縮症／それ以外)"
+      "name": "脊髄小脳変性症(多系統萎縮症／それ以外)",
+      "latin": "SCD (incl. MSA)",
+      "textbook": true,
+      "color": "#2F8F7A",
+      "tint": "#E7F4F0",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "ms",
-      "name": "多発性硬化症／視神経脊髄炎"
+      "name": "多発性硬化症／視神経脊髄炎",
+      "latin": "MS / NMOSD",
+      "textbook": true,
+      "color": "#3C6E9A",
+      "tint": "#E9F0F5",
+      "worksheets": 2,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "gbs",
-      "name": "多発ニューロパチー(ギランバレー症候群など)"
+      "name": "多発ニューロパチー(ギランバレー症候群など)",
+      "latin": "Polyneuropathy (incl. Guillain-Barré Syndrome)",
+      "textbook": true,
+      "color": "#7C6A9E",
+      "tint": "#EFECF5",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "als",
-      "name": "筋萎縮性側索硬化症"
+      "name": "筋萎縮性側索硬化症",
+      "latin": "ALS",
+      "textbook": true,
+      "color": "#AD7A3E",
+      "tint": "#F5EEE3",
+      "worksheets": 2,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "mg",
-      "name": "その他(筋ジストロフィー／重症筋無力症など)"
+      "name": "その他(筋ジストロフィー／重症筋無力症など)",
+      "latin": "Other Neuromuscular Diseases (incl. MG, MD)",
+      "textbook": true,
+      "color": "#A98C3E",
+      "tint": "#F5EFDD",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
-      "id": "topic-msv4lp8u",
-      "name": "実技(評価・治療等のまとめ）"
+      "id": "practical",
+      "name": "実技(評価・治療等のまとめ）",
+      "latin": "Practical Skills",
+      "textbook": false,
+      "color": "#3F9488",
+      "tint": "#E7F3F1",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     },
     {
       "id": "review",
-      "name": "総復習(知識・理解度チェック)"
+      "name": "総復習(知識・理解度チェック)",
+      "latin": "Comprehensive Review",
+      "textbook": false,
+      "color": "#56606B",
+      "tint": "#EDEFF1",
+      "worksheets": 1,
+      "al3Title": "",
+      "pages": {
+        "goals": "",
+        "lecture": "",
+        "al": "",
+        "goalCheck": ""
+      }
     }
   ],
   "lectures": [
     {
       "num": "01",
-      "topicId": "topic-msv2xol5",
+      "topicId": "overview",
       "theme": "オリエンテーション",
       "desc": "講師紹介・講義の進め方、神経系疾患の全体像、理学療法の役割",
       "items": [
         {
+          "id": "n-1",
           "text": "挨拶・講師の自己紹介",
           "children": [
-            "経歴や、これまでにやってきたこと、現在取り組んでいること",
-            "普段神経系の疾患を有する患者様とどのような関りがあるか"
-          ],
-          "id": "grp-dxhfiji"
+            {
+              "id": "n-2",
+              "text": "経歴や、これまでにやってきたこと、現在取り組んでいること",
+              "children": []
+            },
+            {
+              "id": "n-3",
+              "text": "普段神経系の疾患を有する患者様とどのような関りがあるか",
+              "children": []
+            }
+          ]
         },
         {
+          "id": "n-4",
           "text": "神経系理学療法の講義で何を目標にするか",
           "children": [
-            "★重要：疾患の概要を理解でき、かつ説明できる",
-            "各疾患の関係性や、違いなどを理解できる",
-            "疾患の特性を踏まえた理学療法評価をイメージ・列挙できる（実習で困らない）",
-            "どのような理学療法を提供すれば良いのか基本的なものをイメージできる",
-            "★関わるうえでの注意点、リスク管理をできるようにする",
-            "疾患への理解を深めることで、解剖学や生理学などの基本知識を見直しする",
-            "★神経系に関連した国家試験の問題を回答できるようになる"
-          ],
-          "id": "grp-td7stxu"
+            {
+              "id": "n-5",
+              "text": "★重要：疾患の概要を理解でき、かつ説明できる",
+              "children": []
+            },
+            {
+              "id": "n-6",
+              "text": "各疾患の関係性や、違いなどを理解できる",
+              "children": []
+            },
+            {
+              "id": "n-7",
+              "text": "疾患の特性を踏まえた理学療法評価をイメージ・列挙できる（実習で困らない）",
+              "children": []
+            },
+            {
+              "id": "n-8",
+              "text": "どのような理学療法を提供すれば良いのか基本的なものをイメージできる",
+              "children": []
+            },
+            {
+              "id": "n-9",
+              "text": "★関わるうえでの注意点、リスク管理をできるようにする",
+              "children": []
+            },
+            {
+              "id": "n-10",
+              "text": "疾患への理解を深めることで、解剖学や生理学などの基本知識を見直しする",
+              "children": []
+            },
+            {
+              "id": "n-11",
+              "text": "★神経系に関連した国家試験の問題を回答できるようになる",
+              "children": []
+            }
+          ]
         },
         {
+          "id": "n-12",
           "text": "神経系の疾患にはどのようなものがあるのか",
           "children": [
-            "発症率など、頻度の多い疾患・稀な疾患について理解する",
-            "パーキンソン病",
-            "脊髄小脳変性症(多系統萎縮症／それ以外)",
-            "多発性硬化症／視神経脊髄炎",
-            "多発ニューロパチー(ギランバレー症候群など)",
-            "筋萎縮性側索硬化症",
-            "その他(筋ジストロフィー／重症筋無力症など)"
-          ],
-          "id": "grp-0tz0vnp"
+            {
+              "id": "n-13",
+              "text": "発症率など、頻度の多い疾患・稀な疾患について理解する",
+              "children": []
+            },
+            {
+              "id": "n-14",
+              "text": "パーキンソン病",
+              "children": []
+            },
+            {
+              "id": "n-15",
+              "text": "脊髄小脳変性症(多系統萎縮症／それ以外)",
+              "children": []
+            },
+            {
+              "id": "n-16",
+              "text": "多発性硬化症／視神経脊髄炎",
+              "children": []
+            },
+            {
+              "id": "n-17",
+              "text": "多発ニューロパチー(ギランバレー症候群など)",
+              "children": []
+            },
+            {
+              "id": "n-18",
+              "text": "筋萎縮性側索硬化症",
+              "children": []
+            },
+            {
+              "id": "n-19",
+              "text": "その他(筋ジストロフィー／重症筋無力症など)",
+              "children": []
+            }
+          ]
         },
         {
-          "id": "grp-veng5ub",
+          "id": "n-20",
           "text": "どのような場面（急性期・回復期・生活期）で神経系の疾患と関わるのか",
           "children": [
-            "脳血管リハビリテーション料",
-            "一般病棟の対象疾患",
-            "回復期リハビリテーション病棟の対象疾患",
-            "難病リハビリテーション料"
+            {
+              "id": "n-21",
+              "text": "脳血管リハビリテーション料",
+              "children": []
+            },
+            {
+              "id": "n-22",
+              "text": "一般病棟の対象疾患",
+              "children": []
+            },
+            {
+              "id": "n-23",
+              "text": "回復期リハビリテーション病棟の対象疾患",
+              "children": []
+            },
+            {
+              "id": "n-24",
+              "text": "難病リハビリテーション料",
+              "children": []
+            }
           ]
         },
         {
+          "id": "n-25",
           "text": "神経系疾患に対する理学療法士の役割とは？",
-          "children": [],
-          "id": "grp-1zk5lj8"
+          "children": []
         },
         {
-          "id": "grp-s90ayj7",
+          "id": "n-26",
           "text": "現在、学校で習っていて、使える武器（理学療法評価）は何でしょう？",
           "children": [
-            "運動機能障害（運動麻痺）に対する検査項目は何がありますか？",
-            "感覚障害に対する検査項目には何がありますか？",
-            "異常筋緊張に対する検査項目には何がありますか？",
-            "運動失調に対する検査項目には何がありますか？",
-            "姿勢・バランス障害に対する検査項目には何がありますか？",
-            "ADL評価には何がありますか？",
-            "動作分析の項目は何がありますか？",
-            "高次脳機能障害に対する評価は何がありますか？",
-            "運動耐容能を評価するものは何がありますか？"
+            {
+              "id": "n-27",
+              "text": "運動機能障害（運動麻痺）に対する検査項目は何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-28",
+              "text": "感覚障害に対する検査項目には何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-29",
+              "text": "異常筋緊張に対する検査項目には何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-30",
+              "text": "運動失調に対する検査項目には何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-31",
+              "text": "姿勢・バランス障害に対する検査項目には何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-32",
+              "text": "ADL評価には何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-33",
+              "text": "動作分析の項目は何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-34",
+              "text": "高次脳機能障害に対する評価は何がありますか？",
+              "children": []
+            },
+            {
+              "id": "n-35",
+              "text": "運動耐容能を評価するものは何がありますか？",
+              "children": []
+            }
           ]
         },
         {
+          "id": "n-36",
           "text": "本日の復習",
-          "children": [],
-          "id": "grp-sztrow5"
+          "children": []
         }
       ]
     },
@@ -425,46 +620,170 @@
       "desc": "運動症状と非運動症状について、栄養管理",
       "items": [
         {
-          "text": "前回のおさらい（神経疾患にはどのようなものがあるのか等）",
-          "children": [],
-          "id": "grp-rj6wi0k"
+          "id": "n-37",
+          "text": "前回のおさらい(神経系疾患にはどのようなものがあるか)",
+          "children": []
         },
         {
-          "text": "パーキンソン病の概要",
-          "children": [],
-          "id": "grp-gjhagvc"
-        },
-        {
-          "text": "パーキンソン病の原因",
-          "children": [],
-          "id": "grp-m0bvgwl"
-        },
-        {
-          "text": "診断基準",
+          "id": "n-38",
+          "text": "1　疾患の概要と障害の特徴・留意点",
           "children": [
-            "CT・MRI",
-            "SPECT",
-            "鑑別診断（脳画像の診方）",
-            "新しい内容"
-          ],
-          "id": "grp-pvj8af0"
+            {
+              "id": "n-39",
+              "text": "1) 概要",
+              "children": []
+            },
+            {
+              "id": "n-40",
+              "text": "2) 原因",
+              "children": []
+            },
+            {
+              "id": "n-41",
+              "text": "3) 診断基準",
+              "children": [
+                {
+                  "id": "n-42",
+                  "text": "① CT・MRI",
+                  "children": []
+                },
+                {
+                  "id": "n-43",
+                  "text": "② SPECT",
+                  "children": []
+                },
+                {
+                  "id": "n-44",
+                  "text": "③ MIBG心筋シンチグラフィ",
+                  "children": []
+                },
+                {
+                  "id": "n-45",
+                  "text": "④ L-dopaテスト",
+                  "children": []
+                },
+                {
+                  "id": "n-46",
+                  "text": "⑤ 初期PDとして考えにくい症状",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "n-47",
+              "text": "4) 重症度分類",
+              "children": [
+                {
+                  "id": "n-48",
+                  "text": "① 症状の進行形式",
+                  "children": []
+                },
+                {
+                  "id": "n-49",
+                  "text": "② PDの進行",
+                  "children": []
+                },
+                {
+                  "id": "n-50",
+                  "text": "③ サブタイプ",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "n-51",
+              "text": "5) Braakの仮説",
+              "children": []
+            },
+            {
+              "id": "n-52",
+              "text": "6) 障害の特徴・留意点",
+              "children": [
+                {
+                  "id": "n-53",
+                  "text": "① 基本的な病態",
+                  "children": []
+                },
+                {
+                  "id": "n-54",
+                  "text": "② 運動ループ(ハイパー直接路，直接路，間接路)",
+                  "children": []
+                },
+                {
+                  "id": "n-55",
+                  "text": "③ 症状",
+                  "children": [
+                    {
+                      "id": "n-56",
+                      "text": "無動",
+                      "children": []
+                    },
+                    {
+                      "id": "n-57",
+                      "text": "振戦",
+                      "children": []
+                    },
+                    {
+                      "id": "n-58",
+                      "text": "筋強剛・固縮",
+                      "children": []
+                    },
+                    {
+                      "id": "n-59",
+                      "text": "姿勢反射障害",
+                      "children": []
+                    },
+                    {
+                      "id": "n-60",
+                      "text": "異常姿勢",
+                      "children": []
+                    },
+                    {
+                      "id": "n-61",
+                      "text": "歩行障害",
+                      "children": []
+                    },
+                    {
+                      "id": "n-62",
+                      "text": "転倒関連",
+                      "children": []
+                    },
+                    {
+                      "id": "n-63",
+                      "text": "非運動症状：認知機能／レム睡眠行動異常(RBD)／血圧調整／嗅覚障害／便秘／流涎／頻尿／うつ",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n-64",
+              "text": "7) 進行と予後",
+              "children": []
+            },
+            {
+              "id": "n-65",
+              "text": "8) 治療",
+              "children": [
+                {
+                  "id": "n-66",
+                  "text": "① 薬物療法",
+                  "children": []
+                },
+                {
+                  "id": "n-67",
+                  "text": "② 外科的治療",
+                  "children": []
+                }
+              ]
+            }
+          ]
         },
         {
-          "text": "特徴的な問題と対処-非運動症状に対して-",
-          "children": [
-            "便秘、血圧変動、構音障害、嚥下障害など"
-          ],
-          "id": "grp-m4di4qs"
-        },
-        {
-          "text": "CT/MRI",
-          "children": [],
-          "id": "grp-8bxblsk"
-        },
-        {
+          "id": "n-68",
           "text": "本日の復習",
-          "children": [],
-          "id": "grp-tnpt4zc"
+          "children": []
         }
       ]
     },
@@ -475,50 +794,187 @@
       "desc": "理学療法評価、リハビリ実践part1",
       "items": [
         {
+          "id": "n-69",
           "text": "前回のおさらい",
-          "children": [],
-          "id": "grp-mx7ypxo"
+          "children": []
         },
         {
-          "text": "理学療法評価について",
+          "id": "n-70",
+          "text": "2　理学療法評価",
           "children": [
-            "UPDRS"
-          ],
-          "id": "grp-g3o7gfn"
+            {
+              "id": "n-71",
+              "text": "1) 評価の意義・目的",
+              "children": []
+            },
+            {
+              "id": "n-72",
+              "text": "2) 評価の実際",
+              "children": [
+                {
+                  "id": "n-73",
+                  "text": "① 情報収集",
+                  "children": [
+                    {
+                      "id": "n-74",
+                      "text": "医学的情報",
+                      "children": []
+                    },
+                    {
+                      "id": "n-75",
+                      "text": "社会的情報",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-76",
+                  "text": "② 問診",
+                  "children": []
+                },
+                {
+                  "id": "n-77",
+                  "text": "③ 全体像の把握",
+                  "children": [
+                    {
+                      "id": "n-78",
+                      "text": "MDS-UPDRS",
+                      "children": []
+                    },
+                    {
+                      "id": "n-79",
+                      "text": "Parkinson Activity Scale",
+                      "children": []
+                    },
+                    {
+                      "id": "n-80",
+                      "text": "Parkinson's Disease Questionnaire-39(PDQ-39)",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-81",
+                  "text": "④ 運動機能検査",
+                  "children": [
+                    {
+                      "id": "n-82",
+                      "text": "10m歩行テスト",
+                      "children": []
+                    },
+                    {
+                      "id": "n-83",
+                      "text": "姿勢評価",
+                      "children": []
+                    },
+                    {
+                      "id": "n-84",
+                      "text": "timed up and go test(TUG)",
+                      "children": []
+                    },
+                    {
+                      "id": "n-85",
+                      "text": "freezing of gait questionnaire(FOG-Q)",
+                      "children": []
+                    },
+                    {
+                      "id": "n-86",
+                      "text": "functional reach test(FRT)",
+                      "children": []
+                    },
+                    {
+                      "id": "n-87",
+                      "text": "pull test",
+                      "children": []
+                    },
+                    {
+                      "id": "n-88",
+                      "text": "balance evaluation systems(BESTest)",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-89",
+                  "text": "⑤ 筋緊張検査",
+                  "children": [
+                    {
+                      "id": "n-90",
+                      "text": "筋強剛・固縮の評価",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-91",
+                  "text": "⑥ 不随意運動の評価",
+                  "children": [
+                    {
+                      "id": "n-92",
+                      "text": "振戦",
+                      "children": []
+                    },
+                    {
+                      "id": "n-93",
+                      "text": "ジスキネジア",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-94",
+                  "text": "⑦ ROM",
+                  "children": []
+                },
+                {
+                  "id": "n-95",
+                  "text": "⑧ 筋力検査",
+                  "children": []
+                },
+                {
+                  "id": "n-96",
+                  "text": "⑨ 自律神経機能障害の評価",
+                  "children": []
+                },
+                {
+                  "id": "n-97",
+                  "text": "⑩ 体重・栄養(血液検査)",
+                  "children": []
+                },
+                {
+                  "id": "n-98",
+                  "text": "⑪ ADL検査",
+                  "children": []
+                }
+              ]
+            }
+          ]
         },
         {
-          "text": "環境面でのサポート方法",
+          "id": "n-99",
+          "text": "3　リスク管理",
           "children": [
-            "家屋環境でのチェックポイント、アドバイス内容、利用したい福祉用具",
-            "「福祉住宅環境コーディネーター」の紹介",
-            "ご家族への説明(長期的に病気と関わる上でとても重要)"
-          ],
-          "id": "grp-kvjtnd3"
+            {
+              "id": "n-100",
+              "text": "1) 転倒",
+              "children": []
+            },
+            {
+              "id": "n-101",
+              "text": "2) 悪性症候群，PHS",
+              "children": []
+            },
+            {
+              "id": "n-102",
+              "text": "3) 誤嚥，窒息，肺炎",
+              "children": []
+            }
+          ]
         },
         {
-          "text": "リハビリテーションの「実践①」(パーキンソン病に特化したもの)",
-          "children": [
-            "LSVTの紹介、ボクシングメニュー、卓球、水中運動、太極拳など",
-            "「LSVT(R)BIG認定療法士、パーキンソン病療養指導士」などの資格紹介 [動画]動画で理解を深める"
-          ],
-          "id": "grp-t9405rr"
-        },
-        {
-          "text": "指定難病について",
-          "children": [],
-          "id": "grp-oe8zkua"
-        },
-        {
-          "text": "指定難病医療費助成制度とは",
-          "children": [
-            "データ収集の効率化と長期療養による経済的な負担の軽減"
-          ],
-          "id": "grp-v0dizh5"
-        },
-        {
+          "id": "n-103",
           "text": "本日の復習",
-          "children": [],
-          "id": "grp-a4kjeev"
+          "children": []
         }
       ]
     },
@@ -529,29 +985,135 @@
       "desc": "リハビリ実践part2、歩行介助、「Parkinson病」の復習",
       "items": [
         {
+          "id": "n-104",
           "text": "前回のおさらい",
-          "children": [],
-          "id": "grp-6lkc3ze"
+          "children": []
         },
         {
-          "text": "リハビリテーションの「実践②」",
+          "id": "n-105",
+          "text": "4　理学療法方針",
           "children": [
-            "臥位で固縮の評価"
-          ],
-          "id": "grp-eyoo14e"
+            {
+              "id": "n-106",
+              "text": "1) 予後予測",
+              "children": []
+            },
+            {
+              "id": "n-107",
+              "text": "2) 目標設定，理学療法方針",
+              "children": []
+            },
+            {
+              "id": "n-108",
+              "text": "3) 臨床推論(クリニカルリーズニング)と動作分析",
+              "children": [
+                {
+                  "id": "n-109",
+                  "text": "① 概要",
+                  "children": []
+                },
+                {
+                  "id": "n-110",
+                  "text": "② 具体的な進め方",
+                  "children": [
+                    {
+                      "id": "n-111",
+                      "text": "問診",
+                      "children": []
+                    },
+                    {
+                      "id": "n-112",
+                      "text": "動作の観察および誘導・介助",
+                      "children": []
+                    },
+                    {
+                      "id": "n-113",
+                      "text": "動作と姿勢の共通点",
+                      "children": []
+                    },
+                    {
+                      "id": "n-114",
+                      "text": "動作と症状との関連性をみる",
+                      "children": []
+                    },
+                    {
+                      "id": "n-115",
+                      "text": "画像や検査データなど病態情報の確認",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
-          "text": "歩行介助の「実践」",
+          "id": "n-116",
+          "text": "5　理学療法の実践",
           "children": [
-            "歩行開始時の誘導方法、歩行時の介助(歩幅の調整方法)、介助者への注意点、視線の誘導、目標物の指示方法",
-            "重心の移動範囲、体幹回旋の角度、上肢swingについての考え方など"
-          ],
-          "id": "grp-0biilpc"
+            {
+              "id": "n-117",
+              "text": "1) 運動療法",
+              "children": [
+                {
+                  "id": "n-118",
+                  "text": "① ROM制限への運動療法",
+                  "children": []
+                },
+                {
+                  "id": "n-119",
+                  "text": "② 基本動作，応用動作獲得へのアプローチ",
+                  "children": []
+                },
+                {
+                  "id": "n-120",
+                  "text": "③ バランス障害への運動療法",
+                  "children": [
+                    {
+                      "id": "n-121",
+                      "text": "課題特性",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n-122",
+                  "text": "④ 歩行練習",
+                  "children": []
+                },
+                {
+                  "id": "n-123",
+                  "text": "⑤ 筋力トレーニング",
+                  "children": []
+                },
+                {
+                  "id": "n-124",
+                  "text": "⑥ 全身持久力",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "n-125",
+              "text": "2) 環境調整",
+              "children": []
+            },
+            {
+              "id": "n-126",
+              "text": "3) 家族指導",
+              "children": []
+            }
+          ]
         },
         {
+          "id": "n-127",
+          "text": "6　おわりに",
+          "children": []
+        },
+        {
+          "id": "n-128",
           "text": "パーキンソン病の講義全体の復習",
-          "children": [],
-          "id": "grp-hljbt2d"
+          "children": []
         }
       ]
     },
@@ -560,187 +1122,91 @@
       "topicId": "scd_msa",
       "theme": "脊髄小脳変性症①",
       "desc": "SCD総論・MSA以外の病態と評価(運動失調・視覚代償)",
-      "items": [
-        {
-          "text": "脊髄小脳変性症とは [用語]SCD: Spinocerebellar Degeneration",
-          "children": [
-            "概念や症状の進行について"
-          ],
-          "id": "grp-m3v3pmf"
-        },
-        {
-          "text": "代表的なもの:多系統萎縮症(MSA)",
-          "children": [
-            "MSA-C(オリーブ橋小脳萎縮症[OPCA]) [用語解説]「C」はCerebellum(小脳)を表す",
-            "MSA-P(線条体黒質変性症[SND]) [用語解説]「P」はパーキンソニズムを表す",
-            "(シャイドレーガー症候群[SDS]) [補足]欧米ではMSA-P、MSA-Cに統合されている"
-          ],
-          "id": "grp-uyyjqi0"
-        },
-        {
-          "text": "小脳の機能について",
-          "children": [],
-          "id": "grp-4bmjubn"
-        }
-      ]
+      "items": []
     },
     {
       "num": "06",
       "topicId": "scd_msa",
       "theme": "脊髄小脳変性症②",
       "desc": "多系統萎縮症(MSA)を中心とした運動療法・比較(起立性低血圧・自律神経症状)",
-      "items": [
-        {
-          "text": "MSA-C(オリーブ橋小脳萎縮症)について",
-          "children": [
-            "①好発年齢、②症状(小脳の機能を踏まえて)、③確定診断、④治療方法"
-          ],
-          "id": "grp-5toku1o"
-        },
-        {
-          "text": "MSA-P(線条体黒質変性症)について",
-          "children": [
-            "①好発年齢、②症状(パーキンソニズムについて)、③確定診断、④治療方法",
-            "Parkinson病との違い:症状に左右差がない、安静時振戦が目立たない、進行が速い",
-            "Parkinson病との違い:小脳症状が出現、MIBG心筋シンチで初期は取り込み低下なし、L-dopa反応が低い"
-          ],
-          "id": "grp-xekpuge"
-        },
-        {
-          "text": "シャイドレーガー症候群について",
-          "children": [
-            "①好発年齢、②症状、③確定診断、④治療方法",
-            "自律神経症状とは?注意点(起立性低血圧に対するリスク管理など)や介入方法"
-          ],
-          "id": "grp-04dxwr6"
-        }
-      ]
+      "items": []
     },
     {
       "num": "07",
       "topicId": "ms",
       "theme": "多発性硬化症/視神経脊髄炎①",
       "desc": "病態・評価(疲労のマネジメント、ウートフ徴候)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-1rrhzrc"
-        }
-      ]
+      "items": []
     },
     {
       "num": "08",
       "topicId": "ms",
       "theme": "多発性硬化症/視神経脊髄炎②",
       "desc": "運動療法・目標設定(再発・寛解を踏まえて)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-j48pumv"
-        }
-      ]
+      "items": []
     },
     {
       "num": "09",
       "topicId": "gbs",
       "theme": "ギラン・バレー症候群①",
       "desc": "病態・病期(急性期〜回復期)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-jdg8wxn"
-        }
-      ]
+      "items": []
     },
     {
       "num": "10",
       "topicId": "gbs",
       "theme": "ギラン・バレー症候群②",
       "desc": "評価・運動療法(過用性筋力低下に注意した負荷設定)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-naxi61f"
-        }
-      ]
+      "items": []
     },
     {
       "num": "11",
       "topicId": "als",
       "theme": "筋萎縮性側索硬化症①",
       "desc": "病態・評価・運動療法(拘縮予防、コミュニケーション支援機器、過用注意)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-iq249d2"
-        }
-      ]
+      "items": []
     },
     {
       "num": "12",
       "topicId": "als",
       "theme": "筋萎縮性側索硬化症②",
       "desc": "評価・運動療法の実践、コミュニケーション支援機器の紹介(続き)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-fswfz53"
-        }
-      ]
+      "items": []
     },
     {
       "num": "13",
       "topicId": "mg",
       "theme": "筋ジストロフィー／重症筋無力症",
       "desc": "筋ジストロフィー・重症筋無力症の疾患概要とリハビリの禁忌・注意点(過用性筋力低下、易疲労性・呼吸筋モニタリング)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-oztj11a"
-        }
-      ]
+      "items": []
     },
     {
       "num": "14",
-      "topicId": "topic-msv4lp8u",
+      "topicId": "practical",
       "theme": "実技まとめ",
       "desc": "疾患比較・鑑別のまとめ(発症率、症状の違い、見分け方)",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-dl2m7t4"
-        }
-      ]
+      "items": []
     },
     {
       "num": "15",
       "topicId": "review",
       "theme": "総復習",
       "desc": "これまでの様々な疾患の概要について要点をチェック。\n理解度テストなどを使ってテスト対策＋国試に回答できるレベルに到達していることを確認する。",
-      "items": [
-        {
-          "text": "内容準備中",
-          "children": [],
-          "id": "grp-94aq2dh"
-        }
-      ]
+      "items": []
     }
   ],
   "checklists": {
+    "overview": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
+    ],
     "parkinson": [
       "PDの原因は何か？",
       "PDにみられる症状にはどのようなものがあるのか？",
       "PDに対する治療法にはどのようなものがあるか？",
       "PDに対する一般的な理学療法評価の項目は？",
-      "PDに対する一般的な運動療法の項目は？",
+      "PDに対する一般的な理学療法の項目は？",
       "PDの理学療法評価において必要なカルテ情報の項目は？",
       "PDの理学療法評価において医療面接はどのような内容を聞くのか？",
       "PDの理学療法評価において姿勢観察・評価はどのように行うか？",
@@ -748,7 +1214,7 @@
       "PDの理学療法評価においてROM 検査はどのように行うか？",
       "PDの理学療法評価において筋力検査はどのように行うか？",
       "PDの理学療法評価においてバランス検査はどのように行うか？",
-      "PDの理学療法評価において緊張検査はどのように行うか？",
+      "PDの理学療法評価において筋緊張検査はどのように行うか？",
       "PDの理学療法評価において歩行の評価はどのように行うか？",
       "PDに起こりやすいリスクは何か？",
       "PDの理学療法においてROM 運動はどのように行うのか？",
@@ -760,7 +1226,7 @@
       "PDの日常生活の活性化をどのように図ればよいか？"
     ],
     "scd_msa": [
-      "多系統萎縮症（MS）に含まれる疾患とそれぞれの代表的な症状は？",
+      "多系統萎縮症（MSA）に含まれる疾患とそれぞれの代表的な症状は？",
       "SCDで生じやすい自律神経系の症状は？",
       "SCDの一般的な理学療法評価の項目は？",
       "SCDの一般的な運動療法の項目は？",
@@ -904,568 +1370,1195 @@
       "舌咽呼吸法とは？",
       "疲労の徴候にはどのようなものがあるか？"
     ],
-    "review": [
-      "項目A(仮・内容は決まり次第差し替え)",
-      "項目B(仮・内容は決まり次第差し替え)",
-      "項目C(仮・内容は決まり次第差し替え)"
-    ],
-    "topic-msv2xol5": [],
-    "topic-msv4lp8u": [
+    "practical": [
       "寝返動作",
       "起立動作",
       "移乗動作",
       "歩行"
+    ],
+    "review": [
+      "項目A(仮・内容は決まり次第差し替え)",
+      "項目B(仮・内容は決まり次第差し替え)",
+      "項目C(仮・内容は決まり次第差し替え)"
     ]
   },
   "topicNotes": {
     "parkinson": "パーキンソン病の病理を理解することで、多彩な症状を「暗記」するのではなく理解してイメージできるようになる(特にパーキンソン病パンデミックといわれるほど今後増加することが予想されており、遭遇する頻度も高いためここをおさえておくことは非常に重要)\n\n大脳基底核の機能を理解することで脳血管疾患に対する理解も深めることができる\n鑑別のための脳画像の評価も他の疾患の理解につながる\n理学療法介入が実際にできることまで目指す(特に起居動作の評価・治療(体位変換の介助方法も含めて)、起立動作、歩行介入の部分は実践できることを目指す)",
     "scd_msa": "複雑な名称にまどわされず、まず分類を整理すること\n\n「診断」するわけではないので、どのような症状が出るのかを理解し、それに対するリハビリの評価・方針を考えられることが重要\nMSA-Pについては、Parkinson病との違いを理解することで、Parkinson病の理解も深められる\nシャイドレーガー症候群については、自律神経症状(起立性低血圧)への対応も理解するきっかけとする",
-    "topic-msv2xol5": "",
-    "topic-msv4lp8u": ""
+    "overview": "",
+    "practical": ""
+  },
+  "goals": {
+    "overview": [],
+    "parkinson": [
+      {
+        "id": "n-129",
+        "text": "1　Parkinson病(PD)について以下の項目が説明できる",
+        "children": [
+          {
+            "id": "n-130",
+            "text": "(1) PDの原因",
+            "children": []
+          },
+          {
+            "id": "n-131",
+            "text": "(2) PDの診断基準",
+            "children": []
+          },
+          {
+            "id": "n-132",
+            "text": "(3) PDの重症度分類",
+            "children": []
+          },
+          {
+            "id": "n-133",
+            "text": "(4) PDの症状",
+            "children": []
+          },
+          {
+            "id": "n-134",
+            "text": "(5) PDの①薬物治療と②外科治療",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "n-135",
+        "text": "2　PDに対する理学療法について以下の項目が説明できる",
+        "children": [
+          {
+            "id": "n-136",
+            "text": "(1) 理学療法の実施に際して収集すべき医学的情報",
+            "children": []
+          },
+          {
+            "id": "n-137",
+            "text": "(2) 医療面接，問診の方法",
+            "children": []
+          },
+          {
+            "id": "n-138",
+            "text": "(3) 姿勢の観察と評価方法",
+            "children": []
+          },
+          {
+            "id": "n-139",
+            "text": "(4) 動作の観察と評価方法",
+            "children": []
+          },
+          {
+            "id": "n-140",
+            "text": "(5) バランス能力の評価方法",
+            "children": []
+          },
+          {
+            "id": "n-141",
+            "text": "(6) ROMおよび筋力測定の方法",
+            "children": []
+          },
+          {
+            "id": "n-142",
+            "text": "(7) 筋緊張検査の評価方法",
+            "children": []
+          },
+          {
+            "id": "n-143",
+            "text": "(8) 深部腱反射の評価方法",
+            "children": []
+          },
+          {
+            "id": "n-144",
+            "text": "(9) 歩行の観察と評価方法",
+            "children": []
+          },
+          {
+            "id": "n-145",
+            "text": "(10) ADLの評価方法",
+            "children": []
+          },
+          {
+            "id": "n-146",
+            "text": "(11) 転倒のリスク管理",
+            "children": []
+          },
+          {
+            "id": "n-147",
+            "text": "(12) 理学療法のポイント",
+            "children": []
+          },
+          {
+            "id": "n-148",
+            "text": "(13) 環境設定と在宅生活",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
+  },
+  "prep": {
+    "overview": [],
+    "parkinson": [
+      "問1：中脳の位置は？",
+      "問2：錐体外路の①経路と②損傷した場合の症状とは？",
+      "問3：黒質が変性すると起こる症状は？",
+      "問4：大脳基底核を構成するものは？またその働きは？",
+      "問5：ドパミンとは？",
+      "問6：姿勢とは？",
+      "問7：重心と重心投影線について説明しなさい。",
+      "問8：重心投影線と支持基底面の関係(安定性)について説明しなさい。",
+      "問9：立位時の重心投影線と床反力の関係について説明しなさい。",
+      "問10：立位姿勢を保持するための筋活動について説明しなさい。",
+      "問11：正常歩行周期とは？",
+      "問12：体幹のROMの参考角度は？",
+      "問13：膝関節，足関節，股関節のROMの参考角度は？",
+      "問14：肩関節の可動域の参考角度は？",
+      "問15：筋緊張の検査方法について説明しなさい。",
+      "問16：無動とは？",
+      "問17：腱反射の①検査方法，②判定基準について説明しなさい。",
+      "問18：立位の重心の位置はどこか？",
+      "問19：歩行中の重心の位置はどのように移動するのか？",
+      "問20：歩行中の遊脚期に働く下肢の筋は何か？",
+      "問21：歩行中の遊脚期に働く体幹の筋は何か？",
+      "問22：歩行中の立脚期に働く下肢の筋は何か？",
+      "問23：歩行中の立脚期に働く体幹の筋は何か？",
+      "問24：体幹は水平面でどのくらい回旋するか？",
+      "問25：歩行における股関節の逸脱運動とは？",
+      "問26：歩行における膝関節の逸脱運動とは？",
+      "問27：歩行における足関節の逸脱運動とは？",
+      "問28：PDに特徴的なすくみ足とは？",
+      "問29：PDに特徴的な小刻み歩行とは？",
+      "問30：PDに特徴的な加速歩行とは？",
+      "問31：Hoehn-Yahrの重症度分類について説明しなさい。",
+      "問32：MDS-UPDRSについて説明しなさい。",
+      "問33：PDの服薬による副作用について説明しなさい。",
+      "問34：FRTの①目的と②方法は？",
+      "問35：TUGの①目的と②方法は？",
+      "問36：開眼片足立ちテストの①目的と②方法は？",
+      "問37：10m歩行テストの①目的と②方法は？",
+      "問38：pull testの①目的と②方法は？",
+      "問39：PDのリスクについて説明しなさい。",
+      "問40：転倒の要因は何か？",
+      "問41：転倒を防止するための装具やサポーターは？",
+      "問42：PDに対するROM運動はどのように行うのか？",
+      "問43：PDに対する筋力増強運動の方法は？",
+      "問44：キュー(運動のきっかけ)について説明しなさい。",
+      "問45：キューを用いた歩行練習の方法は？",
+      "問46：階段昇降練習の方法は？",
+      "問47：バリアフリーな住宅環境とは？"
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
+  },
+  "al2": {
+    "overview": [],
+    "parkinson": [
+      "PDの症例で時間帯によって動きの良い時間と，動きの悪い時間があると考えられる原因は何か？",
+      "PDの症例で歩行時によくみられるすくみ足，方向転換は，なぜ不十分となっているのか，その原因は？",
+      "PDの突進現象は転倒のリスクとなるが，どのような反応が不十分となっていることに原因があるのか？",
+      "ある症例において椅座位から立ち上がり歩行を開始すると，顔面蒼白となりふらつき転倒しそうになった。このときに考えられるリスクは何か？",
+      "歩行開始時にすくみ足症状が著明にみられている症例に対して，前方に目標物を置き，またぐように指示するとスムーズに1歩を出すことができた。これはなぜか？",
+      "医療面接の際に表情乏しく，声も小さい症例に対して，どのように医療面接を進めればよいか？",
+      "寝返りから起き上がりが困難で家族の介護量が増えている症例の場合，どのようなROM確保が必要か？"
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
+  },
+  "al3": {
+    "overview": [],
+    "parkinson": [
+      {
+        "id": "n-149",
+        "text": "PDの病態や原因，進行状況を踏まえ，本疾患に対する理学療法の一般原則をまとめなさい。",
+        "children": [
+          {
+            "id": "n-150",
+            "text": "① 評価(カルテ情報収集，医療面接を含む)",
+            "children": []
+          },
+          {
+            "id": "n-151",
+            "text": "② 理学療法介入",
+            "children": []
+          },
+          {
+            "id": "n-152",
+            "text": "③ リスク管理",
+            "children": []
+          }
+        ]
+      }
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
+  },
+  "al4": {
+    "overview": [],
+    "parkinson": [
+      "本症例の理学療法目標は？",
+      "本症例の問題点は？",
+      "本症例の治療プランは？",
+      "本症例における理学療法実施におけるリスク管理の方法は？",
+      "本症例が退院する際の環境設備や生活指導について",
+      "本症例に対する理学療法における評価と治療を行ってみましょう。"
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
+  },
+  "goalChecks": {
+    "overview": [],
+    "parkinson": [
+      "PDの原因とは？",
+      "PDの診断基準とは？",
+      "PDの重症度分類とは？",
+      "PDの症状は？",
+      "PDの①薬物治療と②外科治療とは？",
+      "理学療法の実施に際して収集すべき医学的情報は？",
+      "医療面接，問診の方法は？",
+      "姿勢の観察と評価方法は？",
+      "動作の観察と評価方法は？",
+      "バランス能力の評価方法は？",
+      "ROMおよび筋力測定の方法は？",
+      "筋緊張検査の評価方法は？",
+      "深部腱反射の評価方法は？",
+      "歩行の観察と評価方法は？",
+      "ADLの評価方法は？",
+      "転倒のリスク管理は？",
+      "理学療法のポイントは？",
+      "環境設定と在宅生活は？"
+    ],
+    "scd_msa": [],
+    "ms": [],
+    "gbs": [],
+    "als": [],
+    "mg": [],
+    "practical": [],
+    "review": []
   }
 };
-  var STORAGE_KEY = 'neuro-pt-editor-draft-v3';
+</script>
+<script>
+  var STORAGE_KEY = 'neuro-pt-editor-draft-v4';
+  var state = null;
+  var openMap = {};      /* 開閉状態(カード/パート) */
+  var saveTimer = null;
 
-  function migrateLectureItems(items){
-    // v2互換: フラットな{type,text}配列を{text,children}構造に変換
-    if(!items || items.length === 0) return [];
-    if(items[0] && items[0].hasOwnProperty('children')) return items;
-    var groups = [];
-    items.forEach(function(it){
-      if(it.type === 'sub'){
-        if(groups.length === 0){ groups.push({text: '(見出しなし)', children: []}); }
-        groups[groups.length - 1].children.push(it.text);
-      } else {
-        groups.push({text: it.text, children: []});
-      }
-    });
-    return groups;
+  /* ============ 基本ユーティリティ ============ */
+  function makeId(p){ return p + '-' + Math.random().toString(36).slice(2, 9); }
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function autoGrow(el){
+    if(!el) return;
+    el.style.height = 'auto';
+    el.style.height = (el.scrollHeight + 2) + 'px';
+  }
+  function pad2(n){ n = String(n); return n.length < 2 ? '0' + n : n; }
+
+  function scheduleSave(){
+    var el = document.getElementById('saveStatus');
+    if(el) el.textContent = '保存中…';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+      if(el) el.textContent = '保存しました';
+    }, 350);
   }
 
-  function migrateState(data){
-    if(data && data.lectures){
-      data.lectures.forEach(function(lec){
-        lec.items = migrateLectureItems(lec.items);
-      });
-    }
-    return data;
+  /* ============ 状態の読み込みと移行 ============ */
+  function ensureNodeIds(list){
+    (list || []).forEach(function(n){
+      if(!n.id) n.id = makeId('n');
+      if(!Array.isArray(n.children)) n.children = [];
+      ensureNodeIds(n.children);
+    });
+    return list || [];
+  }
+
+  function toNodes(arr){
+    /* v3 の children(文字列配列) を v4 のノードに変換 */
+    return (arr || []).map(function(x){
+      if(typeof x === 'string') return {id: makeId('n'), text: x, children: []};
+      return {id: x.id || makeId('n'), text: x.text || '',
+              children: toNodes(x.children)};
+    });
+  }
+
+  function migrate(data){
+    if(!data || !data.topics) return clone(DEFAULT_STATE);
+    var d = clone(data);
+    d.version = 4;
+    (d.topics || []).forEach(function(t){
+      if(t.latin == null) t.latin = '';
+      if(t.textbook == null) t.textbook = false;
+      if(!t.color) t.color = '#4E7DBF';
+      if(!t.tint) t.tint = '#EAF0F9';
+      if(t.worksheets == null) t.worksheets = 1;
+      if(t.al3Title == null) t.al3Title = '';
+      if(!t.pages) t.pages = {goals: '', lecture: '', al: '', goalCheck: ''};
+    });
+    (d.lectures || []).forEach(function(l){ l.items = toNodes(l.items); });
+    ['goals', 'al3'].forEach(function(k){
+      d[k] = d[k] || {};
+      Object.keys(d[k]).forEach(function(t){ d[k][t] = toNodes(d[k][t]); });
+    });
+    ['checklists', 'prep', 'al2', 'al4', 'goalChecks'].forEach(function(k){
+      d[k] = d[k] || {};
+    });
+    d.topicNotes = d.topicNotes || {};
+    return d;
   }
 
   function loadState(){
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if(raw) return migrateState(JSON.parse(raw));
-    } catch(e){}
-    return JSON.parse(JSON.stringify(DEFAULT_STATE));
-  }
-
-  function makeId(prefix){
-    return prefix + '-' + Math.random().toString(36).slice(2, 9);
-  }
-
-  function ensureGroupIds(data){
-    if(data && data.lectures){
-      data.lectures.forEach(function(lec){
-        (lec.items || []).forEach(function(group){
-          if(!group.id){ group.id = makeId('grp'); }
-        });
-      });
+    var raw = null;
+    try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){}
+    if(raw){
+      try{ return migrate(JSON.parse(raw)); }catch(e){}
     }
-    return data;
+    return migrate(DEFAULT_STATE);
   }
 
-  var state = ensureGroupIds(loadState());
-  var saveTimer = null;
-
-  // アコーディオンの開閉状態(再描画をまたいで保持する。ページ再読み込みでは初期化される)
-  var openLectures = {};   // { lectureNum: true }
-  var openGroups = {};     // { groupId: true }
-
-  function persist(){
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      var el = document.getElementById('saveStatus');
-      el.textContent = '保存済み ' + new Date().toLocaleTimeString('ja-JP');
-    } catch(e){}
+  /* ============ 参照ヘルパ ============ */
+  function topicById(id){
+    for(var i = 0; i < state.topics.length; i++){
+      if(state.topics[i].id === id) return state.topics[i];
+    }
+    return null;
   }
-  function scheduleSave(){
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(persist, 400);
+  function topicName(id){ var t = topicById(id); return t ? t.name : '(未設定)'; }
+  function topicIndex(id){
+    for(var i = 0; i < state.topics.length; i++){
+      if(state.topics[i].id === id) return i;
+    }
+    return -1;
   }
-
-  function topicOptions(selectedId){
+  function lecturesOf(id){
+    return state.lectures.filter(function(l){ return l.topicId === id; });
+  }
+  function topicOptions(sel){
     return state.topics.map(function(t){
-      return '<option value="' + t.id + '"' + (t.id === selectedId ? ' selected' : '') + '>' + t.name + '</option>';
+      return '<option value="' + esc(t.id) + '"' + (t.id === sel ? ' selected' : '') + '>' +
+             esc(t.name) + '</option>';
     }).join('');
   }
-  function topicName(id){
-    var t = state.topics.filter(function(x){ return x.id === id; })[0];
-    return t ? t.name : id;
+  function listOf(bucket, id){
+    if(!state[bucket][id]) state[bucket][id] = [];
+    return state[bucket][id];
   }
 
-  function escapeAttr(s){
-    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-  function escapeHtml(s){
-    return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  function autoGrow(el){
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
-
-  /* ---------- 汎用ドラッグ並び替え ---------- */
-  function enableDragReorder(container, array, itemSelector, onChange){
-    var dragIndex = null;
-    container.querySelectorAll(itemSelector).forEach(function(row){
-      row.addEventListener('dragstart', function(ev){
-        ev.stopPropagation();
-        dragIndex = parseInt(row.dataset.index, 10);
-        row.classList.add('dragging');
+  /* ============ 並べ替え(ドラッグ) ============ */
+  function enableDrag(container, arr, sel, after){
+    var dragIdx = null;
+    container.querySelectorAll(sel).forEach(function(row, i){
+      row.draggable = true;
+      row.addEventListener('dragstart', function(e){
+        dragIdx = i; e.dataTransfer.effectAllowed = 'move';
+        try{ e.dataTransfer.setData('text/plain', String(i)); }catch(err){}
       });
-      row.addEventListener('dragend', function(ev){
-        ev.stopPropagation();
-        row.classList.remove('dragging');
-        container.querySelectorAll(itemSelector).forEach(function(r){ r.classList.remove('drag-over'); });
+      row.addEventListener('dragover', function(e){
+        e.preventDefault(); e.stopPropagation(); row.classList.add('drag-over');
       });
-      row.addEventListener('dragover', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        row.classList.add('drag-over');
+      row.addEventListener('dragleave', function(){ row.classList.remove('drag-over'); });
+      row.addEventListener('drop', function(e){
+        e.preventDefault(); e.stopPropagation(); row.classList.remove('drag-over');
+        if(dragIdx === null || dragIdx === i) return;
+        var moved = arr.splice(dragIdx, 1)[0];
+        arr.splice(i, 0, moved);
+        dragIdx = null;
+        scheduleSave(); after();
       });
-      row.addEventListener('dragleave', function(ev){
-        ev.stopPropagation();
-        row.classList.remove('drag-over');
-      });
-      row.addEventListener('drop', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        row.classList.remove('drag-over');
-        var dropIndex = parseInt(row.dataset.index, 10);
-        if(dragIndex === null || dragIndex === dropIndex) return;
-        var moved = array.splice(dragIndex, 1)[0];
-        array.splice(dropIndex, 0, moved);
-        dragIndex = null;
-        onChange();
-      });
+      row.addEventListener('dragend', function(){ row.classList.remove('drag-over'); });
     });
   }
 
-  /* ---------- ① 講義計画 ---------- */
-  function renderSessions(){
-    var container = document.getElementById('sessionsList');
+  /* ============ ツリー編集(最大4階層) ============ */
+  function renderTree(container, nodes, depth, redraw, maxDepth){
+    maxDepth = maxDepth || 4;
     container.innerHTML = '';
-    state.lectures.forEach(function(lec){
-      var card = document.createElement('div');
-      card.className = 'session-card';
-      card.innerHTML =
-        '<div class="session-card-head">' +
-          '<span class="session-num-badge">第' + parseInt(lec.num,10) + '回</span>' +
-          '<select class="topic-select" data-field="topicId">' + topicOptions(lec.topicId) + '</select>' +
-        '</div>' +
-        '<div class="field-row"><label>講義名</label>' +
-          '<input type="text" data-field="theme" value="' + escapeAttr(lec.theme) + '">' +
-        '</div>' +
-        '<div class="field-row"><label>内容</label>' +
-          '<textarea class="autogrow" data-field="desc" rows="1">' + escapeHtml(lec.desc) + '</textarea>' +
-        '</div>';
+    nodes.forEach(function(node, idx){
+      var wrap = document.createElement('div');
+      wrap.className = 'tree-node lv' + depth;
 
-      card.querySelector('[data-field="topicId"]').addEventListener('change', function(e){
-        lec.topicId = e.target.value;
-        scheduleSave();
-        renderOutline();
-      });
-      card.querySelector('[data-field="theme"]').addEventListener('input', function(e){
-        lec.theme = e.target.value;
-        scheduleSave();
-      });
-      var descEl = card.querySelector('[data-field="desc"]');
-      descEl.addEventListener('input', function(e){
-        lec.desc = e.target.value;
-        autoGrow(e.target);
-        scheduleSave();
-      });
-
-      container.appendChild(card);
-      autoGrow(descEl);
-    });
-  }
-
-  /* ---------- ② 理解度チェック ---------- */
-  function renderChecklists(){
-    var container = document.getElementById('checklistsList');
-    container.innerHTML = '';
-    state.topics.forEach(function(t){
-      var group = document.createElement('div');
-      group.className = 'topic-group';
-      var list = state.checklists[t.id] || (state.checklists[t.id] = []);
-
-      var itemsWrap = document.createElement('div');
-      itemsWrap.className = 'items-wrap';
-
-      list.forEach(function(text, i){
-        var row = document.createElement('div');
-        row.className = 'item-row';
-        row.draggable = true;
-        row.dataset.index = i;
-        row.innerHTML =
-          '<span class="drag-handle">::</span>' +
-          '<textarea rows="1">' + escapeHtml(text) + '</textarea>' +
-          '<button class="icon-btn" data-action="del">×</button>';
-        var ta = row.querySelector('textarea');
-        ta.addEventListener('input', function(e){
-          list[i] = e.target.value;
-          autoGrow(e.target);
-          scheduleSave();
-        });
-        row.querySelector('[data-action="del"]').addEventListener('click', function(){
-          if(!confirm('この項目を削除しますか?\n「' + text + '」')) return;
-          list.splice(i, 1);
-          scheduleSave();
-          renderChecklists();
-        });
-        itemsWrap.appendChild(row);
-      });
-
-      group.innerHTML = '<div class="topic-group-title">' + t.name + '</div>';
-      group.appendChild(itemsWrap);
-      var addBtn = document.createElement('button');
-      addBtn.className = 'add-row-btn';
-      addBtn.textContent = '+ 項目を追加';
-      addBtn.addEventListener('click', function(){
-        list.push('新しい項目');
-        scheduleSave();
-        renderChecklists();
-      });
-      group.appendChild(addBtn);
-      container.appendChild(group);
-
-      itemsWrap.querySelectorAll('textarea').forEach(autoGrow);
-      enableDragReorder(itemsWrap, list, '.item-row', function(){ scheduleSave(); renderChecklists(); });
-    });
-  }
-
-  /* ---------- 疾患共通メモ ---------- */
-  function renderTopicNotes(){
-    var container = document.getElementById('topicNotesList');
-    container.innerHTML = '';
-    state.topics.forEach(function(t){
       var row = document.createElement('div');
-      row.className = 'topic-note-row';
+      row.className = 'node-row';
       row.innerHTML =
-        '<label>' + t.name + '</label>' +
-        '<textarea class="autogrow" rows="3" placeholder="疾患共通のポイントなど(1行1項目)">' + escapeHtml(state.topicNotes[t.id] || '') + '</textarea>';
+        '<span class="drag-handle">::</span>' +
+        '<textarea class="autogrow" rows="1" placeholder="項目"></textarea>' +
+        '<button class="icon-btn" title="削除">×</button>';
+
       var ta = row.querySelector('textarea');
-      ta.addEventListener('input', function(e){
-        state.topicNotes[t.id] = e.target.value;
-        autoGrow(e.target);
-        scheduleSave();
+      ta.value = node.text;
+      ta.addEventListener('input', function(){
+        node.text = ta.value; autoGrow(ta); scheduleSave();
+      });
+      row.querySelector('.icon-btn').addEventListener('click', function(){
+        var n = countNodes(node.children);
+        var msg = n > 0
+          ? 'この項目と、その下の' + n + '件をまとめて削除しますか?\n「' + node.text + '」'
+          : 'この項目を削除しますか?\n「' + node.text + '」';
+        if(!confirm(msg)) return;
+        nodes.splice(idx, 1); scheduleSave(); redraw();
+      });
+      wrap.appendChild(row);
+
+      if(node.children.length){
+        var kids = document.createElement('div');
+        kids.className = 'node-children';
+        wrap.appendChild(kids);
+        renderTree(kids, node.children, depth + 1, redraw, maxDepth);
+      }
+
+      if(depth < maxDepth){
+        var add = document.createElement('button');
+        add.type = 'button';
+        add.className = 'node-add';
+        add.textContent = '+ 下の階層';
+        add.addEventListener('click', function(){
+          node.children.push({id: makeId('n'), text: '', children: []});
+          scheduleSave(); redraw();
+        });
+        wrap.appendChild(add);
+      }
+
+      container.appendChild(wrap);
+      autoGrow(ta);
+    });
+
+    enableDrag(container, nodes, ':scope > .tree-node', redraw);
+
+    var addSame = document.createElement('button');
+    addSame.type = 'button';
+    addSame.className = 'add-row-btn';
+    addSame.textContent = depth === 1 ? '+ 項目を追加' : '+ 同じ階層に追加';
+    addSame.addEventListener('click', function(){
+      nodes.push({id: makeId('n'), text: '', children: []});
+      scheduleSave(); redraw();
+    });
+    container.appendChild(addSame);
+  }
+
+  function leafCount(nodes){
+    var n = 0;
+    (nodes || []).forEach(function(x){
+      n += (x.children && x.children.length) ? leafCount(x.children) : 1;
+    });
+    return n;
+  }
+
+  function countNodes(nodes){
+    var n = 0;
+    (nodes || []).forEach(function(x){ n += 1 + countNodes(x.children); });
+    return n;
+  }
+
+  /* ============ 単純リスト編集 ============ */
+  function renderList(container, arr, redraw, placeholder){
+    container.innerHTML = '';
+    arr.forEach(function(text, i){
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      row.innerHTML =
+        '<span class="drag-handle">::</span>' +
+        '<span class="list-num">' + (i + 1) + '</span>' +
+        '<textarea class="autogrow" rows="1"></textarea>' +
+        '<button class="icon-btn" title="削除">×</button>';
+      var ta = row.querySelector('textarea');
+      ta.placeholder = placeholder || '内容';
+      ta.value = text;
+      ta.addEventListener('input', function(){
+        arr[i] = ta.value; autoGrow(ta); scheduleSave();
+      });
+      row.querySelector('.icon-btn').addEventListener('click', function(){
+        if(!confirm('この行を削除しますか?\n「' + text + '」')) return;
+        arr.splice(i, 1); scheduleSave(); redraw();
       });
       container.appendChild(row);
       autoGrow(ta);
     });
+    enableDrag(container, arr, '.list-row', redraw);
+
+    var add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'add-row-btn';
+    add.textContent = '+ 行を追加';
+    add.addEventListener('click', function(){ arr.push(''); scheduleSave(); redraw(); });
+    container.appendChild(add);
   }
 
-  /* ---------- ③ 授業内容(2段階アコーディオン) ---------- */
-  function renderOutline(){
-    var container = document.getElementById('outlineList');
-    container.innerHTML = '';
+  /* ============ 折りたたみパーツ ============ */
+  function makePart(key, tag, title, countText, lead){
+    var el = document.createElement('div');
+    el.className = 'part' + (openMap[key] ? ' open' : '');
+    var head = document.createElement('div');
+    head.className = 'part-head';
+    head.innerHTML =
+      '<span class="part-tag">' + esc(tag) + '</span>' +
+      '<span class="part-title">' + esc(title) + '</span>' +
+      '<span class="part-count">' + esc(countText) + '</span>';
+    head.addEventListener('click', function(){
+      if(openMap[key]){ delete openMap[key]; } else { openMap[key] = true; }
+      el.className = 'part' + (openMap[key] ? ' open' : '');
+    });
+    el.appendChild(head);
+    var body = document.createElement('div');
+    body.className = 'part-body';
+    if(lead){
+      var p = document.createElement('p');
+      p.className = 'part-lead';
+      p.textContent = lead;
+      body.appendChild(p);
+    }
+    el.appendChild(body);
+    return {el: el, body: body};
+  }
 
+  /* ============ ① 講義計画 ============ */
+  function renderSessions(){
+    var box = document.getElementById('sessionsList');
+    box.innerHTML = '';
     state.lectures.forEach(function(lec){
+      var t = topicById(lec.topicId);
       var card = document.createElement('div');
-      card.className = 'lecture-card' + (openLectures[lec.num] ? ' open' : '');
+      card.className = 'card';
+      card.innerHTML =
+        '<div class="card-head">' +
+          '<span class="num-badge">第' + parseInt(lec.num, 10) + '回</span>' +
+          '<span class="dot-badge" style="background:' + esc(t ? t.color : '#ccc') + '"></span>' +
+          '<select class="topic-select"></select>' +
+        '</div>' +
+        '<div class="field-row"><label>テーマ(見出し)</label>' +
+          '<input type="text" class="f-theme"></div>' +
+        '<div class="field-row"><label>説明文</label>' +
+          '<textarea class="autogrow f-desc" rows="1"></textarea></div>';
+
+      var sel = card.querySelector('.topic-select');
+      sel.innerHTML = topicOptions(lec.topicId);
+      sel.addEventListener('change', function(){
+        lec.topicId = sel.value; scheduleSave(); renderSessions(); renderOutline();
+      });
+      var th = card.querySelector('.f-theme');
+      th.value = lec.theme;
+      th.addEventListener('input', function(){ lec.theme = th.value; scheduleSave(); });
+      var de = card.querySelector('.f-desc');
+      de.value = lec.desc;
+      de.addEventListener('input', function(){ lec.desc = de.value; autoGrow(de); scheduleSave(); });
+
+      box.appendChild(card);
+      autoGrow(de);
+    });
+  }
+
+  /* ============ ② 講義内容 ============ */
+  function renderOutline(){
+    var box = document.getElementById('outlineList');
+    box.innerHTML = '';
+    state.lectures.forEach(function(lec){
+      var t = topicById(lec.topicId);
+      var key = 'lec-' + lec.num;
+      var card = document.createElement('div');
+      card.className = 'card' + (openMap[key] ? ' open' : '');
 
       var head = document.createElement('div');
-      head.className = 'lecture-head';
+      head.className = 'card-head';
       head.innerHTML =
-        '<span class="session-num-badge">第' + parseInt(lec.num,10) + '回</span>' +
-        '<select class="topic-select" data-field="topicId">' + topicOptions(lec.topicId) + '</select>' +
-        '<button type="button" class="lecture-toggle">▾ 編集</button>';
-      head.querySelector('[data-field="topicId"]').addEventListener('change', function(e){
-        lec.topicId = e.target.value;
-        scheduleSave();
-        renderSessions();
-        renderOutlinePreview();
-      });
-      head.querySelector('.lecture-toggle').addEventListener('click', function(){
-        card.classList.toggle('open');
-        if(card.classList.contains('open')){ openLectures[lec.num] = true; } else { delete openLectures[lec.num]; }
+        '<span class="num-badge">第' + parseInt(lec.num, 10) + '回</span>' +
+        '<span class="dot-badge" style="background:' + esc(t ? t.color : '#ccc') + '"></span>' +
+        '<span class="card-title">' + esc(lec.theme || topicName(lec.topicId)) + '</span>' +
+        '<span class="part-count">' + countNodes(lec.items) + '件</span>' +
+        '<button type="button" class="toggle-btn">▾ 編集</button>';
+      head.querySelector('.toggle-btn').addEventListener('click', function(){
+        if(openMap[key]){ delete openMap[key]; } else { openMap[key] = true; }
+        card.className = 'card' + (openMap[key] ? ' open' : '');
       });
       card.appendChild(head);
 
       var body = document.createElement('div');
-      body.className = 'lecture-body';
+      body.className = 'card-body';
+      card.appendChild(body);
+      renderTree(body, lec.items, 1, function(){ renderOutline(); });
 
-      var groupsWrap = document.createElement('div');
-      groupsWrap.className = 'groups-wrap';
+      box.appendChild(card);
+    });
+  }
 
-      lec.items.forEach(function(group, gi){
-        var gBlock = document.createElement('div');
-        gBlock.className = 'group-block' + (openGroups[group.id] ? ' open' : '');
-        gBlock.draggable = true;
-        gBlock.dataset.index = gi;
+  /* ============ ③ 教科書パート ============ */
+  function renderTextbook(){
+    var box = document.getElementById('textbookList');
+    box.innerHTML = '';
 
-        var gHead = document.createElement('div');
-        gHead.className = 'group-head';
-        gHead.innerHTML =
-          '<span class="drag-handle">::</span>' +
-          '<input type="text" value="' + escapeAttr(group.text) + '" placeholder="項目名">' +
-          '<span class="group-count">' + group.children.length + '件</span>' +
-          '<button type="button" class="group-toggle">▾</button>' +
-          '<button class="icon-btn" data-action="del-group">×</button>';
+    state.topics.forEach(function(t){
+      var key = 'tb-' + t.id;
+      var card = document.createElement('div');
+      card.className = 'card' + (openMap[key] ? ' open' : '');
 
-        gHead.querySelector('input[type=text]').addEventListener('input', function(e){
-          group.text = e.target.value;
-          scheduleSave();
-          renderOutlinePreview();
-        });
-        gHead.querySelector('.group-toggle').addEventListener('click', function(){
-          gBlock.classList.toggle('open');
-          if(gBlock.classList.contains('open')){ openGroups[group.id] = true; } else { delete openGroups[group.id]; }
-        });
-        gHead.querySelector('[data-action="del-group"]').addEventListener('click', function(){
-          var msg = group.children.length > 0
-            ? 'この項目と、その下の内容' + group.children.length + '件をまとめて削除しますか?\n「' + group.text + '」'
-            : 'この項目を削除しますか?\n「' + group.text + '」';
-          if(!confirm(msg)) return;
-          delete openGroups[group.id];
-          lec.items.splice(gi, 1);
-          scheduleSave();
-          renderOutline();
-        });
-
-        gBlock.appendChild(gHead);
-
-        var gBody = document.createElement('div');
-        gBody.className = 'group-body';
-
-        var childrenWrap = document.createElement('div');
-        childrenWrap.className = 'children-wrap';
-
-        group.children.forEach(function(childText, ci){
-          var cRow = document.createElement('div');
-          cRow.className = 'child-row';
-          cRow.draggable = true;
-          cRow.dataset.index = ci;
-          cRow.innerHTML =
-            '<span class="drag-handle">::</span>' +
-            '<textarea rows="1" placeholder="内容">' + escapeHtml(childText) + '</textarea>' +
-            '<button class="icon-btn" data-action="del-child">×</button>';
-
-          var cta = cRow.querySelector('textarea');
-          cta.addEventListener('input', function(e){
-            group.children[ci] = e.target.value;
-            autoGrow(e.target);
-            scheduleSave();
-            renderOutlinePreview();
-          });
-          cRow.querySelector('[data-action="del-child"]').addEventListener('click', function(){
-            if(!confirm('この内容を削除しますか?\n「' + childText + '」')) return;
-            group.children.splice(ci, 1);
-            scheduleSave();
-            renderOutline();
-          });
-          childrenWrap.appendChild(cRow);
-        });
-
-        gBody.appendChild(childrenWrap);
-
-        var addChildBtn = document.createElement('button');
-        addChildBtn.type = 'button';
-        addChildBtn.className = 'add-child-btn';
-        addChildBtn.textContent = '+ 内容を追加';
-        addChildBtn.addEventListener('click', function(){
-          group.children.push('新しい内容');
-          openLectures[lec.num] = true;
-          openGroups[group.id] = true;
-          scheduleSave();
-          renderOutline();
-        });
-        gBody.appendChild(addChildBtn);
-
-        gBlock.appendChild(gBody);
-        groupsWrap.appendChild(gBlock);
-
-        childrenWrap.querySelectorAll('textarea').forEach(autoGrow);
-        enableDragReorder(childrenWrap, group.children, '.child-row', function(){ scheduleSave(); renderOutline(); });
+      var head = document.createElement('div');
+      head.className = 'card-head';
+      head.innerHTML =
+        '<span class="dot-badge" style="background:' + esc(t.color) + '"></span>' +
+        '<span class="card-title">' + esc(t.name) + '</span>' +
+        '<span class="pill' + (t.textbook ? '' : ' off') + '">' +
+          (t.textbook ? '教科書の章' : '番号なし') + '</span>' +
+        '<button type="button" class="toggle-btn">▾ 編集</button>';
+      head.querySelector('.toggle-btn').addEventListener('click', function(){
+        if(openMap[key]){ delete openMap[key]; } else { openMap[key] = true; }
+        card.className = 'card' + (openMap[key] ? ' open' : '');
       });
+      card.appendChild(head);
 
-      body.appendChild(groupsWrap);
+      var body = document.createElement('div');
+      body.className = 'card-body';
 
-      var addGroupBtn = document.createElement('button');
-      addGroupBtn.type = 'button';
-      addGroupBtn.className = 'add-row-btn';
-      addGroupBtn.textContent = '+ 項目を追加';
-      addGroupBtn.addEventListener('click', function(){
-        var newGroup = {id: makeId('grp'), text: '新しい項目', children: []};
-        lec.items.push(newGroup);
-        openLectures[lec.num] = true;
-        openGroups[newGroup.id] = true;
-        scheduleSave();
-        renderOutline();
+      /* 教科書の章として扱うか */
+      var line = document.createElement('label');
+      line.className = 'check-line';
+      line.innerHTML = '<input type="checkbox"' + (t.textbook ? ' checked' : '') + '>' +
+                       '<span>教科書の章として扱う(I〜Vの番号・症例イメージ図を出力する)</span>';
+      line.querySelector('input').addEventListener('change', function(e){
+        t.textbook = e.target.checked; scheduleSave(); renderTextbook();
       });
-      body.appendChild(addGroupBtn);
+      body.appendChild(line);
+
+      /* 教科書ページ表記 */
+      var pg = document.createElement('div');
+      pg.className = 'field-grid';
+      pg.style.marginTop = '10px';
+      [['goals', 'I・II のページ表記'], ['lecture', 'III のページ表記'],
+       ['al', 'IV のページ表記'], ['goalCheck', 'V のページ表記']].forEach(function(f){
+        var row = document.createElement('div');
+        row.className = 'field-row';
+        row.innerHTML = '<label>' + f[1] + '</label><input type="text" placeholder="例: P.165">';
+        var inp = row.querySelector('input');
+        inp.value = t.pages[f[0]] || '';
+        inp.addEventListener('input', function(){ t.pages[f[0]] = inp.value; scheduleSave(); });
+        pg.appendChild(row);
+      });
+      body.appendChild(pg);
+
+      function addTreePart(tag, title, bucket, lead, titleField){
+        var arr = listOf(bucket, t.id);
+        ensureNodeIds(arr);
+        var p = makePart(t.id + '-' + bucket, tag, title, countNodes(arr) + '件', lead);
+        if(titleField){
+          var tf = document.createElement('div');
+          tf.className = 'field-row';
+          tf.innerHTML = '<label>見出し(講義計画での表示名)</label>' +
+                         '<input type="text" placeholder="まとめ課題">';
+          var ti = tf.querySelector('input');
+          ti.value = t[titleField] || '';
+          ti.addEventListener('input', function(){ t[titleField] = ti.value; scheduleSave(); });
+          p.body.appendChild(tf);
+        }
+        var holder = document.createElement('div');
+        p.body.appendChild(holder);
+        renderTree(holder, arr, 1, function(){ renderTextbook(); }, 2);
+        body.appendChild(p.el);
+      }
+      function addListPart(tag, title, bucket, lead, ph){
+        var arr = listOf(bucket, t.id);
+        var p = makePart(t.id + '-' + bucket, tag, title, arr.length + '件', lead);
+        renderList(p.body, arr, function(){ renderTextbook(); }, ph);
+        body.appendChild(p.el);
+      }
+
+      if(t.textbook){
+        addTreePart('I', '学習目標', 'goals', '2階層まで。講義計画の I として表示されます。');
+        addListPart('II', '予習課題', 'prep', 'チェックボックス付きで表示されます。', '問1：…');
+      }
+      addListPart('AL1', t.textbook ? 'AL1 理解度チェック(調べ学習)' : '理解度チェック',
+                  'checklists', 'チェックボックス付きで表示されます。', '設問');
+      if(t.textbook){
+        addListPart('AL2', 'グループで考える設問', 'al2', '', '設問');
+        addTreePart('AL3', 'まとめ課題', 'al3', '2階層まで。', 'al3Title');
+        addListPart('AL4', '症例課題', 'al4', '', '設問');
+        addListPart('V', '到達度チェック', 'goalChecks',
+                    'チェックボックス付きで表示されます。', '設問');
+      }
+
+      /* POINT */
+      var pt = makePart(t.id + '-point', 'P', 'POINT欄',
+                        (state.topicNotes[t.id] || '').split('\n').filter(function(x){
+                          return x.trim();
+                        }).length + '件', '1行につき1項目。空行は無視されます。');
+      var ta = document.createElement('textarea');
+      ta.className = 'big';
+      ta.value = state.topicNotes[t.id] || '';
+      ta.addEventListener('input', function(){
+        state.topicNotes[t.id] = ta.value; scheduleSave();
+      });
+      pt.body.appendChild(ta);
+      body.appendChild(pt.el);
 
       card.appendChild(body);
-      container.appendChild(card);
-
-      enableDragReorder(groupsWrap, lec.items, '.group-block', function(){ scheduleSave(); renderOutline(); });
+      box.appendChild(card);
     });
-
-    renderOutlinePreview();
   }
 
-  function buildOutlineText(){
-    var lines = [];
-    state.lectures.forEach(function(lec){
-      lines.push('■ 第' + parseInt(lec.num,10) + '回　' + topicName(lec.topicId));
-      if(lec.items.length === 0){
-        lines.push('  (項目なし)');
-      }
-      lec.items.forEach(function(group){
-        lines.push('　・' + group.text);
-        group.children.forEach(function(child){
-          lines.push('　　- ' + child);
-        });
-      });
-      lines.push('');
-    });
-    return lines.join('\n');
-  }
-
-  function renderOutlinePreview(){
-    var box = document.getElementById('outlinePreviewBox');
-    if(!box) return;
-    box.value = buildOutlineText();
-  }
-
-  /* ---------- ④ 疾患一覧 ---------- */
-  function slugify(){
-    return 'topic-' + Date.now().toString(36);
-  }
-
+  /* ============ ④ 疾患一覧 ============ */
   function renderTopics(){
-    var container = document.getElementById('topicsList');
-    container.innerHTML = '';
-
+    var box = document.getElementById('topicsList');
+    box.innerHTML = '';
     state.topics.forEach(function(t, i){
-      var row = document.createElement('div');
-      row.className = 'item-row';
-      row.draggable = true;
-      row.dataset.index = i;
-      row.innerHTML =
-        '<span class="drag-handle">::</span>' +
-        '<input type="text" value="' + escapeAttr(t.name) + '">' +
-        '<button class="icon-btn" data-action="del">×</button>';
+      var used = lecturesOf(t.id).length;
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML =
+        '<div class="card-head">' +
+          '<span class="num-badge">' + pad2(i + 1) + '</span>' +
+          '<span class="dot-badge" style="background:' + esc(t.color) + '"></span>' +
+          '<span class="card-title">' + esc(t.name) + '</span>' +
+          '<span class="part-count">' + used + 'コマ</span>' +
+          '<button class="icon-btn" title="削除">×</button>' +
+        '</div>' +
+        '<div class="field-grid" style="margin-top:10px">' +
+          '<div class="field-row"><label>名称</label><input type="text" class="f-name"></div>' +
+          '<div class="field-row"><label>英語表記(任意)</label><input type="text" class="f-latin"></div>' +
+          '<div class="field-row"><label>色(見出し・アクセント)</label><input type="text" class="f-color" placeholder="#5C6BB8"></div>' +
+          '<div class="field-row"><label>背景色(薄い色)</label><input type="text" class="f-tint" placeholder="#EEEFF8"></div>' +
+          '<div class="field-row"><label>振り返りシートのページ数</label><input type="number" min="0" max="20" class="f-ws"></div>' +
+        '</div>';
 
-      row.querySelector('input').addEventListener('input', function(e){
-        t.name = e.target.value;
-        scheduleSave();
-        renderSessions();
-        renderChecklists();
-        renderOutline();
-        renderTopicNotes();
-      });
+      function bind(sel, key, num){
+        var el = card.querySelector(sel);
+        el.value = num ? t[key] : (t[key] || '');
+        el.addEventListener('input', function(){
+          t[key] = num ? (parseInt(el.value, 10) || 0) : el.value;
+          scheduleSave();
+        });
+        if(!num && (key === 'name' || key === 'color')){
+          /* 入力中は再描画せず、確定してから他のタブへ反映する */
+          el.addEventListener('change', function(){ renderAll(); });
+        }
+      }
+      bind('.f-name', 'name'); bind('.f-latin', 'latin');
+      bind('.f-color', 'color'); bind('.f-tint', 'tint');
+      bind('.f-ws', 'worksheets', true);
 
-      row.querySelector('[data-action="del"]').addEventListener('click', function(){
-        var usedIn = state.lectures.filter(function(lec){ return lec.topicId === t.id; })
-          .map(function(lec){ return '第' + parseInt(lec.num,10) + '回'; });
-        if(usedIn.length > 0){
-          alert('「' + t.name + '」は' + usedIn.join('、') + 'で使われているため削除できません。先に別の疾患へ変更してください。');
+      card.querySelector('.icon-btn').addEventListener('click', function(){
+        if(used > 0){
+          alert('この疾患は第' + lecturesOf(t.id).map(function(l){
+            return parseInt(l.num, 10);
+          }).join('・') + '回で使われています。先に別の疾患へ変更してください。');
           return;
         }
         if(!confirm('「' + t.name + '」を削除しますか?')) return;
         state.topics.splice(i, 1);
-        delete state.checklists[t.id];
-        delete state.topicNotes[t.id];
-        scheduleSave();
-        renderAll();
+        scheduleSave(); renderAll();
       });
 
-      container.appendChild(row);
-    });
-
-    enableDragReorder(container, state.topics, '.item-row', function(){
-      scheduleSave();
-      renderAll();
+      box.appendChild(card);
     });
   }
 
-  document.getElementById('addTopicBtn').addEventListener('click', function(){
-    var id = slugify();
-    state.topics.push({id: id, name: '新しい疾患'});
-    state.checklists[id] = [];
-    state.topicNotes[id] = '';
-    scheduleSave();
-    renderTopics();
-    renderTopicNotes();
-  });
+  /* ============ HTML 書き出し ============ */
+  function ul(nodes, indent, depth){
+    if(!nodes || !nodes.length) return '';
+    depth = depth || 1;
+    var pad = new Array(indent + 1).join(' ');
+    var lv = Math.min(depth, 4);
+    var out = pad + '<ul class="outline">\n';
+    nodes.forEach(function(n){
+      out += pad + '  <li class="l' + lv + '">' + esc(n.text);
+      if(n.children && n.children.length){
+        out += '\n' + ul(n.children, indent + 4, depth + 1) + pad + '  </li>\n';
+      } else {
+        out += '</li>\n';
+      }
+    });
+    out += pad + '</ul>\n';
+    return out;
+  }
 
+  function checklistHtml(prefix, items, word, lead, withAll, indent){
+    var pad = new Array(indent + 1).join(' ');
+    var out = '';
+    if(lead) out += pad + '<p class="subacc-lead">' + esc(lead) + '</p>\n';
+    out += pad + '<div class="check-progress">\n' +
+           pad + '  <div class="check-progress-bar"><div class="check-progress-fill"></div></div>\n' +
+           pad + '  <span class="check-progress-label">0 / ' + items.length + ' ' + word + '(0%)</span>\n' +
+           pad + '</div>\n';
+    items.forEach(function(x, i){
+      out += pad + '<label class="check-item">\n' +
+             pad + '  <input type="checkbox" class="check-box" data-key="' + prefix + '-' + i + '">\n' +
+             pad + '  <span>' + esc(x) + '</span>\n' +
+             pad + '</label>\n';
+    });
+    out += pad + '<div class="check-actions">\n';
+    if(withAll) out += pad + '  <button type="button" class="check-action-btn check-all">全てチェック</button>\n';
+    out += pad + '  <button type="button" class="check-action-btn check-reset">' +
+           (withAll ? '一斉解除' : 'チェックをリセット') + '</button>\n' + pad + '</div>\n';
+    return out;
+  }
+
+  function subacc(tag, title, count, innerHtml, major, extraCls, extraAttr, scrollable){
+    var cls = 'subacc' + (major ? ' subacc-major' : '') + (extraCls ? ' ' + extraCls : '');
+    return '    <div class="' + cls + '"' + (extraAttr || '') + '>\n' +
+           '      <button class="subacc-trigger">\n' +
+           '        <span class="subacc-num mono">' + esc(tag) + '</span>\n' +
+           '        <span class="subacc-title">' + esc(title) + '</span>\n' +
+           (count ? '        <span class="subacc-count mono">' + esc(count) + '</span>\n' : '') +
+           '        ' + CHEV + '\n' +
+           '      </button>\n' +
+           '      <div class="subacc-panel">\n' +
+           '        <div class="subacc-panel-inner' + (scrollable ? ' scrollable' : '') + '">\n' +
+           innerHtml +
+           '        </div>\n' +
+           '      </div>\n' +
+           '    </div>\n';
+  }
+
+  var CHEV = '<svg class="chevron" viewBox="0 0 24 24" fill="none">' +
+             '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" ' +
+             'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_DOC = '<svg class="res-icon" viewBox="0 0 24 24" fill="none">' +
+    '<rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>' +
+    '<path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  var ICON_HAND = '<svg class="res-icon" viewBox="0 0 24 24" fill="none">' +
+    '<path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="2"/>' +
+    '<path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  var ICON_BOOK = '<svg class="res-icon" viewBox="0 0 24 24" fill="none">' +
+    '<path d="M4 3h16v18l-4-3-4 3-4-3-4 3z" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linejoin="round"/></svg>';
+  var ICON_CHECK = '<svg class="res-icon" viewBox="0 0 24 24" fill="none">' +
+    '<path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
+    'stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>';
+
+  function sectHead(num, title, note){
+    return '    <div class="sect-head">\n' +
+           (num ? '      <span class="sect-num mono">' + num + '</span>\n' : '') +
+           '      <span class="sect-title">' + esc(title) + '</span>\n' +
+           (note ? '      <span class="sect-note">' + esc(note) + '</span>\n' : '') +
+           '    </div>\n';
+  }
+
+  function folderOf(t){ return pad2(topicIndex(t.id) + 1) + '_' + t.id; }
+
+  function buildSections(){
+    var out = [];
+    state.topics.forEach(function(t){
+      var lecs = lecturesOf(t.id);
+      if(!lecs.length) return;
+      var dir = folderOf(t);
+      var s = '';
+      s += '  <section class="disease" id="plan-' + esc(t.id) + '" style="--dot:' +
+           esc(t.color) + '; --bg-tint:' + esc(t.tint) + '">\n';
+      s += '    <div class="disease-head">\n' +
+           '      <span class="disease-num mono">' + pad2(topicIndex(t.id) + 1) + '</span>\n' +
+           '      <span class="disease-name">' + esc(t.name) +
+           (t.latin ? '<span class="latin">' + esc(t.latin) + '</span>' : '') + '</span>\n' +
+           '      <span class="disease-koma mono">' + lecs.length + 'コマ</span>\n' +
+           '    </div>\n';
+
+      if(t.textbook){
+        s += '    <div class="case-image-wrap">\n' +
+             '      <img class="case-image" src="images/case/' + esc(t.id) + '.webp" alt="' +
+             esc(t.name) + ' 症例イメージ" onerror="this.closest(\'.case-image-wrap\').classList.add(\'missing\')">\n' +
+             '      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/' +
+             esc(t.id) + '.webp)</div>\n' +
+             '    </div>\n';
+
+        var goals = listOf('goals', t.id);
+        if(goals.length){
+          s += subacc('I', '学習目標', leafCount(goals) + '項目' +
+                      (t.pages.goals ? ' / ' + t.pages.goals : ''),
+                      '          <p class="subacc-lead">この講義を終えたときに，自分の言葉で説明できるようになっていたい項目です。</p>\n' +
+                      ul(goals, 10), true);
+        }
+        var prep = listOf('prep', t.id);
+        if(prep.length){
+          s += subacc('II', '予習課題', '全' + prep.length + '問' +
+                      (t.pages.goals ? ' / ' + t.pages.goals : ''),
+                      checklistHtml('prep-' + t.id, prep, '完了',
+                        'すでに学んだ知識を思い出そう。答えられた項目にチェックを入れてください。',
+                        false, 10),
+                      true, 'checklist', ' data-progress-word="完了"', true);
+        }
+      }
+
+      s += sectHead(t.textbook ? 'III' : '', '講義内容(全' + lecs.length + 'コマ)',
+                    t.textbook ? t.pages.lecture : '');
+      s += '    <div class="sessions">\n';
+      lecs.forEach(function(lec){
+        s += '      <div class="session">\n' +
+             '        <button class="session-trigger">\n' +
+             '          <span class="session-num mono">' + esc(lec.num) + '</span>\n' +
+             '          <span class="session-text">\n' +
+             '            <div class="session-theme">' + esc(lec.theme) + '</div>\n' +
+             '            <div class="session-desc">' + esc(lec.desc) + '</div>\n' +
+             '          </span>\n' +
+             '          ' + CHEV + '\n' +
+             '        </button>\n' +
+             '        <div class="session-panel">\n' +
+             '          <div class="session-panel-inner">\n' +
+             '            <div class="session-res top">\n' +
+             '              <div class="res-head">この回の資料</div>\n' +
+             resLink(ICON_DOC, '講義スライド(PDF)', 'materials/' + dir + '/' + lec.num + '_slide.pdf') +
+             resLink(ICON_HAND, '配布資料', 'materials/' + dir + '/' + lec.num + '_handout.pdf') +
+             '            </div>\n' +
+             '            <div class="session-outline">\n' +
+             (lec.items.length ? ul(lec.items, 12)
+                               : '            <div class="empty-note">教科書の内容を反映してから記載します。</div>\n') +
+             '            </div>\n' +
+             '          </div>\n' +
+             '        </div>\n' +
+             '      </div>\n';
+      });
+      s += '    </div>\n';
+
+      /* 振り返りシート */
+      s += '    <div class="disease-refs">\n' +
+           '      <button class="refs-trigger">\n' +
+           '        ' + ICON_BOOK + '\n' +
+           '        <span class="refs-title">振り返りシート</span>\n' +
+           '        ' + CHEV + '\n' +
+           '      </button>\n' +
+           '      <div class="refs-panel">\n' +
+           '        <div class="refs-panel-inner">\n';
+      for(var w = 1; w <= (t.worksheets || 0); w++){
+        s += '          <a class="res-link sub" href="materials/' + dir +
+             '/worksheet/worksheet_' + w + '.pdf">\n' +
+             '            <span class="res-label">' + w + 'ページ目</span>' +
+             '<span class="res-path mono">worksheet_' + w + '.pdf</span>\n' +
+             '            <span class="link-status mono" data-status="idle"></span>\n' +
+             '          </a>\n';
+      }
+      s += '        </div>\n      </div>\n    </div>\n';
+
+      /* IV アクティブ・ラーニング */
+      if(t.textbook) s += sectHead('IV', 'アクティブ・ラーニング', t.pages.al);
+      var al1 = listOf('checklists', t.id);
+      s += '    <div class="disease-refs checklist" data-topic="' + esc(t.id) + '">\n' +
+           '      <button class="refs-trigger">\n' +
+           '        ' + ICON_CHECK + '\n' +
+           '        <span class="refs-title">' +
+           (t.textbook ? 'AL1　理解度チェック(調べ学習)' : '理解度チェック') + '</span>\n' +
+           '        ' + CHEV + '\n' +
+           '      </button>\n' +
+           '      <div class="refs-panel">\n' +
+           '        <div class="refs-panel-inner checklist-panel-inner">\n' +
+           checklistHtml(t.id, al1, '達成', '', true, 10) +
+           '        </div>\n      </div>\n    </div>\n';
+
+      if(t.textbook){
+        var al2 = listOf('al2', t.id);
+        if(al2.length){
+          s += subacc('AL2', 'グループで考える(' + al2.length + '問)', '',
+                      ul(al2.map(toNode), 10), false, '', '', true);
+        }
+        var al3 = listOf('al3', t.id);
+        if(al3.length) s += subacc('AL3', t.al3Title || 'まとめ課題', '', ul(al3, 10));
+        var al4 = listOf('al4', t.id);
+        if(al4.length){
+          s += subacc('AL4', '症例課題に答える(' + al4.length + '問)', '',
+                      ul(al4.map(toNode), 10), false, '', '', true);
+        }
+        var gc = listOf('goalChecks', t.id);
+        if(gc.length){
+          s += subacc('V', '到達度チェック', '全' + gc.length + '項目' +
+                      (t.pages.goalCheck ? ' / ' + t.pages.goalCheck : ''),
+                      checklistHtml('goal-' + t.id, gc, '達成',
+                        '説明できるようになった項目にチェックを入れてください。', false, 10),
+                      true, 'checklist', ' data-progress-word="達成"', true);
+        }
+        if(!goalsFilled(t)){
+          s += '    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>\n';
+        }
+      }
+
+      /* POINT */
+      var note = (state.topicNotes[t.id] || '').split('\n')
+                   .map(function(x){ return x.trim(); })
+                   .filter(function(x){ return x; });
+      if(note.length){
+        s += '    <div class="callout callout-point">\n' +
+             '      <span class="callout-label">POINT</span>\n      <ul>\n';
+        note.forEach(function(x){ s += '        <li>' + esc(x) + '</li>\n'; });
+        s += '      </ul>\n    </div>\n';
+      }
+
+      s += '  </section>\n';
+      out.push(s);
+    });
+    return out.join('\n');
+  }
+
+  function toNode(text){ return {text: text, children: []}; }
+  function goalsFilled(t){
+    return listOf('goals', t.id).length > 0 || listOf('prep', t.id).length > 0 ||
+           listOf('goalChecks', t.id).length > 0;
+  }
+  function resLink(icon, label, href){
+    var file = href.split('/').pop();
+    return '              <a class="res-link" href="' + href + '">\n' +
+           '                ' + icon + '\n' +
+           '                <span class="res-label">' + label + '</span>' +
+           '<span class="res-path mono">' + file + '</span>\n' +
+           '                <span class="link-status mono" data-status="idle"></span>\n' +
+           '              </a>\n';
+  }
+
+  function buildRhythm(){
+    return '    <div class="ambulance-lane" id="ambulanceLane">\n' +
+           '      <img class="building-bg" src="images/building-bg.png" alt="">\n' +
+           '      <div class="road-strip"></div>\n' +
+           '      <img id="ambulance-el" src="images/ambulance.png" alt="救急車">\n' +
+           '    </div>\n';
+  }
+
+  function buildMenu(){
+    var s = '<div class="menu-panel" id="menuPanel">\n  <div class="menu-group">\n' +
+            '    <div class="menu-group-title">目次(全' + state.lectures.length + '回)</div>\n';
+    state.topics.forEach(function(t){
+      var lecs = lecturesOf(t.id);
+      if(!lecs.length) return;
+      var a = parseInt(lecs[0].num, 10);
+      var b = parseInt(lecs[lecs.length - 1].num, 10);
+      var label = a === b ? '第' + a + '回' : '第' + a + '〜' + b + '回';
+      s += '    <button class="menu-link" data-target="plan-' + esc(t.id) + '">' +
+           '<span class="menu-link-round mono">' + label + '</span>' + esc(t.name) + '</button>\n';
+    });
+    return s + '  </div>\n</div>\n';
+  }
+
+  function buildExport(){
+    return '<!-- ============ ここから 目次(menu-panel) ============ -->\n' +
+           buildMenu() +
+           '\n<!-- ============ ここから 救急車レーン(ambulance-lane) ============ -->\n' +
+           buildRhythm() +
+           '\n<!-- ============ ここから 疾患セクション ============ -->\n' +
+           buildSections();
+  }
+
+  /* ============ モーダル ============ */
+  var modalPayload = {text: '', name: 'export.txt'};
+  function openModal(title, lead, text, filename){
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalLead').textContent = lead;
+    document.getElementById('modalBox').value = text;
+    modalPayload = {text: text, name: filename};
+    document.getElementById('modalBack').classList.add('open');
+  }
+  function download(text, name, type){
+    var blob = new Blob([text], {type: type || 'text/plain;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  }
+
+  /* ============ 起動 ============ */
   function renderAll(){
     renderSessions();
-    renderChecklists();
-    renderTopicNotes();
     renderOutline();
+    renderTextbook();
     renderTopics();
   }
+
+  state = loadState();
   renderAll();
 
-  /* ---------- Tabs ---------- */
   document.querySelectorAll('.tab-btn').forEach(function(tab){
     tab.addEventListener('click', function(){
       document.querySelectorAll('.tab-btn').forEach(function(t){ t.classList.remove('active'); });
       document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
       tab.classList.add('active');
       document.getElementById(tab.dataset.view).classList.add('active');
+      window.scrollTo({top: 0});
     });
   });
 
-  /* ---------- Export / Import / Reset ---------- */
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if(!confirm('編集内容をすべて破棄して、初期状態に戻しますか?')) return;
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    state = migrate(DEFAULT_STATE);
+    openMap = {};
+    renderAll();
+  });
+
   document.getElementById('exportBtn').addEventListener('click', function(){
-    var blob = new Blob(['\ufeff' + JSON.stringify(state, null, 2)], {type: 'application/json;charset=utf-8'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    var ts = new Date().toISOString().slice(0,10);
-    a.href = url;
-    a.download = 'neuro-pt-content-' + ts + '.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    download(JSON.stringify(state, null, 2), 'lecture-plan.json', 'application/json');
   });
 
   document.getElementById('importBtn').addEventListener('click', function(){
     document.getElementById('importFile').click();
   });
   document.getElementById('importFile').addEventListener('change', function(e){
-    var file = e.target.files[0];
-    if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(){
-      try {
-        var text = reader.result.replace(/^\ufeff/, '');
-        var parsed = migrateState(JSON.parse(text));
-        state = parsed;
-        persist();
+    var f = e.target.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try{
+        state = migrate(JSON.parse(r.result));
+        openMap = {};
+        scheduleSave();
         renderAll();
         alert('読み込みました。');
-      } catch(err){
-        alert('JSONの読み込みに失敗しました。ファイルを確認してください。');
+      }catch(err){
+        alert('読み込めませんでした: ' + err.message);
       }
     };
-    reader.readAsText(file);
+    r.readAsText(f, 'utf-8');
     e.target.value = '';
   });
 
-  document.getElementById('resetBtn').addEventListener('click', function(){
-    if(!confirm('現在の編集内容を破棄して、サイトの現在の内容に戻します。よろしいですか?')) return;
-    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-    persist();
-    renderAll();
+  document.getElementById('htmlBtn').addEventListener('click', function(){
+    openModal('HTML書き出し',
+      'index.html の3か所(目次・リズムバー・疾患セクション)に貼り替えてください。各ブロックの前にコメントで目印が入っています。',
+      buildExport(), 'lecture-sections.html');
   });
 
-  persist();
+  document.getElementById('modalCopy').addEventListener('click', function(){
+    var box = document.getElementById('modalBox');
+    box.select();
+    var ok = false;
+    try{ ok = document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard && !ok){
+      navigator.clipboard.writeText(modalPayload.text).then(function(){
+        alert('コピーしました。');
+      });
+      return;
+    }
+    alert(ok ? 'コピーしました。' : 'コピーできませんでした。手動で選択してください。');
+  });
+  document.getElementById('modalDownload').addEventListener('click', function(){
+    download(modalPayload.text, modalPayload.name, 'text/html;charset=utf-8');
+  });
+  document.getElementById('modalClose').addEventListener('click', function(){
+    document.getElementById('modalBack').classList.remove('open');
+  });
+  document.getElementById('modalBack').addEventListener('click', function(e){
+    if(e.target === this) this.classList.remove('open');
+  });
+
 </script>
 </body>
 </html>
