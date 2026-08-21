@@ -185,13 +185,11 @@
 
   .menu-btn{
     flex: 0 0 auto;
-    width: 52px;
+    width: 40px;
+    height: 40px;
     display:flex;
-    flex-direction: column;
     align-items:center;
     justify-content:center;
-    gap: 2px;
-    padding: 6px 0;
     background: var(--paper-raised);
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -200,8 +198,7 @@
     transition: border-color .15s ease, background .15s ease;
   }
   .menu-btn:hover{ border-color: var(--ink-soft); }
-  .menu-btn svg{ width: 18px; height: 18px; }
-  .menu-btn-label{ font-size: 10px; font-weight: 600; line-height: 1; }
+  .menu-btn svg{ width: 20px; height: 20px; }
   .menu-btn[aria-expanded="true"]{ border-color: var(--accent); background: var(--accent-soft); }
 
   .menu-panel{
@@ -364,6 +361,7 @@
   .menu-link-round{
     flex: 0 0 auto; font-size: 10.5px; font-weight: 700; color: var(--accent);
     background: var(--accent-soft); border-radius: 4px; padding: 1px 6px;
+    min-width: 44px; text-align: left;
   }
 
   /* ---------- 救急車レーン ---------- */
@@ -435,6 +433,19 @@
     border-radius: 999px; padding: 2px 10px; letter-spacing: 0.02em;
   }
   .pending-note{ margin-top: 12px; }
+
+  /* ---------- 1コマに教科書2章分をまとめる場合の見出し ---------- */
+  .subject-head{
+    display: flex; align-items: center; gap: 8px;
+    margin: 30px 0 6px; padding: 9px 13px;
+    background: var(--bg-tint); border-radius: 8px;
+    font-size: 12.5px; font-weight: 700; color: var(--ink);
+  }
+  .subject-head:first-of-type{ margin-top: 4px; }
+  .subject-head .subject-dot{
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--dot); flex: 0 0 auto;
+  }
 
   /* I / II / V は単独で見出しを兼ねる大きめのアコーディオン */
   .subacc-major{
@@ -771,9 +782,8 @@
 <div class="tabbar">
   <div class="tabbar-inner">
     <div class="toolbar-title">神経・筋疾患理学療法　講義計画</div>
-    <button class="menu-btn" id="menuBtn" aria-label="メニュー" aria-expanded="false">
+    <button class="menu-btn" id="menuBtn" aria-label="目次を開く" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span class="menu-btn-label">目次</span>
     </button>
   </div>
 </div>
@@ -783,11 +793,17 @@
   <div class="menu-group">
     <div class="menu-group-title">目次(全15回)</div>
     <button class="menu-link" data-target="plan-overview"><span class="menu-link-round mono">第1回</span>神経系理学療法の概要</button>
-    <button class="menu-link" data-target="plan-parkinson"><span class="menu-link-round mono">第2〜4回</span>パーキンソン病</button>
-    <button class="menu-link" data-target="plan-scd_msa"><span class="menu-link-round mono">第5〜6回</span>脊髄小脳変性症(多系統萎縮症／それ以外)</button>
-    <button class="menu-link" data-target="plan-ms"><span class="menu-link-round mono">第7〜8回</span>多発性硬化症／視神経脊髄炎</button>
-    <button class="menu-link" data-target="plan-gbs"><span class="menu-link-round mono">第9〜10回</span>多発ニューロパチー(ギランバレー症候群など)</button>
-    <button class="menu-link" data-target="plan-als"><span class="menu-link-round mono">第11〜12回</span>筋萎縮性側索硬化症</button>
+    <button class="menu-link" data-target="plan-parkinson"><span class="menu-link-round mono">第2回</span>パーキンソン病①</button>
+    <button class="menu-link" data-target="plan-parkinson"><span class="menu-link-round mono">第3回</span>パーキンソン病②</button>
+    <button class="menu-link" data-target="plan-parkinson"><span class="menu-link-round mono">第4回</span>パーキンソン病③</button>
+    <button class="menu-link" data-target="plan-scd_msa"><span class="menu-link-round mono">第5回</span>脊髄小脳変性症(多系統萎縮症／それ以外)①</button>
+    <button class="menu-link" data-target="plan-scd_msa"><span class="menu-link-round mono">第6回</span>脊髄小脳変性症(多系統萎縮症／それ以外)②</button>
+    <button class="menu-link" data-target="plan-ms"><span class="menu-link-round mono">第7回</span>多発性硬化症／視神経脊髄炎①</button>
+    <button class="menu-link" data-target="plan-ms"><span class="menu-link-round mono">第8回</span>多発性硬化症／視神経脊髄炎②</button>
+    <button class="menu-link" data-target="plan-gbs"><span class="menu-link-round mono">第9回</span>多発ニューロパチー(ギランバレー症候群など)①</button>
+    <button class="menu-link" data-target="plan-gbs"><span class="menu-link-round mono">第10回</span>多発ニューロパチー(ギランバレー症候群など)②</button>
+    <button class="menu-link" data-target="plan-als"><span class="menu-link-round mono">第11回</span>筋萎縮性側索硬化症①</button>
+    <button class="menu-link" data-target="plan-als"><span class="menu-link-round mono">第12回</span>筋萎縮性側索硬化症②</button>
     <button class="menu-link" data-target="plan-mg"><span class="menu-link-round mono">第13回</span>その他(筋ジストロフィー／重症筋無力症など)</button>
     <button class="menu-link" data-target="plan-practical"><span class="menu-link-round mono">第14回</span>実技(評価・治療等のまとめ）</button>
     <button class="menu-link" data-target="plan-review"><span class="menu-link-round mono">第15回</span>総復習(知識・理解度チェック)</button>
@@ -813,8 +829,7 @@
     <!-- ============ 救急車レーンここまで ============ -->
 
   <div class="note">
-    <strong>初回</strong>：講師の経歴紹介、講義で学ぶ疾患や到達目標の紹介、使用する教材や復習が可能な専用サイトの利用方法についての説明(15分程度)<br>
-    各疾患のカードは <strong>I. 学習目標 → II. 予習課題 → III. 講義内容(各回) → IV. アクティブ・ラーニング → V. 到達度評価</strong> の順に並んでいます。
+    <strong>説明</strong>：教科書に準じて <strong>I. 学習目標 → II. 予習課題 → III. 講義内容(各回) → IV. アクティブ・ラーニング → V. 到達度評価</strong> の順に構成しています。
   </div>
 
   <!-- ============ ここから 疾患セクション ============ -->
@@ -1229,7 +1244,7 @@
         <button class="session-trigger">
           <span class="session-num mono">02</span>
           <span class="session-text">
-            <div class="session-theme">パーキンソン病②</div>
+            <div class="session-theme">パーキンソン病①</div>
             <div class="session-desc">運動症状と非運動症状について、栄養管理</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1310,7 +1325,7 @@
         <button class="session-trigger">
           <span class="session-num mono">03</span>
           <span class="session-text">
-            <div class="session-theme">パーキンソン病③</div>
+            <div class="session-theme">パーキンソン病②</div>
             <div class="session-desc">理学療法評価、リハビリ実践part1</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1400,7 +1415,7 @@
         <button class="session-trigger">
           <span class="session-num mono">04</span>
           <span class="session-text">
-            <div class="session-theme">パーキンソン病④</div>
+            <div class="session-theme">パーキンソン病③</div>
             <div class="session-desc">リハビリ実践part2、歩行介助、「Parkinson病」の復習</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3146,6 +3161,15 @@
         </div>
       </div>
     </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>疾患名を理解すると分かることがある(「硬化」とは，神経の炎症がおさまった後，傷あとが硬くなること／症状は出たり(再発)，落ち着いておさまったり(寛解)を繰り返す(多発))</li>
+        <li>硬化(傷あとが硬くなる)と変性(細胞が減少して機能が失われる)の違いを理解する</li>
+        <li>多発性硬化症は「中枢神経」の脱髄疾患。多発ニューロパチーは「末梢神経」の疾患で，脱髄型と軸索変性型に分かれる</li>
+        <li>脱髄とはどのような状態なのかを理解することが重要</li>
+      </ul>
+    </div>
   </section>
 
   <section class="disease" id="plan-gbs" style="--dot:var(--c-gbs); --bg-tint:var(--c-gbs-bg)">
@@ -3447,7 +3471,7 @@
         <button class="session-trigger">
           <span class="session-num mono">09</span>
           <span class="session-text">
-            <div class="session-theme">ギラン・バレー症候群①</div>
+            <div class="session-theme">多発ニューロパチー①</div>
             <div class="session-desc">病態・病期(急性期〜回復期)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3522,7 +3546,7 @@
         <button class="session-trigger">
           <span class="session-num mono">10</span>
           <span class="session-text">
-            <div class="session-theme">ギラン・バレー症候群②</div>
+            <div class="session-theme">多発ニューロパチー②</div>
             <div class="session-desc">評価・運動療法(過用性筋力低下に注意した負荷設定)</div>
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3924,6 +3948,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>ニューロパチー(末梢神経障害)：「多発」がつくことで，複数の末梢神経が同時に障害されることを意味する</li>
+        <li>脱髄と，軸索の変性を理解することで症状の進行や回復過程が理解できる</li>
+        <li>運動負荷の設定が重要になる</li>
+      </ul>
     </div>
   </section>
 
@@ -4697,6 +4729,15 @@
         </div>
       </div>
     </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>病態を理解したうえで，陰性徴候を理解する</li>
+        <li>嚥下機能や呼吸機能についての理解を深める</li>
+        <li>一般的なコミュニケーションツールを知り，さらに近年のICT発展による可能性，柔軟に取り入れる考え方を学ぶ</li>
+        <li>医療従事者としての心構え，患者様の心理面をそれぞれの立場から考える</li>
+      </ul>
+    </div>
   </section>
 
   <section class="disease" id="plan-mg" style="--dot:var(--c-mg); --bg-tint:var(--c-mg-bg)">
@@ -4708,6 +4749,575 @@
     <div class="case-image-wrap">
       <img class="case-image" src="images/case/mg.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
       <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
+    </div>
+    <div class="subject-head">
+      <span class="subject-dot"></span>筋ジストロフィー(Duchenne型など)
+    </div>
+    <div class="subacc subacc-major">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">I</span>
+        <span class="subacc-title">学習目標</span>
+        <span class="subacc-count mono">16項目</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <p class="subacc-lead">この講義を終えたときに，自分の言葉で説明できるようになっていたい項目です。</p>
+          <ul class="outline">
+            <li class="l1">1　筋ジストロフィーについて以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) 筋力低下が生じる疾患</li>
+                <li class="l2">(2) 筋ジストロフィーの定義</li>
+                <li class="l2">(3) 筋ジストロフィーの診断項目</li>
+                <li class="l2">(4) 臨床病型別の特徴</li>
+                <li class="l2">(5) 筋ジストロフィー医療の歴史と近年の課題</li>
+              </ul>
+            </li>
+            <li class="l1">2　Duchenne型筋ジストロフィー(DMD)について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) 疫学の特徴</li>
+                <li class="l2">(2) 年齢と機能障害度分類に即した経過の理解</li>
+                <li class="l2">(3) 特徴的な機能障害</li>
+                <li class="l2">(4) DMDの理学療法評価の種類</li>
+                <li class="l2">(5) DMDに対する運動療法</li>
+                <li class="l2">(6) DMDに対する補装具療法</li>
+                <li class="l2">(7) DMDに対する呼吸理学療法</li>
+                <li class="l2">(8) QOLを支える理学療法士の支援</li>
+              </ul>
+            </li>
+            <li class="l1">3　DMD以外の病型について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) Becker型筋ジストロフィーの①疫学と②運動機能のピーク，③臨床所見</li>
+                <li class="l2">(2) 福山型筋ジストロフィーの①疫学と②筋病理所見，③臨床所見</li>
+                <li class="l2">(3) 筋強直性筋ジストロフィーの①疫学と②針筋電図所見，③病型</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="完了">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">II</span>
+        <span class="subacc-title">予習課題</span>
+        <span class="subacc-count mono">全50問</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">すでに学んだ知識を思い出そう。答えられた項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 50 完了(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-0">
+            <span>問1：筋萎縮とはどのようなものか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-1">
+            <span>問2：大脳皮質から筋までの運動路について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2">
+            <span>問3：針筋電図検査での「電位」とは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-3">
+            <span>問4：筋原性酵素にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-4">
+            <span>問5：遺伝子とは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-5">
+            <span>問6：筋原性筋萎縮の特徴を挙げてみよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-6">
+            <span>問7：小児の歩行の発達を説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-7">
+            <span>問8：抗重力筋を挙げてみよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-8">
+            <span>問9：正常な筋細胞においてCa2+の流入をコントロールしているものは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-9">
+            <span>問10：4つの換気機能障害の診断基準は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-10">
+            <span>問11：咳嗽能力の評価に用いる指標は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-11">
+            <span>問12：最大強制吸気量(MIC)とはどのような評価方法か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-12">
+            <span>問13：摂食嚥下の①範囲は？ ②その過程の分類は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-13">
+            <span>問14：摂食嚥下機能評価にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-14">
+            <span>問15：誤嚥性肺炎について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-15">
+            <span>問16：心不全について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-16">
+            <span>問17：窒息の原因にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-17">
+            <span>問18：ステロイド治療の副作用について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-18">
+            <span>問19：身体障害者手帳の交付について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-19">
+            <span>問20：特別支援教育については？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-20">
+            <span>問21：代表的な知能の評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-21">
+            <span>問22：告知はどの職種が行うか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-22">
+            <span>問23：治験とは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-23">
+            <span>問24：筋ジストロフィーの定義は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-24">
+            <span>問25：筋ジストロフィーの遺伝形式による分類を挙げてみよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-25">
+            <span>問26：Duchenne型筋ジストロフィーの発生頻度は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-26">
+            <span>問27：Duchenne型筋ジストロフィーに起こりうる筋力低下以外の症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-27">
+            <span>問28：筋ジストロフィー機能障害度の新分類について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-28">
+            <span>問29：登攀性起立(Gowers徴候)について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-29">
+            <span>問30：偽(仮)性肥大について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-30">
+            <span>問31：動揺性歩行について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-31">
+            <span>問32：扁平足について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-32">
+            <span>問33：skew foot(z-foot)について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-33">
+            <span>問34：尖足について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-34">
+            <span>問35：進行性疾患の理学療法評価の目的について説明しよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-35">
+            <span>問36：脊柱の変形にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-36">
+            <span>問37：筋力低下を①定量的，②定性的に評価する方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-37">
+            <span>問38：ADLの評価にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-38">
+            <span>問39：神経筋疾患の歩行評価で信頼性が高い尺度にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-39">
+            <span>問40：基本動作能力の評価項目にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-40">
+            <span>問41：スタティック(静的)ストレッチとは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-41">
+            <span>問42：テコの原理とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-42">
+            <span>問43：車椅子の種類を挙げよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-43">
+            <span>問44：シーティングとは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-44">
+            <span>問45：身体障害児の立位・歩行訓練で用いる①治療・訓練用補装具と②実用補装具の違いは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-45">
+            <span>問46：足底板(インソール)とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-46">
+            <span>問47：筋ジストロフィーで用いる長下肢装具の種類は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-47">
+            <span>問48：座位保持装置とは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-48">
+            <span>問49：非侵襲的陽圧換気療法(NPPV)とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-49">
+            <span>問50：QOLについて説明しよう。</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subject-head">
+      <span class="subject-dot"></span>重症筋無力症・多発性筋炎(MG・PM/DM)
+    </div>
+    <div class="subacc subacc-major">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">I</span>
+        <span class="subacc-title">学習目標</span>
+        <span class="subacc-count mono">25項目</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <p class="subacc-lead">この講義を終えたときに，自分の言葉で説明できるようになっていたい項目です。</p>
+          <ul class="outline">
+            <li class="l1">1　重症筋無力症(MG)について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) MGの①病態と②臨床症状</li>
+                <li class="l2">(2) MGの診断に用いられる指標</li>
+                <li class="l2">(3) 胸腺異常と自己免疫疾患との関連</li>
+                <li class="l2">(4) 抗AChR抗体による筋力低下の機序</li>
+                <li class="l2">(5) MGにおける神経筋伝達能低下と易疲労の機序</li>
+                <li class="l2">(6) MGにおける①クリーゼ，②眼症状，③球症状，④顔面症状の機序</li>
+              </ul>
+            </li>
+            <li class="l1">2　多発性筋炎・皮膚筋炎(PM・DM)について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) PM・DMの①病態と②臨床症状</li>
+                <li class="l2">(2) 筋炎の①全身症状，②筋症状，③皮膚症状，④関節症状</li>
+                <li class="l2">(3) PM・DMの診断に用いられる指標</li>
+                <li class="l2">(4) PM・DMにおける骨格筋の損傷や炎症の程度を示す①血液検査，②尿検査の所見</li>
+                <li class="l2">(5) PM・DMの合併症における間質性肺炎の発生機序</li>
+                <li class="l2">(6) PM・DMにおける①内科的治療と②その機序</li>
+              </ul>
+            </li>
+            <li class="l1">3　MG，PM・DMの理学療法について以下の項目が説明できる
+              <ul class="outline">
+                <li class="l2">(1) 理学療法評価の意義・目的</li>
+                <li class="l2">(2) 理学療法の実施に際して収集すべき医学的情報</li>
+                <li class="l2">(3) 全身状態の把握</li>
+                <li class="l2">(4) 医療面接の方法</li>
+                <li class="l2">(5) 理学療法評価の①項目と②理学療法の方針</li>
+                <li class="l2">(6) 筋力評価の①必要性と②評価項目，③実施するうえでのリスク</li>
+                <li class="l2">(7) 筋持久力評価の①必要性と②評価項目，③実施するうえでのリスク</li>
+                <li class="l2">(8) 呼吸機能評価の①必要性と②評価項目，③実施するうえでのリスク</li>
+                <li class="l2">(9) 疲労評価の①必要性と②評価項目，③実施するうえでのリスク</li>
+                <li class="l2">(10) 骨格筋の易疲労性を伴う筋力低下を①予防する方法と②評価方法</li>
+                <li class="l2">(11) 骨格筋の炎症による筋痛や筋力低下を①予防する方法と②評価方法</li>
+                <li class="l2">(12) 段階的に運動負荷量を上げていくうえでの①評価項目と②リスク管理</li>
+                <li class="l2">(13) ①生活指導と②ホームプログラム</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="完了">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">II</span>
+        <span class="subacc-title">予習課題</span>
+        <span class="subacc-count mono">全57問</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">すでに学んだ知識を思い出そう。答えられた項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 57 完了(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-0">
+            <span>問1：筋疾患とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-1">
+            <span>問2：筋疾患の主症状とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-2">
+            <span>問3：筋疾患の代表的疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-3">
+            <span>問4：筋組織の種類は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-4">
+            <span>問5：典型的なニューロンの構造は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-5">
+            <span>問6：運動神経の軸索の末端の名称は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-6">
+            <span>問7：骨格筋と運動神経の接合部の名称は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-7">
+            <span>問8：運動神経の軸索を伝導している活動電位はどのようにして筋線維膜の電位変化を引き起こすか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-8">
+            <span>問9：運動神経末端から放出される神経伝達物質は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-9">
+            <span>問10：運動神経末端から放出される神経伝達物質はどのようにして筋線維膜の電位変化を引き起こすか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-10">
+            <span>問11：運動神経末端で発生した活動電位により筋線維膜で活動電位が発生すると，骨格筋では何が起こるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-11">
+            <span>問12：運動神経末端から放出されるアセチルコリンの量の低下は，筋収縮をどのように変化させるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-12">
+            <span>問13：筋線維膜におけるアセチルコリン受容体(AChR)の減少や機能低下は，筋収縮をどのように変化させるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-13">
+            <span>問14：1本の運動神経とその運動神経によって支配される筋線維群を何というか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-14">
+            <span>問15：1運動単位において，神経伝達路の障害は筋収縮をどのように変化させるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-15">
+            <span>問16：大きな力を必要とするとき，筋力発揮に参加する運動単位の数はどうなるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-16">
+            <span>問17：発揮すべき筋力が強くなるほど運動単位の参加動員数が増える一方，疲労感はどうなるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-17">
+            <span>問18：運動時，神経筋接合部におけるアセチルコリン放出量が低下するほど疲労感はどうなるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-18">
+            <span>問19：運動時，神経筋接合部におけるAChR量が低下するほど疲労感はどうなるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-19">
+            <span>問20：AChR抗体によるアセチルコリン結合阻害は運動時の疲労感をどうするか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-20">
+            <span>問21：免疫反応とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-21">
+            <span>問22：自然免疫による反応とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-22">
+            <span>問23：獲得免疫による反応とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-23">
+            <span>問24：アレルギーとは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-24">
+            <span>問25：自己免疫疾患とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-25">
+            <span>問26：自己免疫疾患における免疫反応の異常によって，何が引き起こされるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-26">
+            <span>問27：自己免疫疾患の障害・症状の部位は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-27">
+            <span>問28：臓器特異的自己免疫疾患において，甲状腺が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-28">
+            <span>問29：臓器特異的自己免疫疾患において，膵臓のLangerhans島が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-29">
+            <span>問30：臓器特異的自己免疫疾患において，神経筋接合部が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-30">
+            <span>問31：臓器特異的自己免疫疾患において，中枢神経が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-31">
+            <span>問32：全身性特異的自己免疫疾患において，関節や血管が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-32">
+            <span>問33：全身性特異的自己免疫疾患において，皮膚，筋線維などの結合組織および腎臓が障害される疾患は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-33">
+            <span>問34：炎症とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-34">
+            <span>問35：炎症の原因は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-35">
+            <span>問36：免疫系の異常による炎症とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-36">
+            <span>問37：炎症の初期過程は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-37">
+            <span>問38：炎症反応の四徴候は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-38">
+            <span>問39：急性炎症における血液所見は何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-39">
+            <span>問40：自己免疫疾患などによる慢性炎症や筋炎症の血液・尿所見は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-40">
+            <span>問41：白血球の中でリンパ球の役割は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-41">
+            <span>問42：胸腺の役割は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-42">
+            <span>問43：神経筋接合部の障害において，筋力はどうなる？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-43">
+            <span>問44：神経筋接合部の障害において，筋緊張(筋トヌス)はどうなる？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-44">
+            <span>問45：神経筋接合部の障害を呈する筋疾患において，筋萎縮はどの部位から始まるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-45">
+            <span>問46：神経筋接合部の障害を呈する筋疾患において，腱反射と病的反射はどうなるか？その機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-46">
+            <span>問47：球麻痺とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-47">
+            <span>問48：球麻痺の代表的症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-48">
+            <span>問49：構音障害にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-49">
+            <span>問50：骨格筋障害による筋疾患における医学的検査項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-50">
+            <span>問51：炎症や痛みに対する理学療法評価項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-51">
+            <span>問52：全身持久力に対する理学療法評価項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-52">
+            <span>問53：バランス能力に対する理学療法評価項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-53">
+            <span>問54：筋力に対する理学療法評価項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-54">
+            <span>問55：筋力増強運動の4条件は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-55">
+            <span>問56：神経筋疾患患者に筋力トレーニングを実施するうえで注意することは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="prep-mg-2-56">
+            <span>問57：廃用症候群や進行性疾患に伴う筋萎縮に対して，どのように筋力トレーニングを実施するか？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="sect-head">
       <span class="sect-num mono">III</span>
@@ -4723,7 +5333,7 @@
           </span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-                <div class="session-panel">
+        <div class="session-panel">
           <div class="session-panel-inner">
             <div class="session-res top">
               <div class="res-head">この回の資料</div>
@@ -4739,7 +5349,154 @@
               </a>
             </div>
             <div class="session-outline">
-            <div class="empty-note">教科書の内容を反映してから記載します。</div>
+            <ul class="outline">
+              <li class="l1">前回のおさらい</li>
+              <li class="l1">筋ジストロフィー(Duchenne型など)
+                <ul class="outline">
+                  <li class="l2">1　疾患の概要と障害の特徴・留意点
+                    <ul class="outline">
+                      <li class="l3">1) 疾患の概要
+                        <ul class="outline">
+                          <li class="l4">① 筋力低下が生じる疾患の分類</li>
+                          <li class="l4">② 筋ジストロフィーの定義</li>
+                          <li class="l4">③ 筋ジストロフィー医療の歴史</li>
+                        </ul>
+                      </li>
+                      <li class="l3">2) 障害の特徴・留意点
+                        <ul class="outline">
+                          <li class="l4">① Duchenne型筋ジストロフィー(DMD)(歩行喪失，呼吸障害，心合併症，側弯，栄養，知的・認知機能などの特徴)</li>
+                          <li class="l4">② Becker型筋ジストロフィー(BMD)</li>
+                          <li class="l4">③ 福山型先天性筋ジストロフィー(FCMD)</li>
+                          <li class="l4">④ 筋強直性筋ジストロフィー(MyD)</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">2　理学療法評価
+                    <ul class="outline">
+                      <li class="l3">1) 評価の意義・目的</li>
+                      <li class="l3">2) 評価の実際と臨床推論(クリニカルリーズニング)
+                        <ul class="outline">
+                          <li class="l4">① 情報収集(医学の情報，社会の情報，一般の情報)</li>
+                          <li class="l4">② 問診(他部門情報)</li>
+                          <li class="l4">③ 機能障害度分類</li>
+                          <li class="l4">④ ROM，変形</li>
+                          <li class="l4">⑤ 筋力</li>
+                          <li class="l4">⑥ 基本動作能力</li>
+                          <li class="l4">⑦ 呼吸機能</li>
+                          <li class="l4">⑧ 摂食嚥下機能</li>
+                          <li class="l4">⑨ ADL</li>
+                          <li class="l4">⑩ 学校・社会生活</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">3　リスク管理
+                    <ul class="outline">
+                      <li class="l3">1) 運動負荷量のリスク管理</li>
+                      <li class="l3">2) 窒息のリスク</li>
+                      <li class="l3">3) ステロイド治療におけるリスク管理</li>
+                      <li class="l3">4) 告知に関するリスク管理</li>
+                    </ul>
+                  </li>
+                  <li class="l2">4　理学療法方針
+                    <ul class="outline">
+                      <li class="l3">1) 目標設定</li>
+                      <li class="l3">2) 予後予測</li>
+                    </ul>
+                  </li>
+                  <li class="l2">5　理学療法の実践
+                    <ul class="outline">
+                      <li class="l3">1) 運動療法
+                        <ul class="outline">
+                          <li class="l4">① ROM練習</li>
+                          <li class="l4">② 筋力増強，維持練習</li>
+                        </ul>
+                      </li>
+                      <li class="l3">2) 装具療法
+                        <ul class="outline">
+                          <li class="l4">① 足底板(インソール)</li>
+                          <li class="l4">② 長下肢装具</li>
+                          <li class="l4">③ 座位保持装置</li>
+                          <li class="l4">④ 車椅子</li>
+                        </ul>
+                      </li>
+                      <li class="l3">3) 呼吸理学療法
+                        <ul class="outline">
+                          <li class="l4">① 肺・胸郭の可動性と柔軟性の維持</li>
+                          <li class="l4">② 気道クリアランスの維持</li>
+                          <li class="l4">③ 呼吸理学療法における援助(アシスト)</li>
+                        </ul>
+                      </li>
+                      <li class="l3">4) QOLを支える理学療法士の支援</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="l1">重症筋無力症・多発性筋炎(MG・PM/DM)
+                <ul class="outline">
+                  <li class="l2">1　疾患の概要と障害の特徴・留意点
+                    <ul class="outline">
+                      <li class="l3">1) 重症筋無力症(MG)の疾患概要
+                        <ul class="outline">
+                          <li class="l4">(1) 病態と病因</li>
+                          <li class="l4">(2) 臨床症状</li>
+                          <li class="l4">(3) 疫学</li>
+                          <li class="l4">(4) 経過・予後</li>
+                        </ul>
+                      </li>
+                      <li class="l3">2) 多発性筋炎(PM)の疾患概要
+                        <ul class="outline">
+                          <li class="l4">(1) 病態と病因</li>
+                          <li class="l4">(2) PM・DMの臨床症状(全身症状／筋症状／皮膚症状／関節症状／その他の合併症)</li>
+                          <li class="l4">(3) PM・DMの疫学</li>
+                          <li class="l4">(4) PM・DMの経過・予後</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">2　理学療法評価
+                    <ul class="outline">
+                      <li class="l3">1) 評価の意義・目的</li>
+                      <li class="l3">2) 評価の実際
+                        <ul class="outline">
+                          <li class="l4">(1) 診断基準</li>
+                          <li class="l4">(2) 検査所見(血液検査，尿検査／自己抗体検査／特殊検査：MRI，筋電図，筋生検)</li>
+                          <li class="l4">(3) 理学療法評価(筋力評価／筋持久力評価／四肢周径評価／動作評価，ADL評価／歩行能力評価／パフォーマンス評価／呼吸機能評価／疲労評価と疼痛評価)</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">3　リスク管理
+                    <ul class="outline">
+                      <li class="l3">1) 意義・目的</li>
+                      <li class="l3">2) 実際
+                        <ul class="outline">
+                          <li class="l4">(1) MGのリスク管理の実際</li>
+                          <li class="l4">(2) PM・DMのリスク管理の実際</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="l2">4　理学療法方針
+                    <ul class="outline">
+                      <li class="l3">1) 一次性の筋機能障害に対する理学療法方針</li>
+                      <li class="l3">2) 二次性の筋機能障害に対する理学療法方針</li>
+                    </ul>
+                  </li>
+                  <li class="l2">5　理学療法の実践
+                    <ul class="outline">
+                      <li class="l3">1) 運動療法</li>
+                      <li class="l3">2) 装具療法</li>
+                      <li class="l3">3) 呼吸理学療法</li>
+                      <li class="l3">4) QOLを支える理学療法士の支援</li>
+                    </ul>
+                  </li>
+                  <li class="l2">6　おわりに</li>
+                </ul>
+              </li>
+              <li class="l1">本日の復習</li>
+            </ul>
             </div>
           </div>
         </div>
@@ -4755,11 +5512,13 @@
         <div class="refs-panel-inner">
           <a class="res-link sub" href="materials/07_mg/worksheet/worksheet_1.pdf">
             <span class="res-label">1ページ目</span><span class="res-path mono">worksheet_1.pdf</span>
-              <span class="link-status mono" data-status="idle"></span>
+            <span class="link-status mono" data-status="idle"></span>
           </a>
-          <!-- 追加する場合はこの<a>行をコピーしてください -->
         </div>
       </div>
+    </div>
+    <div class="subject-head">
+      <span class="subject-dot"></span>筋ジストロフィー(Duchenne型など)
     </div>
     <div class="sect-head">
       <span class="sect-num mono">IV</span>
@@ -4775,214 +5534,90 @@
         <div class="refs-panel-inner checklist-panel-inner">
           <div class="check-progress">
             <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
-            <span class="check-progress-label">0 / 52 達成(0%)</span>
+            <span class="check-progress-label">0 / 21 達成(0%)</span>
           </div>
           <label class="check-item">
             <input type="checkbox" class="check-box" data-key="mg-0">
-            <span>MG（重症筋無力症）の病態と病因は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-1">
-            <span>MGの臨床症状は？運動症状と非運動症状、その他の症状に分けて調べてみよう。</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-2">
-            <span>MGの疫学（発症頻度や好発年齢など）は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-3">
-            <span>MGの経過と予後は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-4">
-            <span>クリーゼとは何か、また、MGにおいてクリーゼを生じることがあるのはなぜか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-5">
-            <span>胸腺の生理機能は？胸腺の異常による免疫反応の機能異常とMGとの関連は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-6">
-            <span>MGにおける抗AChR抗体の産生によって、筋力低下が起こるのはなぜか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-7">
-            <span>拘束性換気障害とは何か。また、MGにおいて拘束性換気障害を生じる場合があるのはなぜか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-8">
-            <span>神経筋接合部の伝達の障害とは何か、また、MGにおいて筋電図検査ではどのような所見が得られるか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-9">
-            <span>MGの理学療法評価において、カルテから得るべき情報にはどのようなものがあるか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-10">
-            <span>MGの理学療法評価において、医療面接ではどのようなことを聞くべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-11">
-            <span>MGの理学療法評価において、筋力・運動耐容能の評価はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-12">
-            <span>MG の理学療法評価において、筋・全身疲労の検査はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-13">
-            <span>MGのリスクにはどのようなものがあるか。また、そのリスクにどのように対処するか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-14">
-            <span>PM（多発性筋炎）・DMの病態と病因は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-15">
-            <span>PM・DMの臨床症状は何か．また、全身・筋・皮膚・関節の症状と合併症に分けて調べてみよう．</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-16">
-            <span>PM・DMの疫学は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-17">
-            <span>PM・DMの経過と予後は？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-18">
-            <span>間質性肺炎とは何か。また、PMなどの炎症性疾患において間質性肺炎を生じることがあるのはなぜか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-19">
-            <span>Raynaud現象とは何か．また、PMでRaynaud現象を生じることがあるのはなぜか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-20">
-            <span>PM・DMにおいて血液・尿検査ではどのような所見が得られるか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-21">
-            <span>PM・DMの理学療法評価において，カルテから得るべき情報にはどのようなものがあるか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-22">
-            <span>PM・DMの理学療法評価において、医療面接ではどのようなことを聞くべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-23">
-            <span>PM・DMの理学療法評価において、疼痛の評価はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-24">
-            <span>PM・DMの理学療法評価において，呼吸機能の検査はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-25">
-            <span>PM・DMのリスクにはどのようなものがあるか。そのリスクにどのように対処するか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-26">
-            <span>ROM運動、ストレッチング，筋力増強運動。動作練習で共通して注意すべきことは何か？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-27">
-            <span>神経筋疾患における神経伝導障害の理学療法において、運動療法はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-28">
-            <span>炎症性疾患の理学療法において、筋力増強運動はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-29">
-            <span>神経・筋原生疲労を伴う神経筋疾患の理学療法において、動作、生活指導はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-30">
-            <span>炎症性疾患の理学療法において、動作・生活指導はどのように行うべきか？</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-31">
             <span>遺伝性筋疾患にはどのようなものがあるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-32">
+            <input type="checkbox" class="check-box" data-key="mg-1">
             <span>筋ジストロフィーの確定診断にはどのような検査が行われるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-33">
+            <input type="checkbox" class="check-box" data-key="mg-2">
             <span>筋ジストロフィーの分類ごとの特徴の違いは何か？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-34">
-            <span>登攀性起立（Gowers 徴候）の特徴を説明し、動きを再現してみよう。</span>
+            <input type="checkbox" class="check-box" data-key="mg-3">
+            <span>登攀性起立(Gowers徴候)の特徴を説明し，動きを再現してみよう。</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-35">
-            <span>（仮）性肥大とは？</span>
+            <input type="checkbox" class="check-box" data-key="mg-4">
+            <span>偽(仮)性肥大とは？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-36">
+            <input type="checkbox" class="check-box" data-key="mg-5">
             <span>動揺性歩行の特徴を説明し，動きを再現してみよう。</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-37">
+            <input type="checkbox" class="check-box" data-key="mg-6">
             <span>DMDはどのように進行するか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-38">
+            <input type="checkbox" class="check-box" data-key="mg-7">
             <span>DMDの呼吸障害にはどのような特徴があるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-39">
-            <span>筋の短縮を評価するためには、どのようなテストがあるか？</span>
+            <input type="checkbox" class="check-box" data-key="mg-8">
+            <span>筋の短縮を評価するためには，どのようなテストがあるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-40">
+            <input type="checkbox" class="check-box" data-key="mg-9">
             <span>DMDの医療面接ではどのようなことを聴取するか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-41">
+            <input type="checkbox" class="check-box" data-key="mg-10">
             <span>多職種とどのように連携を図りながら行うとよいか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-42">
+            <input type="checkbox" class="check-box" data-key="mg-11">
             <span>他部門情報にはどのようなものがあるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-43">
+            <input type="checkbox" class="check-box" data-key="mg-12">
             <span>筋力評価で注意すべきことは何か？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-44">
+            <input type="checkbox" class="check-box" data-key="mg-13">
             <span>呼吸機能評価にはどのようなものがあるか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-45">
+            <input type="checkbox" class="check-box" data-key="mg-14">
             <span>DMDの運動負荷量，窒息，ステロイド治療のリスク管理はどのように行ったらよいか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-46">
-            <span>DMDのROM 運動を重点的に行うべき部位はどこか？</span>
+            <input type="checkbox" class="check-box" data-key="mg-15">
+            <span>DMDのROM運動を重点的に行うべき部位はどこか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-47">
-            <span>DMDのROM 運動で注意すべきことは何か？</span>
+            <input type="checkbox" class="check-box" data-key="mg-16">
+            <span>DMDのROM運動で注意すべきことは何か？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-48">
-            <span>DMDの筋力維持に向けて負荷、頻度、運動の種類はどのようにしたらよいか？</span>
+            <input type="checkbox" class="check-box" data-key="mg-17">
+            <span>DMDの筋力維持に向けて負荷，頻度，運動の種類はどのようにしたらよいか？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-49">
+            <input type="checkbox" class="check-box" data-key="mg-18">
             <span>DMDの筋力維持運動で過負荷の目安は？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-50">
+            <input type="checkbox" class="check-box" data-key="mg-19">
             <span>舌咽呼吸法とは？</span>
           </label>
           <label class="check-item">
-            <input type="checkbox" class="check-box" data-key="mg-51">
+            <input type="checkbox" class="check-box" data-key="mg-20">
             <span>疲労の徴候にはどのようなものがあるか？</span>
           </label>
           <div class="check-actions">
@@ -4992,7 +5627,514 @@
         </div>
       </div>
     </div>
-    <div class="empty-note pending-note">I. 学習目標／II. 予習課題／IV. AL2〜4／V. 到達度評価は、教科書の内容を反映してから追加します。</div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL2</span>
+        <span class="subacc-title">グループで考える(12問)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">DMDの下肢帯の筋力低下では，登攀性起立(Gowers徴候)が観察される。このとき利用している運動機能はどこか？</li>
+            <li class="l1">脊柱の変形は，他のどのような機能に影響を及ぼすか？</li>
+            <li class="l1">足関節の変形により，扁平足やskew footを起こしやすい。この場合の形態評価で注意すべきポイントは何か？</li>
+            <li class="l1">腰椎前弯に対する理学療法で考えられるものは何か。また，そう考える理由は？</li>
+            <li class="l1">呼吸障害は車椅子期になると急速に進行するが，その時期に行うべき理学療法は何か？</li>
+            <li class="l1">DMDの知的障害では自閉症傾向を示す場合がある。特に言語性IQは低い傾向にあるといわれている。理学療法を行ううえで配慮すべきことは何か。また，そう考える理由は？</li>
+            <li class="l1">ステロイド治療では，肥満が問題になることが多い。支援者の過保護も問題を複雑にしてしまう傾向があるが，この対策としてどのようなことが考えられるか。また，そう考える理由は？</li>
+            <li class="l1">ホームプログラムも必要な要因であるが，実施にあたり本人と支援者に配慮あるいは注意すべきことは何か？</li>
+            <li class="l1">機能低下の進行に応じて，本人や支援者にどのような働きかけが必要か。また，そう考える理由は？</li>
+            <li class="l1">症状の進行に伴い，装具や車椅子，環境の整備などが必要となる。どのような社会的資源が活用できるか？</li>
+            <li class="l1">進行性疾患患者のQOLをどのようにサポートするのが望ましいか。また，そう考える理由は？</li>
+            <li class="l1">DMDの目標設定は進行状況に応じてどのように考えたらよいか。また，そう考える理由は？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL3</span>
+        <span class="subacc-title">まとめ課題</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <ul class="outline">
+            <li class="l1">DMDの機能障害の特徴を経年的進行別にまとめなさい。
+              <ul class="outline">
+                <li class="l2">① 1〜2歳</li>
+                <li class="l2">② 3〜6歳</li>
+                <li class="l2">③ 9〜11歳</li>
+                <li class="l2">④ 11〜17歳</li>
+                <li class="l2">⑤ 18歳以上</li>
+              </ul>
+            </li>
+            <li class="l1">DMDの一般的な理学療法の考え方を機能障害度分類ごとにまとめなさい。
+              <ul class="outline">
+                <li class="l2">① 歩行期(ステージI〜IV)</li>
+                <li class="l2">② 車椅子期(ステージV〜VII)</li>
+                <li class="l2">③ 臥床期(呼吸管理適応期)(ステージVIII)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL4</span>
+        <span class="subacc-title">症例課題に答える(7問)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">本症例の着目すべき評価ポイントは？</li>
+            <li class="l1">本症例の理学療法の目標(解決すべき課題)は？</li>
+            <li class="l1">本症例の理学療法プログラムは？</li>
+            <li class="l1">本症例のリスク管理は？</li>
+            <li class="l1">本症例の支援者への働きかけは？</li>
+            <li class="l1">本症例に必要な装具療法と環境整備は？</li>
+            <li class="l1">本症例の予後に対する備えは？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="達成">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">V</span>
+        <span class="subacc-title">到達度チェック</span>
+        <span class="subacc-count mono">全16項目</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">説明できるようになった項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 16 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-0">
+            <span>筋力低下が生じる疾患とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-1">
+            <span>筋ジストロフィーの定義は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2">
+            <span>筋ジストロフィーの診断項目は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-3">
+            <span>臨床病型別の特徴とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-4">
+            <span>筋ジストロフィー医療の①歴史と②近年の課題は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-5">
+            <span>疫学の特徴は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-6">
+            <span>年齢と機能障害度分類に即した経過の理解とは？(①経年の変化，②機能障害度分類)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-7">
+            <span>特徴的な機能障害とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-8">
+            <span>DMDの理学療法評価の種類は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-9">
+            <span>DMDに対する運動療法とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-10">
+            <span>DMDにおける補装具療法とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-11">
+            <span>DMDに対する呼吸理学療法とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-12">
+            <span>QOLを支える理学療法士の支援とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-13">
+            <span>Becker型筋ジストロフィーの①疫学と②運動機能のピーク，③臨床所見は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-14">
+            <span>福山型筋ジストロフィーの①疫学と②筋病理所見，③臨床所見は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-15">
+            <span>筋強直性筋ジストロフィーの①疫学と②針筋電図所見，③病型は？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subject-head">
+      <span class="subject-dot"></span>重症筋無力症・多発性筋炎(MG・PM/DM)
+    </div>
+    <div class="sect-head">
+      <span class="sect-num mono">IV</span>
+      <span class="sect-title">アクティブ・ラーニング</span>
+    </div>
+    <div class="disease-refs checklist" data-topic="mg-2">
+      <button class="refs-trigger">
+        <svg class="res-icon" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="refs-title">AL1　理解度チェック(調べ学習)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="refs-panel">
+        <div class="refs-panel-inner checklist-panel-inner">
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 31 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-0">
+            <span>MGの病態と病因は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-1">
+            <span>MGの臨床症状は？運動症状と非運動症状，その他の症状に分けて調べてみよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-2">
+            <span>MGの疫学は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-3">
+            <span>MGの経過と予後は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-4">
+            <span>クリーゼとは何か。また，MGにおいてクリーゼを生じることがあるのはなぜか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-5">
+            <span>胸腺の生理機能は？胸腺の異常による免疫反応の機能異常とMGとの関連は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-6">
+            <span>MGにおける抗AChR抗体の産生によって，筋力低下が起こるのはなぜか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-7">
+            <span>拘束性換気障害とは何か。また，MGにおいて，拘束性換気障害を生じる場合があるのはなぜか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-8">
+            <span>神経筋接合部の伝達の障害とは何か。また，MGにおいて筋電図検査ではどのような所見が得られるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-9">
+            <span>MGの理学療法評価において，カルテから得るべき情報にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-10">
+            <span>MGの理学療法評価において，医療面接ではどのようなことを聞くべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-11">
+            <span>MGの理学療法評価において，筋力・運動耐容能の評価はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-12">
+            <span>MGの理学療法評価において，筋・全身疲労の検査はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-13">
+            <span>MGのリスクにはどのようなものがあるか。また，そのリスクにどのように対処するか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-14">
+            <span>PM・DMの病態と病因は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-15">
+            <span>PM・DMの臨床症状は何か。また，全身・筋・皮膚・関節の症状と合併症に分けて調べてみよう。</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-16">
+            <span>PM・DMの疫学は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-17">
+            <span>PM・DMの経過と予後は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-18">
+            <span>間質性肺炎とは何か。また，PMなどの炎症性疾患において間質性肺炎を生じることがあるのはなぜか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-19">
+            <span>Raynaud現象とは何か。また，PMでRaynaud現象を生じることがあるのはなぜか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-20">
+            <span>PM・DMにおいて血液・尿検査ではどのような所見が得られるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-21">
+            <span>PM・DMの理学療法評価において，カルテから得るべき情報にはどのようなものがあるか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-22">
+            <span>PM・DMの理学療法評価において，医療面接ではどのようなことを聞くべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-23">
+            <span>PM・DMの理学療法評価において，疼痛の評価はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-24">
+            <span>PM・DMの理学療法評価において，呼吸機能の検査はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-25">
+            <span>PM・DMのリスクにはどのようなものがあるか。また，そのリスクにどのように対処するか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-26">
+            <span>ROM運動，ストレッチング，筋力増強運動，動作練習で共通して注意すべきことは何か？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-27">
+            <span>神経筋疾患における神経伝達障害の理学療法において，運動療法はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-28">
+            <span>炎症性疾患の理学療法において，筋力増強運動はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-29">
+            <span>神経・筋疲労を伴う神経筋疾患の理学療法において，動作・生活指導はどのように行うべきか？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="mg-2-30">
+            <span>炎症性疾患の理学療法において，動作・生活指導はどのように行うべきか？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-all">全てチェック</button>
+            <button type="button" class="check-action-btn check-reset">一斉解除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL2</span>
+        <span class="subacc-title">グループで考える(12問)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">MGで眼・顔面の筋萎縮を伴う筋力低下を呈する症例において，日常生活や社会生活への影響，実施すべき理学療法評価項目，理学療法プログラムは何か。また，そう考えた理由は？</li>
+            <li class="l1">MGで頸部・四肢の筋萎縮を伴う筋力低下を呈する症例において，日常生活や社会生活への影響，実施すべき理学療法評価項目，理学療法プログラムは何か。また，そう考えた理由は？</li>
+            <li class="l1">MGで球症状とクリーゼを呈する症例において，日常生活や社会生活への影響，実施すべき理学療法評価項目，理学療法プログラムは何か。また，そう考えた理由は？</li>
+            <li class="l1">MGにおける筋力低下に対する運動療法は，反復運動・持続運動を低負荷・高頻度で行うことが推奨されている。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">MGへの運動療法において，介入時間帯や運動量を考慮する必要がある。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">MGでの易疲労性の評価において，1日の生活の中での疲労出現の時間帯や活動内容を確認することが重要である。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">MGにおける易疲労性や運動耐容性の再評価は，前回と同じ時間帯や同じ運動量・負荷量で評価することが重要である。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">PM・DMで炎症を伴う筋力低下を呈する症例において，日常生活や社会生活への影響，実施すべき理学療法評価項目，理学療法プログラムは何か。また，そう考えた理由は？</li>
+            <li class="l1">PM・DMで炎症を伴う筋・皮膚・関節の痛みを呈する症例において，日常生活や社会生活への影響，実施すべき理学療法評価項目，理学療法プログラムは何か。また，そう考えた理由は？</li>
+            <li class="l1">PM・DMで炎症所見のある症例において，運動療法実施前と翌日以降の血液データ(CKやCRP)を比較することは重要である。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">PM・DMで炎症所見のある症例において，運動前，運動中および運動後にBorg指数やVASを用いて疲労度や疼痛の評価をすることは重要である。それはなぜか。また，そう考えた理由は？</li>
+            <li class="l1">PM・DMの炎症期の運動療法において，前回の運動療法実施時と同様の運動課題・運動負荷量であったにもかかわらず，運動時の筋出力低下やBorg指数から疲労度増大がみられた。それはなぜか。また，そう考えた理由は？</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL3</span>
+        <span class="subacc-title">まとめ課題</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner">
+          <ul class="outline">
+            <li class="l1">MGの病態や神経筋接合部の情報伝達のメカニズムを踏まえ，本疾患に対する理学療法の一般原則をまとめなさい。
+              <ul class="outline">
+                <li class="l2">① 評価</li>
+                <li class="l2">② 治療</li>
+                <li class="l2">③ リスク管理</li>
+              </ul>
+            </li>
+            <li class="l1">PMの病態や炎症性疾患を踏まえ，本疾患に対する理学療法の一般原則をまとめなさい。
+              <ul class="outline">
+                <li class="l2">① 評価</li>
+                <li class="l2">② 治療</li>
+                <li class="l2">③ リスク管理</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">AL4</span>
+        <span class="subacc-title">症例課題に答える(7問)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <ul class="outline">
+            <li class="l1">本症例の理学療法目標は？</li>
+            <li class="l1">本症例の問題点(解決すべき課題)は？</li>
+            <li class="l1">本症例の治療プランは？</li>
+            <li class="l1">本症例における理学療法実施上のリスクとその管理方法は？</li>
+            <li class="l1">多職種とどのように連携しながら問題解決を図っていくべきか？</li>
+            <li class="l1">本症例が退院する際の環境整備や生活指導は？</li>
+            <li class="l1">最後に本症例に対する評価と治療を実際に行ってみましょう。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subacc subacc-major checklist" data-progress-word="達成">
+      <button class="subacc-trigger">
+        <span class="subacc-num mono">V</span>
+        <span class="subacc-title">到達度チェック</span>
+        <span class="subacc-count mono">全25項目</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="subacc-panel">
+        <div class="subacc-panel-inner scrollable">
+          <p class="subacc-lead">説明できるようになった項目にチェックを入れてください。</p>
+          <div class="check-progress">
+            <div class="check-progress-bar"><div class="check-progress-fill"></div></div>
+            <span class="check-progress-label">0 / 25 達成(0%)</span>
+          </div>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-0">
+            <span>MGの①病態と②臨床症状とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-1">
+            <span>MGの診断に用いられる指標は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-2">
+            <span>胸腺異常と自己免疫疾患との関連は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-3">
+            <span>抗AChR抗体による筋力低下の機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-4">
+            <span>MGにおける神経筋伝達能低下による易疲労の機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-5">
+            <span>MGにおける①クリーゼ，②眼症状，③球症状，④顔面症状の機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-6">
+            <span>PM・DMの①病態と②臨床症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-7">
+            <span>筋炎の①全身症状，②筋症状，③皮膚症状，④関節症状は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-8">
+            <span>PM・DMの診断に用いられる指標は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-9">
+            <span>PM・DMにおける骨格筋の損傷や炎症の程度を示す①血液検査，②尿検査の所見は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-10">
+            <span>PM・DMの合併症における間質性肺炎の発生機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-11">
+            <span>PM・DMにおける①内科的治療とその機序は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-12">
+            <span>理学療法評価の意義・目的は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-13">
+            <span>理学療法の実施に際して収集すべき医学的情報は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-14">
+            <span>全身状態の把握とは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-15">
+            <span>医療面接の方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-16">
+            <span>理学療法評価の①項目と②理学療法の方針は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-17">
+            <span>筋力評価の①必要性と②評価項目，③実施するうえでのリスクは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-18">
+            <span>筋持久力評価の①必要性と②評価項目，③実施するうえでのリスクは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-19">
+            <span>呼吸機能評価の①必要性と②評価項目，③実施するうえでのリスクは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-20">
+            <span>疲労評価の①必要性と②評価項目，③実施するうえでのリスクは？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-21">
+            <span>骨格筋の易疲労性を伴う筋力低下を①予防する方法と②評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-22">
+            <span>骨格筋の炎症による筋痛や筋力低下を①予防する方法と②評価方法は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-23">
+            <span>段階的に運動負荷量を上げていくうえでの①評価項目と②リスク管理は？</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" class="check-box" data-key="goal-mg-2-24">
+            <span>①生活指導と②ホームプログラムは？</span>
+          </label>
+          <div class="check-actions">
+            <button type="button" class="check-action-btn check-reset">チェックをリセット</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>ステロイド治療による予後の変化，リスク管理について理解する</li>
+        <li>対象年齢の違いによる関わり方の違いなどを考える</li>
+        <li>特徴的な動きがなぜ生じるのか理解する</li>
+      </ul>
+    </div>
   </section>
 
   <section class="disease" id="plan-practical" style="--dot:var(--c-practical); --bg-tint:var(--c-practical-bg)">
@@ -5086,6 +6228,14 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="callout callout-point">
+      <span class="callout-label">POINT</span>
+      <ul>
+        <li>これまで学んだ疾患を思い出しながら，各疾患に合わせた観察ポイント，指導方法を学ぶ</li>
+        <li>動作の修正に必要な介入方法，練習メニューを知る</li>
+        <li>★歩行について：いつ歩行練習を開始するのか，介助の方法について，介助するかどうかの判断，手の触れ方，触れる強さ，触れる場所，誘導の方向，声掛け，目標の設定，介助量の決定方法，リスク管理，実践までを学ぶ</li>
+      </ul>
     </div>
   </section>
 
@@ -5196,7 +6346,7 @@
         <dt>教材</dt><dd>病気がみえる vol.7 脳・神経/イラストでわかる中枢神経障害理学療法/パーキンソン病診療ガイドライン2018/理学療法ガイドライン第2版(第三章 神経難病理学療法ガイドライン)/神経難病リハビリテーション 100の叡智</dd>
         <dt>評価基準</dt><dd>期末試験</dd>
         <dt>評価率</dt><dd>100%</dd>
-        <dt>その他</dt><dd>全15回・90分講義 / <a href="teaching_policy.pdf">講義の方針</a> / <a href="editor.html">講義計画・授業内容 編集ツール</a> / <a href="roulette.html">回答者の抽選</a></dd>
+        <dt>その他</dt><dd>全15回・90分講義 / <a href="roulette.html">回答者の抽選</a></dd>
       </dl>
       <p class="credit">一般財団法人 三宅医学研究所/附属三宅リハビリテーション病院/新池 友希</p>
     </footer>
