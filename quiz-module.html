@@ -44,6 +44,7 @@
     font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
     line-height:1.75;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   #neuro-quiz *{box-sizing:border-box;}
   #neuro-quiz :focus-visible{outline:3px solid #9fb3d0;outline-offset:2px;}
@@ -113,18 +114,21 @@
     display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.06em;
     background:var(--nq-bg);color:var(--nq-primary);border-radius:5px;padding:4px 10px;margin-bottom:12px;
   }
-  .nq-question{font-size:1.18rem;font-weight:700;margin:0 0 16px;line-height:1.7;}
+  .nq-question{font-size:1.18rem;font-weight:700;margin:0 0 16px;line-height:1.7;overflow-wrap:anywhere;}
   .nq-qimg{
     display:block;max-width:100%;max-height:340px;margin:0 auto 20px;
     border:1px solid var(--nq-line);border-radius:8px;background:var(--nq-bg);
   }
   .nq-choices{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .nq-choices > li{min-width:0;}
   .nq-choice{
     display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
     background:var(--nq-surface);border:1.5px solid var(--nq-line);border-radius:9px;
     padding:15px 16px;font-size:1.04rem;font-family:inherit;color:inherit;cursor:pointer;
     transition:border-color .15s,background .15s;line-height:1.6;
+    min-width:0;box-sizing:border-box;
   }
+  .nq-choice > span:last-child{min-width:0;overflow-wrap:anywhere;}
   .nq-choice:hover:not(:disabled){border-color:var(--nq-primary);background:#f2ede2;}
   .nq-choice:disabled{cursor:default;}
   .nq-num{
@@ -220,8 +224,9 @@
   .nq-list-item{
     display:flex;align-items:center;gap:10px;border:1px solid var(--nq-line);
     border-radius:8px;padding:11px 13px;font-size:.95rem;
+    min-width:0;box-sizing:border-box;flex-wrap:wrap;
   }
-  .nq-list-text{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nq-list-text{flex:1 1 160px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .nq-pic{font-size:.74rem;font-weight:700;background:var(--nq-bg);color:var(--nq-sub);border-radius:4px;padding:2px 6px;flex:0 0 auto;}
   .nq-list-btns{display:flex;gap:6px;flex:0 0 auto;}
   .nq-empty{color:var(--nq-sub);font-size:.95rem;padding:16px 0;text-align:center;}
@@ -271,7 +276,6 @@
 
   <p class="nq-eyebrow">CHECK YOUR UNDERSTANDING</p>
   <h2 id="nq-title">疾患別 確認テスト</h2>
-  <p class="nq-lead">国家試験と同じ5択形式です。解いた疾患だけが結果グラフに表示されます。</p>
 
   <div class="nq-tabs" role="tablist">
     <button type="button" class="nq-tab is-on" id="nq-tab-play" role="tab" aria-selected="true">テストを解く</button>
