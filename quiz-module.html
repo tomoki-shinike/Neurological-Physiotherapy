@@ -1,0 +1,1086 @@
+<!-- ============================================================
+     神経理学療法 疾患別クイズモジュール ver.2
+     ・確認テスト（5択・疾患別グラフ）
+     ・問題作成フォーム（カテゴリ／問題文／画像／選択肢5つ／正解／解説）
+     index.html にこの <section> ごと貼り付けてください。
+     作った問題は「コードで書き出す」→ QUIZ_DATA を差し替えると保存されます。
+     ============================================================ -->
+
+<section id="neuro-quiz" aria-labelledby="nq-title">
+  <style>
+  /* ---------- 配色・共通設定（ここを変えるとサイトの色に合わせられます） ---------- */
+  #neuro-quiz{
+    --nq-ink:#1f1b18;
+    --nq-sub:#3a332c;
+    --nq-line:#ddd5c7;
+    --nq-bg:#ede7db;
+    --nq-surface:#fffdf8;
+    --nq-page:#f7f4ee;
+    --nq-primary:#2f4b7c;
+    --nq-primary-dark:#223963;
+    --nq-correct:#5c7a3f;
+    --nq-correct-bg:#eaefe0;
+    --nq-wrong:#a8443a;
+    --nq-wrong-bg:#f5e6e2;
+    --nq-radius:12px;
+    --nq-shadow:0 2px 10px rgba(60,50,35,.08);
+
+    max-width:840px;margin:0 auto;padding:32px 22px 56px;
+    background:var(--nq-page);border-radius:var(--nq-radius);
+    color:var(--nq-ink);font-size:16px;
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  #neuro-quiz *{box-sizing:border-box;}
+  #neuro-quiz :focus-visible{outline:3px solid #9fb3d0;outline-offset:2px;}
+  .nq-hidden{display:none !important;}
+
+  /* ---------- 見出し・タブ ---------- */
+  .nq-eyebrow{font-size:.78rem;letter-spacing:.18em;font-weight:700;color:var(--nq-primary);margin:0 0 6px;}
+  #nq-title{font-size:1.6rem;font-weight:800;margin:0 0 8px;letter-spacing:.02em;}
+  .nq-lead{margin:0 0 20px;color:var(--nq-sub);font-size:1rem;}
+
+  .nq-tabs{display:flex;gap:4px;border-bottom:1px solid var(--nq-line);margin-bottom:24px;}
+  .nq-tab{
+    background:none;border:none;font-family:inherit;font-size:.98rem;font-weight:700;
+    color:var(--nq-ink);padding:11px 18px;cursor:pointer;border-bottom:3px solid transparent;
+    margin-bottom:-1px;transition:color .15s,border-color .15s;
+  }
+  .nq-tab:hover{color:var(--nq-primary);}
+  .nq-tab.is-on{color:var(--nq-primary);border-bottom-color:var(--nq-primary);}
+
+  /* ---------- カード・ボタン ---------- */
+  .nq-card{
+    background:var(--nq-surface);border:1px solid var(--nq-line);
+    border-radius:var(--nq-radius);box-shadow:var(--nq-shadow);padding:24px;
+  }
+  .nq-card + .nq-card{margin-top:18px;}
+  .nq-btn{
+    border:none;border-radius:8px;padding:13px 26px;font-size:1rem;font-weight:700;
+    cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s,color .15s;
+  }
+  .nq-btn-primary{background:var(--nq-primary);color:#fff;}
+  .nq-btn-primary:hover{background:var(--nq-primary-dark);}
+  .nq-btn-primary:disabled{background:#c5bdae;cursor:not-allowed;}
+  .nq-btn-ghost{background:transparent;color:var(--nq-ink);border:1px solid #cfc5b4;}
+  .nq-btn-ghost:hover{border-color:var(--nq-primary);color:var(--nq-primary);}
+  .nq-btn-sm{padding:8px 15px;font-size:.88rem;}
+  .nq-btn-danger{background:transparent;color:var(--nq-wrong);border:1px solid var(--nq-line);}
+  .nq-btn-danger:hover{border-color:var(--nq-wrong);background:var(--nq-wrong-bg);}
+  .nq-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px;}
+
+  /* ---------- 選択チップ（幅を均等にそろえる） ---------- */
+  .nq-field{margin-bottom:22px;}
+  .nq-field > .nq-label{
+    display:block;font-size:.88rem;font-weight:700;letter-spacing:.06em;
+    color:var(--nq-ink);margin-bottom:10px;
+  }
+  .nq-label .nq-req{color:var(--nq-wrong);margin-left:4px;font-size:.8rem;}
+  .nq-grid-disease{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px;}
+  .nq-grid-even{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:8px;}
+  .nq-chip{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    position:relative;text-align:center;border:1px solid var(--nq-line);background:var(--nq-surface);border-radius:8px;
+    padding:12px 10px;font-size:.94rem;line-height:1.45;cursor:pointer;min-height:62px;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .nq-chip:hover{border-color:var(--nq-correct);}
+  .nq-chip input{position:absolute;opacity:0;pointer-events:none;}
+  .nq-chip.is-on{background:#ffffff;border-color:var(--nq-correct);color:var(--nq-ink);font-weight:700;box-shadow:inset 0 0 0 1px var(--nq-correct);}
+  .nq-chip .nq-count{font-size:.78rem;color:var(--nq-sub);font-weight:400;}
+  .nq-chip.is-on .nq-count{color:var(--nq-sub);}
+  .nq-chip-single{min-height:52px;}
+
+  /* ---------- 出題画面 ---------- */
+  .nq-bar-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.88rem;color:var(--nq-sub);margin-bottom:8px;}
+  .nq-progress{height:5px;background:var(--nq-bg);border-radius:99px;overflow:hidden;margin-bottom:22px;}
+  .nq-progress > span{display:block;height:100%;background:var(--nq-primary);transition:width .3s ease;}
+  .nq-tag{
+    display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.06em;
+    background:var(--nq-bg);color:var(--nq-primary);border-radius:5px;padding:4px 10px;margin-bottom:12px;
+  }
+  .nq-question{font-size:1.18rem;font-weight:700;margin:0 0 16px;line-height:1.7;}
+  .nq-qimg{
+    display:block;max-width:100%;max-height:340px;margin:0 auto 20px;
+    border:1px solid var(--nq-line);border-radius:8px;background:var(--nq-bg);
+  }
+  .nq-choices{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .nq-choice{
+    display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+    background:var(--nq-surface);border:1.5px solid var(--nq-line);border-radius:9px;
+    padding:15px 16px;font-size:1.04rem;font-family:inherit;color:inherit;cursor:pointer;
+    transition:border-color .15s,background .15s;line-height:1.6;
+  }
+  .nq-choice:hover:not(:disabled){border-color:var(--nq-primary);background:#f2ede2;}
+  .nq-choice:disabled{cursor:default;}
+  .nq-num{
+    flex:0 0 auto;width:27px;height:27px;border-radius:50%;background:var(--nq-bg);
+    color:var(--nq-primary);font-size:.86rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .nq-choice.is-picked{border-color:var(--nq-primary);background:#e7ebf3;}
+  .nq-choice.is-picked .nq-num{background:var(--nq-primary);color:#fdfcf9;}
+  .nq-choice.is-correct{border-color:var(--nq-correct);background:var(--nq-correct-bg);}
+  .nq-choice.is-correct .nq-num{background:var(--nq-correct);color:#fdfcf9;}
+  .nq-choice.is-wrong{border-color:var(--nq-wrong);background:var(--nq-wrong-bg);}
+  .nq-choice.is-wrong .nq-num{background:var(--nq-wrong);color:#fdfcf9;}
+  .nq-feedback{margin-top:18px;border-radius:9px;padding:15px 17px;font-size:.98rem;border-left:4px solid var(--nq-primary);background:var(--nq-bg);}
+  .nq-feedback.is-correct{border-left-color:var(--nq-correct);background:var(--nq-correct-bg);}
+  .nq-feedback.is-wrong{border-left-color:var(--nq-wrong);background:var(--nq-wrong-bg);}
+  .nq-verdict{font-weight:800;margin:0 0 4px;}
+  .nq-feedback p{margin:0;}
+
+  /* ---------- 結果画面 ---------- */
+  .nq-score{text-align:center;padding:8px 0 24px;border-bottom:1px solid var(--nq-line);margin-bottom:26px;}
+  .nq-score-num{font-size:3.2rem;font-weight:800;line-height:1;letter-spacing:-.02em;}
+  .nq-score-num small{font-size:1.2rem;font-weight:700;margin-left:2px;}
+  .nq-score-sub{color:var(--nq-sub);font-size:.98rem;margin-top:8px;}
+  .nq-sec-title{font-size:1.05rem;font-weight:800;margin:0 0 4px;}
+  .nq-sec-note{font-size:.88rem;color:var(--nq-sub);margin:0 0 16px;line-height:1.7;}
+  .nq-graph{display:grid;gap:14px;margin-bottom:32px;}
+  .nq-row-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:5px;}
+  .nq-row-name{font-size:.96rem;font-weight:700;}
+  .nq-row-val{font-size:.9rem;color:var(--nq-sub);white-space:nowrap;}
+  .nq-track{position:relative;height:22px;background:var(--nq-bg);border-radius:5px;overflow:hidden;}
+  .nq-fill{height:100%;border-radius:5px;background:var(--nq-primary);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1);}
+  .nq-fill.is-good{background:var(--nq-correct);}
+  .nq-fill.is-weak{background:var(--nq-wrong);}
+  .nq-mark{position:absolute;top:0;bottom:0;left:60%;width:1px;background:rgba(31,27,24,.3);}
+  .nq-badge{font-size:.76rem;font-weight:700;border-radius:4px;padding:2px 7px;margin-left:8px;background:var(--nq-bg);color:var(--nq-sub);}
+  .nq-badge.is-good{background:var(--nq-correct-bg);color:var(--nq-correct);}
+  .nq-badge.is-weak{background:var(--nq-wrong-bg);color:var(--nq-wrong);}
+  .nq-legend{font-size:.82rem;color:var(--nq-sub);margin:-18px 0 30px;}
+  .nq-review{display:grid;gap:10px;margin-bottom:8px;}
+  .nq-rev-item{border:1px solid var(--nq-line);border-radius:9px;overflow:hidden;}
+  .nq-rev-head{
+    width:100%;display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--nq-surface);
+    border:none;padding:14px 16px;cursor:pointer;font-family:inherit;font-size:.98rem;color:inherit;line-height:1.6;
+  }
+  .nq-rev-head:hover{background:#f2ede2;}
+  .nq-mk{flex:0 0 auto;font-weight:800;width:1.2em;}
+  .nq-mk.ok{color:var(--nq-correct);}
+  .nq-mk.ng{color:var(--nq-wrong);}
+  .nq-rev-body{padding:0 16px 16px 42px;font-size:.95rem;color:var(--nq-ink);line-height:1.75;}
+  .nq-rev-body b{color:var(--nq-ink);}
+  .nq-rev-body img{max-width:100%;max-height:220px;border:1px solid var(--nq-line);border-radius:6px;margin-bottom:8px;}
+
+  /* ---------- 問題作成フォーム ---------- */
+  .nq-input,.nq-textarea,.nq-select{
+    width:100%;border:1px solid var(--nq-line);border-radius:8px;padding:10px 12px;
+    font-family:inherit;font-size:1rem;color:inherit;background:var(--nq-surface);line-height:1.6;
+  }
+  .nq-input:focus,.nq-textarea:focus,.nq-select:focus{border-color:var(--nq-primary);outline:none;box-shadow:0 0 0 3px rgba(47,75,124,.14);}
+  .nq-textarea{resize:vertical;min-height:84px;}
+  .nq-input::placeholder,.nq-textarea::placeholder{color:#877d70;opacity:1;}
+  .nq-input,.nq-textarea,.nq-select{border-color:#cfc5b4;}
+  .nq-hint{font-size:.85rem;color:var(--nq-sub);margin:6px 0 0;line-height:1.7;}
+  .nq-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  .nq-ans-list{display:grid;gap:8px;}
+  .nq-ans-row{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:10px;}
+  .nq-ans-pick{
+    display:flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;color:var(--nq-ink);
+    border:1px solid var(--nq-line);border-radius:7px;padding:7px 9px;cursor:pointer;white-space:nowrap;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .nq-ans-pick:hover{border-color:var(--nq-correct);color:var(--nq-correct);}
+  .nq-ans-pick.is-on{background:var(--nq-correct);border-color:var(--nq-correct);color:#fdfcf9;}
+  .nq-ans-pick input{margin:0;}
+  .nq-ans-num{
+    width:28px;height:28px;border-radius:50%;background:var(--nq-bg);color:var(--nq-primary);
+    font-size:.86rem;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .nq-preview{
+    margin-top:10px;padding:10px;border:1px dashed var(--nq-line);border-radius:8px;
+    background:var(--nq-bg);text-align:center;font-size:.86rem;color:var(--nq-sub);
+  }
+  .nq-preview img{max-width:100%;max-height:200px;border-radius:6px;display:block;margin:0 auto;}
+
+  .nq-alert{border-radius:8px;padding:12px 15px;font-size:.93rem;font-weight:700;margin-bottom:16px;}
+  .nq-alert.is-error{background:var(--nq-wrong-bg);color:var(--nq-wrong);}
+  .nq-alert.is-ok{background:var(--nq-correct-bg);color:var(--nq-correct);}
+
+  .nq-list{display:grid;gap:8px;}
+  .nq-list-group{font-size:.88rem;font-weight:800;color:var(--nq-primary);margin:14px 0 2px;}
+  .nq-list-group:first-child{margin-top:0;}
+  .nq-list-item{
+    display:flex;align-items:center;gap:10px;border:1px solid var(--nq-line);
+    border-radius:8px;padding:11px 13px;font-size:.95rem;
+  }
+  .nq-list-text{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nq-pic{font-size:.74rem;font-weight:700;background:var(--nq-bg);color:var(--nq-sub);border-radius:4px;padding:2px 6px;flex:0 0 auto;}
+  .nq-list-btns{display:flex;gap:6px;flex:0 0 auto;}
+  .nq-empty{color:var(--nq-sub);font-size:.95rem;padding:16px 0;text-align:center;}
+
+  .nq-code{
+    width:100%;min-height:150px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.82rem;line-height:1.6;border:1px solid var(--nq-line);border-radius:8px;padding:12px;
+    background:#fbf8f1;color:var(--nq-ink);resize:vertical;
+  }
+
+  @media (max-width:560px){
+    #neuro-quiz{padding:24px 15px 44px;border-radius:0;}
+    .nq-card{padding:18px 15px;}
+    .nq-score-num{font-size:2.6rem;}
+    .nq-row2{grid-template-columns:1fr;}
+    .nq-ans-row{grid-template-columns:auto 1fr;grid-template-areas:"pick pick" "num input";}
+    .nq-ans-pick{grid-area:pick;justify-content:center;}
+    .nq-ans-num{grid-area:num;}
+    .nq-ans-row .nq-input{grid-area:input;}
+    .nq-btn{flex:1 1 auto;}
+  }
+  @media (prefers-reduced-motion:reduce){#neuro-quiz *{transition:none !important;}}
+  </style>
+
+  <p class="nq-eyebrow">CHECK YOUR UNDERSTANDING</p>
+  <h2 id="nq-title">疾患別 確認テスト</h2>
+  <p class="nq-lead">国家試験と同じ5択形式です。解いた疾患だけが結果グラフに表示されます。</p>
+
+  <div class="nq-tabs" role="tablist">
+    <button type="button" class="nq-tab is-on" id="nq-tab-play" role="tab" aria-selected="true">テストを解く</button>
+    <button type="button" class="nq-tab" id="nq-tab-edit" role="tab" aria-selected="false">問題を作る</button>
+  </div>
+
+  <!-- ============ テスト側 ============ -->
+  <div id="nq-view-play">
+
+    <!-- 設定 -->
+    <div class="nq-card" id="nq-setup">
+      <div class="nq-field">
+        <span class="nq-label">出題する疾患</span>
+        <div class="nq-grid-disease" id="nq-disease-chips"></div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-select-all">すべて選ぶ</button>
+          <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-select-none">すべて外す</button>
+        </div>
+      </div>
+
+      <div class="nq-field">
+        <span class="nq-label">問題数</span>
+        <div class="nq-grid-even" id="nq-count-chips">
+          <label class="nq-chip nq-chip-single"><input type="radio" name="nq-count" value="5"><span>5問</span></label>
+          <label class="nq-chip nq-chip-single is-on"><input type="radio" name="nq-count" value="10" checked><span>10問</span></label>
+          <label class="nq-chip nq-chip-single"><input type="radio" name="nq-count" value="0"><span>選んだ疾患のすべて</span></label>
+        </div>
+      </div>
+
+      <div class="nq-field">
+        <span class="nq-label">採点のタイミング</span>
+        <div class="nq-grid-even" id="nq-mode-chips">
+          <label class="nq-chip nq-chip-single is-on"><input type="radio" name="nq-mode" value="instant" checked><span>1問ごとに正誤を表示</span></label>
+          <label class="nq-chip nq-chip-single"><input type="radio" name="nq-mode" value="later"><span>最後にまとめて答え合わせ</span></label>
+        </div>
+      </div>
+
+      <div class="nq-actions">
+        <button type="button" class="nq-btn nq-btn-primary" id="nq-start">テストを始める</button>
+        <span id="nq-avail" style="font-size:.9rem;color:var(--nq-ink);"></span>
+      </div>
+    </div>
+
+    <!-- 出題 -->
+    <div class="nq-card nq-hidden" id="nq-play">
+      <div class="nq-bar-head">
+        <span id="nq-counter">1 / 10</span>
+        <span id="nq-live-score"></span>
+      </div>
+      <div class="nq-progress"><span id="nq-progress-fill" style="width:0%"></span></div>
+
+      <span class="nq-tag" id="nq-disease-tag"></span>
+      <p class="nq-question" id="nq-question"></p>
+      <img class="nq-qimg nq-hidden" id="nq-qimg" alt="">
+      <ul class="nq-choices" id="nq-choices"></ul>
+
+      <div class="nq-feedback nq-hidden" id="nq-feedback" role="status" aria-live="polite">
+        <p class="nq-verdict" id="nq-verdict"></p>
+        <p id="nq-explain"></p>
+      </div>
+
+      <div class="nq-actions">
+        <button type="button" class="nq-btn nq-btn-primary" id="nq-next" disabled>次の問題へ</button>
+        <button type="button" class="nq-btn nq-btn-ghost" id="nq-quit">最初からやり直す</button>
+      </div>
+    </div>
+
+    <!-- 結果 -->
+    <div class="nq-card nq-hidden" id="nq-result">
+      <div class="nq-score">
+        <div class="nq-score-num" id="nq-final-rate">0<small>%</small></div>
+        <div class="nq-score-sub" id="nq-final-detail"></div>
+      </div>
+
+      <h3 class="nq-sec-title">疾患別の正答率</h3>
+      <p class="nq-sec-note">今回解いた疾患のみを表示しています。</p>
+      <div class="nq-graph" id="nq-graph"></div>
+      <p class="nq-legend">縦の線は60%の目安です。1疾患あたり2問以下の場合は参考値としてご覧ください。</p>
+
+      <h3 class="nq-sec-title">解答の振り返り</h3>
+      <p class="nq-sec-note">問題をタップすると正解と解説が開きます。</p>
+      <div class="nq-review" id="nq-review"></div>
+
+      <div class="nq-actions">
+        <button type="button" class="nq-btn nq-btn-primary" id="nq-retry">同じ条件でもう一度</button>
+        <button type="button" class="nq-btn nq-btn-ghost" id="nq-back">条件を変えて解く</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 作成側 ============ -->
+  <div id="nq-view-edit" class="nq-hidden">
+
+    <div class="nq-card">
+      <h3 class="nq-sec-title" id="nq-form-title">新しい問題を作る</h3>
+      <p class="nq-sec-note">入力した内容はこのブラウザを閉じるまで有効です。残す場合は下の「コードで書き出す」をお使いください。</p>
+
+      <div class="nq-alert nq-hidden" id="nq-form-msg"></div>
+
+      <div class="nq-field">
+        <span class="nq-label">疾患カテゴリー<span class="nq-req">必須</span></span>
+        <div class="nq-row2">
+          <select class="nq-select" id="nq-f-disease"></select>
+          <input type="text" class="nq-input nq-hidden" id="nq-f-newdisease" placeholder="新しい疾患名を入力">
+        </div>
+      </div>
+
+      <div class="nq-field">
+        <span class="nq-label">問題文<span class="nq-req">必須</span></span>
+        <textarea class="nq-textarea" id="nq-f-question" placeholder="例）右片麻痺の患者で最も合併しやすいのはどれか。"></textarea>
+      </div>
+
+      <div class="nq-field">
+        <span class="nq-label">画像（任意）</span>
+        <input type="text" class="nq-input" id="nq-f-img" placeholder="images/gait01.jpg  または  https://...">
+        <p class="nq-hint">画像のアドレスを入れた問題だけ、テスト中に画像が表示されます。空欄なら表示されません。</p>
+        <input type="text" class="nq-input" id="nq-f-imgalt" placeholder="画像の説明（読み上げ用・任意）" style="margin-top:8px;">
+        <div class="nq-preview nq-hidden" id="nq-f-preview"></div>
+      </div>
+
+      <div class="nq-field">
+        <span class="nq-label">選択肢と正解<span class="nq-req">必須</span></span>
+        <div class="nq-ans-list" id="nq-f-choices"></div>
+        <p class="nq-hint">左の「正解」を押した選択肢が正答になります。出題時は5つの並び順がランダムに入れ替わります。</p>
+      </div>
+
+      <div class="nq-field" style="margin-bottom:0;">
+        <span class="nq-label">解説文<span class="nq-req">必須</span></span>
+        <textarea class="nq-textarea" id="nq-f-explain" placeholder="なぜその選択肢が正解なのかを書きます。"></textarea>
+      </div>
+
+      <div class="nq-actions">
+        <button type="button" class="nq-btn nq-btn-primary" id="nq-f-save">問題を追加する</button>
+        <button type="button" class="nq-btn nq-btn-ghost" id="nq-f-clear">入力を消す</button>
+        <button type="button" class="nq-btn nq-btn-ghost nq-hidden" id="nq-f-cancel">編集をやめる</button>
+      </div>
+    </div>
+
+    <div class="nq-card">
+      <h3 class="nq-sec-title">登録されている問題</h3>
+      <p class="nq-sec-note" id="nq-list-count"></p>
+      <div class="nq-list" id="nq-list"></div>
+    </div>
+
+    <div class="nq-card">
+      <h3 class="nq-sec-title">コードで書き出す／読み込む</h3>
+      <p class="nq-sec-note">書き出したコードを index.html の <code>const QUIZ_DATA = […];</code> と差し替えると、次回以降も残ります。</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+        <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-export">コードで書き出す</button>
+        <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-copy">コピーする</button>
+        <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-import">この内容を読み込む</button>
+      </div>
+      <textarea class="nq-code" id="nq-code" spellcheck="false" placeholder="「コードで書き出す」を押すとここに表示されます。"></textarea>
+      <p class="nq-hint" id="nq-io-msg"></p>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ============================================================
+       ■ 問題データ
+       answer は「正解が choices の何番目か」（0から数えます）。
+       img は画像のアドレス。空欄なら画像は表示されません。
+       ※ 掲載の問題は下書きです。内容は必ずご確認ください。
+       ============================================================ */
+    let QUIZ_DATA = [
+      {
+        id: 'parkinson', name: 'パーキンソン病（PD）',
+        questions: [
+          { q: 'パーキンソン病の4大症状に含まれないのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['安静時振戦', '筋固縮', '無動・寡動', '姿勢反射障害', '企図振戦'],
+            answer: 4,
+            explain: '企図振戦は、目標に近づくほど手が震える症状で、小脳の障害でみられます。パーキンソン病では、何もしていないときに震える安静時振戦が特徴です。' },
+          { q: 'Hoehn&Yahr重症度分類のステージⅢに該当するのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['症状は片側のみで日常生活に支障がない', '両側の症状があるが姿勢反射障害はない', '姿勢反射障害があるが介助なしに生活できる', '起立や歩行に介助が必要である', '車椅子またはベッド上の生活である'],
+            answer: 2,
+            explain: 'ステージⅢは、バランスを立て直す反応（姿勢反射）が低下して転びやすくなるものの、まだ自立して生活できる段階です。ここから介護保険や医療費助成の対象になります。' },
+          { q: 'すくみ足への対応として最も適切なのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['歩行速度をできるだけ速めるよう指示する', '床のテープや号令などの外的手がかりを用いる', '狭い場所での方向転換を繰り返し練習させる', '二重課題を課しながら歩行させる', '歩行器の使用を全例で禁止する'],
+            answer: 1,
+            explain: 'すくみ足は、床のライン、メトロノーム、号令といった外からの合図（外的手がかり）でまたぎ動作が引き出され、改善しやすいことが知られています。' }
+        ]
+      },
+      {
+        id: 'sca', name: '脊髄小脳変性症（SCD）',
+        questions: [
+          { q: '小脳性運動失調の症状として正しいのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['安静時振戦', '測定障害', '歯車様固縮', '線維束性収縮', '感覚性失調による深部感覚低下'],
+            answer: 1,
+            explain: '測定障害は、目標までの距離の見積もりがずれて行き過ぎたり手前で止まったりする症状です。指鼻試験や踵膝試験で確認します。' },
+          { q: '小脳性運動失調と脊髄性（感覚性）失調の鑑別に有用なのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['Romberg試験', 'Thomasテスト', 'Phalenテスト', 'Adsonテスト', 'Trendelenburg徴候'],
+            answer: 0,
+            explain: 'Romberg試験は、閉眼で立位のふらつきが強まるかをみる検査です。感覚性失調では閉眼で明らかに悪化しますが、小脳性では開眼・閉眼の差が小さいのが特徴です。' },
+          { q: '失調症状に対する理学療法として適切なのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['重錘やスーツによる固有感覚入力の付与', '徒手抵抗を用いた最大筋力増強のみを行う', '安静臥床を優先し活動量を制限する', '視覚を遮断した状態での歩行を主体とする', '関節可動域制限の改善を最優先とする'],
+            answer: 0,
+            explain: '重錘（おもり）や弾性帯で体に適度な負荷や締めつけを加えると、体の位置の感覚が入りやすくなり、動きのブレが減ることがあります。' }
+        ]
+      },
+      {
+        id: 'ms', name: '多発性硬化症（MS）',
+        questions: [
+          { q: '多発性硬化症の運動療法で最も注意すべきなのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['低血糖の出現', '体温の上昇', '起立性低血圧', '横紋筋融解症', '不随意運動の増悪'],
+            answer: 1,
+            explain: '体温が上がると一時的に症状が悪化するUhthoff（ウートフ）現象がみられます。室温管理、こまめな休憩、冷却などが必要です。' },
+          { q: '多発性硬化症の病態の特徴はどれか。',
+            img: '', imgAlt: '',
+            choices: ['中枢神経の脱髄が時間的・空間的に多発する', '末梢神経の軸索が対称性に変性する', '運動ニューロンが選択的に脱落する', '神経筋接合部の伝達が障害される', '筋線維そのものが進行性に変性する'],
+            answer: 0,
+            explain: '中枢神経の髄鞘（神経を包む膜）が壊れる病気で、時期を変え、場所を変えて症状が出るのが特徴です。' }
+        ]
+      },
+      {
+        id: 'als', name: '筋萎縮性側索硬化症（ALS）',
+        questions: [
+          { q: 'ALSで一般に障害されにくい（陰性徴候とされる）のはどれか。',
+            img: '', imgAlt: '',
+            choices: ['嚥下機能', '呼吸機能', '眼球運動', '上肢の筋力', '構音機能'],
+            answer: 2,
+            explain: '眼球運動・感覚・膀胱直腸機能・褥瘡は「4大陰性徴候」と呼ばれ、比較的保たれます。これを利用した視線入力による意思伝達装置が使われます。' },
+          { q: 'ALS患者への理学療法として適切なのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['最大負荷での筋力増強運動を毎日行う', '疲労を残さない範囲での関節可動域運動を行う', '筋力低下の進行を止めるため過負荷を徹底する', '呼吸機能の評価は末期まで行わない', '転倒予防のため終日臥床とする'],
+            answer: 1,
+            explain: '過度な運動は筋の使いすぎ（過用性筋力低下）を招きます。拘縮予防を中心に、疲れを翌日に残さない範囲で行うのが原則です。' }
+        ]
+      },
+      {
+        id: 'gbs', name: 'ギラン・バレー症候群',
+        questions: [
+          { q: 'ギラン・バレー症候群の典型的な特徴はどれか。',
+            img: '', imgAlt: '',
+            choices: ['腱反射の亢進と病的反射の出現', '先行感染後に生じる左右対称性の弛緩性麻痺', '片側性に進行する筋萎縮', '症状の日内変動が著明である', '発症から数年かけて緩徐に進行する'],
+            answer: 1,
+            explain: '風邪や下痢などの感染の1〜3週間後に、両足の力が入りにくくなり、上へ広がっていくのが典型です。腱反射は低下・消失します。' },
+          { q: '急性期のギラン・バレー症候群で最も注意すべきなのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['認知機能の低下', '呼吸筋麻痺', '不随意運動', '高血糖', '関節の異所性骨化'],
+            answer: 1,
+            explain: '麻痺が横隔膜など呼吸の筋に及ぶと人工呼吸器が必要になります。肺活量や呼吸状態の観察が欠かせません。' }
+        ]
+      },
+      {
+        id: 'md', name: '筋ジストロフィー',
+        questions: [
+          { q: 'Duchenne型筋ジストロフィーでみられる特徴的な所見はどれか。',
+            img: '', imgAlt: '',
+            choices: ['Gowers徴候', 'Babinski徴候', 'Kernig徴候', 'Lhermitte徴候', 'Tinel徴候'],
+            answer: 0,
+            explain: 'Gowers（ガワーズ）徴候は、床から立ち上がるときに自分の膝に手をついて体をよじ登るようにする動作で、腰まわりの筋力低下を示します。' },
+          { q: 'Duchenne型筋ジストロフィーの理学療法で正しいのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['最大筋力での抵抗運動を積極的に行う', '過用を避け拘縮予防と呼吸理学療法を重視する', '歩行可能な時期は装具を一切用いない', '側弯の進行は自然経過なので対応しない', '心機能の評価は不要である'],
+            answer: 1,
+            explain: '筋が壊れやすいため強い抵抗運動は避けます。拘縮予防、装具や車椅子の適合、呼吸と心臓の管理が中心になります。' }
+        ]
+      },
+      {
+        id: 'mg', name: '重症筋無力症',
+        questions: [
+          { q: '重症筋無力症の特徴はどれか。',
+            img: '', imgAlt: '',
+            choices: ['朝に症状が最も強く夕方に軽快する', '易疲労性があり夕方に症状が増悪する', '症状が数年単位で不変である', '感覚障害が初発症状となる', '腱反射が著明に亢進する'],
+            answer: 1,
+            explain: '使い続けると力が入らなくなる「易疲労性」があり、夕方に悪くなる日内変動が特徴です。まぶたが下がる、物が二重に見えるなどで気づかれます。' },
+          { q: '重症筋無力症患者への運動療法で適切なのはどれか。',
+            img: '', imgAlt: '',
+            choices: ['疲労が蓄積しないよう休憩を挟んで行う', '筋力低下を防ぐため高負荷で連続して行う', '運動は禁忌であり実施しない', '症状が最も強い時間帯に集中して行う', '呼吸状態の確認は不要である'],
+            answer: 0,
+            explain: '疲れを残さないことが原則です。薬が効いている時間帯に合わせ、短時間・分割して行います。急激な悪化（クリーゼ）による呼吸状態にも注意します。' }
+        ]
+      }
+    ];
+
+    /* ============================================================
+       ■ ここから下は動作の仕組みです（通常は変更不要）
+       ============================================================ */
+    const $ = (id) => document.getElementById(id);
+    const MARK = ['①','②','③','④','⑤','⑥'];
+    const NEW_DISEASE = '__new__';
+
+    const state = {
+      selected: new Set(QUIZ_DATA.map(d => d.id)),
+      count: 10, mode: 'instant',
+      queue: [], index: 0, results: [], locked: false, picked: null,
+      editing: null   // {diseaseId, qIndex} 編集中の問題
+    };
+
+    const shuffle = (arr) => {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    };
+    const esc = (s) => String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+    /* ---------------- タブ ---------------- */
+    function switchTab(which) {
+      const play = (which === 'play');
+      $('nq-tab-play').classList.toggle('is-on', play);
+      $('nq-tab-edit').classList.toggle('is-on', !play);
+      $('nq-tab-play').setAttribute('aria-selected', String(play));
+      $('nq-tab-edit').setAttribute('aria-selected', String(!play));
+      $('nq-view-play').classList.toggle('nq-hidden', !play);
+      $('nq-view-edit').classList.toggle('nq-hidden', play);
+      if (play) { buildChips(); updateAvail(); showPane('nq-setup'); }
+      else { buildDiseaseSelect(); renderList(); }
+    }
+
+    /* ---------------- 設定チップ ---------------- */
+    function buildChips() {
+      const wrap = $('nq-disease-chips');
+      wrap.innerHTML = '';
+      QUIZ_DATA.forEach(d => {
+        if (!state.selected.has(d.id) && !state.selected.size) state.selected.add(d.id);
+        const on = state.selected.has(d.id);
+        const label = document.createElement('label');
+        label.className = 'nq-chip' + (on ? ' is-on' : '');
+        label.innerHTML =
+          '<input type="checkbox" value="' + esc(d.id) + '"' + (on ? ' checked' : '') + '>' +
+          '<span>' + esc(d.name) + '</span>' +
+          '<span class="nq-count">' + d.questions.length + '問</span>';
+        const input = label.querySelector('input');
+        input.addEventListener('change', () => {
+          if (input.checked) { state.selected.add(d.id); label.classList.add('is-on'); }
+          else { state.selected.delete(d.id); label.classList.remove('is-on'); }
+          updateAvail();
+        });
+        wrap.appendChild(label);
+      });
+    }
+
+    function bindRadioChips(containerId, onPick) {
+      const wrap = $(containerId);
+      wrap.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', () => {
+          wrap.querySelectorAll('.nq-chip').forEach(c => c.classList.remove('is-on'));
+          input.closest('.nq-chip').classList.add('is-on');
+          onPick(input.value);
+          updateAvail();
+        });
+      });
+    }
+
+    function pool() {
+      const list = [];
+      QUIZ_DATA.forEach(d => {
+        if (!state.selected.has(d.id)) return;
+        d.questions.forEach(q => list.push({ diseaseId: d.id, diseaseName: d.name, data: q }));
+      });
+      return list;
+    }
+
+    function updateAvail() {
+      const n = pool().length;
+      $('nq-start').disabled = n === 0;
+      if (n === 0) { $('nq-avail').textContent = '疾患を1つ以上選んでください。'; return; }
+      const need = state.count === 0 ? n : state.count;
+      $('nq-avail').textContent = (state.count !== 0 && n < state.count)
+        ? '選択中の問題は' + n + '問です。全' + n + '問を出題します。'
+        : '出題数：' + need + '問（選択中 ' + n + '問より抽出）';
+    }
+
+    function showPane(which) {
+      ['nq-setup','nq-play','nq-result'].forEach(id => $(id).classList.toggle('nq-hidden', id !== which));
+      const top = $('neuro-quiz');
+      if (top.getBoundingClientRect().top < 0) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ---------------- 出題 ---------------- */
+    function start() {
+      const list = shuffle(pool());
+      const n = state.count === 0 ? list.length : Math.min(state.count, list.length);
+      state.queue = list.slice(0, n).map(item => {
+        const order = shuffle(item.data.choices.map((c, i) => i));
+        return {
+          diseaseId: item.diseaseId, diseaseName: item.diseaseName,
+          question: item.data.q,
+          img: item.data.img || '', imgAlt: item.data.imgAlt || '',
+          explain: item.data.explain,
+          choices: order.map(i => item.data.choices[i]),
+          answer: order.indexOf(item.data.answer)
+        };
+      });
+      state.index = 0; state.results = [];
+      showPane('nq-play');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = state.queue[state.index];
+      state.locked = false; state.picked = null;
+
+      $('nq-counter').textContent = (state.index + 1) + ' / ' + state.queue.length;
+      $('nq-progress-fill').style.width = (state.index / state.queue.length * 100) + '%';
+      $('nq-disease-tag').textContent = q.diseaseName;
+      $('nq-question').textContent = q.question;
+      $('nq-feedback').classList.add('nq-hidden');
+      $('nq-next').disabled = true;
+      $('nq-next').textContent = (state.index === state.queue.length - 1) ? '結果を見る' : '次の問題へ';
+      $('nq-live-score').textContent = (state.mode === 'instant' && state.results.length)
+        ? '正解 ' + state.results.filter(r => r.correct).length + ' / ' + state.results.length : '';
+
+      /* 画像は登録があるときだけ表示 */
+      const img = $('nq-qimg');
+      if (q.img) {
+        img.src = q.img;
+        img.alt = q.imgAlt || '問題の画像';
+        img.classList.remove('nq-hidden');
+        img.onerror = () => img.classList.add('nq-hidden');
+      } else {
+        img.classList.add('nq-hidden');
+        img.removeAttribute('src');
+      }
+
+      const ul = $('nq-choices');
+      ul.innerHTML = '';
+      q.choices.forEach((text, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'nq-choice';
+        btn.innerHTML = '<span class="nq-num">' + MARK[i] + '</span><span>' + esc(text) + '</span>';
+        btn.addEventListener('click', () => pick(i));
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+    }
+
+    function pick(i) {
+      const q = state.queue[state.index];
+      const buttons = Array.from($('nq-choices').querySelectorAll('.nq-choice'));
+
+      if (state.mode === 'later') {
+        state.picked = i;
+        buttons.forEach((b, k) => b.classList.toggle('is-picked', k === i));
+        $('nq-next').disabled = false;
+        return;
+      }
+      if (state.locked) return;
+      state.locked = true; state.picked = i;
+      const correct = (i === q.answer);
+      buttons.forEach((b, k) => {
+        b.disabled = true;
+        if (k === q.answer) b.classList.add('is-correct');
+        else if (k === i) b.classList.add('is-wrong');
+      });
+      const fb = $('nq-feedback');
+      fb.classList.remove('nq-hidden','is-correct','is-wrong');
+      fb.classList.add(correct ? 'is-correct' : 'is-wrong');
+      $('nq-verdict').textContent = correct ? '正解' : '不正解　正解は ' + MARK[q.answer];
+      $('nq-explain').textContent = q.explain;
+      $('nq-next').disabled = false;
+    }
+
+    function next() {
+      const q = state.queue[state.index];
+      if (state.picked === null) return;
+      state.results.push({
+        diseaseId: q.diseaseId, diseaseName: q.diseaseName, question: q.question,
+        img: q.img, imgAlt: q.imgAlt, choices: q.choices, answer: q.answer,
+        picked: state.picked, correct: state.picked === q.answer, explain: q.explain
+      });
+      state.index++;
+      if (state.index >= state.queue.length) renderResult();
+      else renderQuestion();
+    }
+
+    /* ---------------- 結果 ---------------- */
+    function renderResult() {
+      showPane('nq-result');
+      const total = state.results.length;
+      const hit = state.results.filter(r => r.correct).length;
+      $('nq-final-rate').innerHTML = Math.round(hit / total * 100) + '<small>%</small>';
+      $('nq-final-detail').textContent = '全' + total + '問中 ' + hit + '問正解';
+
+      const byDisease = {};
+      state.results.forEach(r => {
+        if (!byDisease[r.diseaseId]) byDisease[r.diseaseId] = { name: r.diseaseName, n: 0, hit: 0 };
+        byDisease[r.diseaseId].n++;
+        if (r.correct) byDisease[r.diseaseId].hit++;
+      });
+      const rows = Object.values(byDisease)
+        .map(d => Object.assign(d, { rate: Math.round(d.hit / d.n * 100) }))
+        .sort((a, b) => b.rate - a.rate);
+
+      const graph = $('nq-graph');
+      graph.innerHTML = '';
+      rows.forEach(d => {
+        let badge = '', cls = '';
+        if (d.rate >= 80) { badge = '得意'; cls = 'is-good'; }
+        else if (d.rate < 60) { badge = '要復習'; cls = 'is-weak'; }
+        const row = document.createElement('div');
+        row.innerHTML =
+          '<div class="nq-row-head">' +
+            '<span class="nq-row-name">' + esc(d.name) +
+              (badge ? '<span class="nq-badge ' + cls + '">' + badge + '</span>' : '') + '</span>' +
+            '<span class="nq-row-val">' + d.hit + '/' + d.n + '問　' + d.rate + '%</span>' +
+          '</div>' +
+          '<div class="nq-track"><div class="nq-fill ' + cls + '"></div><span class="nq-mark"></span></div>';
+        graph.appendChild(row);
+        const fill = row.querySelector('.nq-fill');
+        requestAnimationFrame(() => { fill.style.width = d.rate + '%'; });
+      });
+
+      const rev = $('nq-review');
+      rev.innerHTML = '';
+      state.results.forEach((r, i) => {
+        const item = document.createElement('div');
+        item.className = 'nq-rev-item';
+        const bodyId = 'nq-rev-body-' + i;
+        item.innerHTML =
+          '<button type="button" class="nq-rev-head" aria-expanded="false" aria-controls="' + bodyId + '">' +
+            '<span class="nq-mk ' + (r.correct ? 'ok">○' : 'ng">×') + '</span>' +
+            '<span>' + (i + 1) + '. [' + esc(r.diseaseName) + '] ' + esc(r.question) + '</span>' +
+          '</button>' +
+          '<div class="nq-rev-body nq-hidden" id="' + bodyId + '">' +
+            (r.img ? '<img src="' + esc(r.img) + '" alt="' + esc(r.imgAlt) + '">' : '') +
+            '<p style="margin:0 0 6px;">正解：<b>' + MARK[r.answer] + ' ' + esc(r.choices[r.answer]) + '</b>' +
+            (r.correct ? '' : '　／　あなたの解答：' + MARK[r.picked] + ' ' + esc(r.choices[r.picked])) + '</p>' +
+            '<p style="margin:0;">' + esc(r.explain) + '</p>' +
+          '</div>';
+        const head = item.querySelector('.nq-rev-head');
+        const body = item.querySelector('.nq-rev-body');
+        head.addEventListener('click', () => {
+          const open = body.classList.toggle('nq-hidden');
+          head.setAttribute('aria-expanded', String(!open));
+        });
+        rev.appendChild(item);
+      });
+    }
+
+    /* ---------------- 問題作成フォーム ---------------- */
+    function buildDiseaseSelect(keepValue) {
+      const sel = $('nq-f-disease');
+      const cur = keepValue || sel.value;
+      sel.innerHTML = '';
+      QUIZ_DATA.forEach(d => {
+        const o = document.createElement('option');
+        o.value = d.id; o.textContent = d.name + '（' + d.questions.length + '問）';
+        sel.appendChild(o);
+      });
+      const o = document.createElement('option');
+      o.value = NEW_DISEASE; o.textContent = '＋ 新しい疾患を追加';
+      sel.appendChild(o);
+      if (cur) sel.value = cur;
+      toggleNewDisease();
+    }
+
+    function toggleNewDisease() {
+      const isNew = $('nq-f-disease').value === NEW_DISEASE;
+      $('nq-f-newdisease').classList.toggle('nq-hidden', !isNew);
+      if (isNew) $('nq-f-newdisease').focus();
+    }
+
+    function buildChoiceInputs() {
+      const wrap = $('nq-f-choices');
+      wrap.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const row = document.createElement('div');
+        row.className = 'nq-ans-row';
+        row.innerHTML =
+          '<label class="nq-ans-pick"><input type="radio" name="nq-f-answer" value="' + i + '"><span>正解</span></label>' +
+          '<span class="nq-ans-num">' + MARK[i] + '</span>' +
+          '<input type="text" class="nq-input" data-choice="' + i + '" placeholder="選択肢' + MARK[i] + 'の文章">';
+        wrap.appendChild(row);
+      }
+      wrap.querySelectorAll('input[name="nq-f-answer"]').forEach(r => {
+        r.addEventListener('change', () => {
+          wrap.querySelectorAll('.nq-ans-pick').forEach(p => p.classList.remove('is-on'));
+          if (r.checked) r.closest('.nq-ans-pick').classList.add('is-on');
+        });
+      });
+    }
+
+    function formMsg(text, ok) {
+      const el = $('nq-form-msg');
+      if (!text) { el.classList.add('nq-hidden'); return; }
+      el.textContent = text;
+      el.className = 'nq-alert ' + (ok ? 'is-ok' : 'is-error');
+    }
+
+    function clearForm() {
+      $('nq-f-question').value = '';
+      $('nq-f-img').value = '';
+      $('nq-f-imgalt').value = '';
+      $('nq-f-explain').value = '';
+      $('nq-f-newdisease').value = '';
+      buildChoiceInputs();
+      updatePreview();
+      state.editing = null;
+      $('nq-form-title').textContent = '新しい問題を作る';
+      $('nq-f-save').textContent = '問題を追加する';
+      $('nq-f-cancel').classList.add('nq-hidden');
+      formMsg('');
+    }
+
+    function updatePreview() {
+      const url = $('nq-f-img').value.trim();
+      const box = $('nq-f-preview');
+      if (!url) { box.classList.add('nq-hidden'); box.innerHTML = ''; return; }
+      box.classList.remove('nq-hidden');
+      box.innerHTML = '<img alt="プレビュー">';
+      const img = box.querySelector('img');
+      img.onerror = () => { box.innerHTML = '画像を読み込めませんでした。アドレスをご確認ください。'; };
+      img.src = url;
+    }
+
+    function readForm() {
+      const sel = $('nq-f-disease').value;
+      let diseaseId = sel, diseaseName = '';
+      if (sel === NEW_DISEASE) {
+        diseaseName = $('nq-f-newdisease').value.trim();
+        if (!diseaseName) return { error: '新しい疾患名を入力してください。' };
+        diseaseId = 'd' + Date.now().toString(36);
+      }
+      const q = $('nq-f-question').value.trim();
+      if (!q) return { error: '問題文を入力してください。' };
+
+      const inputs = Array.from($('nq-f-choices').querySelectorAll('input[data-choice]'));
+      const choices = inputs.map(i => i.value.trim());
+      if (choices.some(c => !c)) return { error: '選択肢を5つすべて入力してください。' };
+
+      const picked = $('nq-f-choices').querySelector('input[name="nq-f-answer"]:checked');
+      if (!picked) return { error: 'どれが正解かを選んでください。' };
+
+      const explain = $('nq-f-explain').value.trim();
+      if (!explain) return { error: '解説文を入力してください。' };
+
+      return {
+        diseaseId, diseaseName, isNew: sel === NEW_DISEASE,
+        question: {
+          q: q,
+          img: $('nq-f-img').value.trim(),
+          imgAlt: $('nq-f-imgalt').value.trim(),
+          choices: choices,
+          answer: parseInt(picked.value, 10),
+          explain: explain
+        }
+      };
+    }
+
+    function saveQuestion() {
+      const data = readForm();
+      if (data.error) { formMsg(data.error, false); return; }
+
+      if (data.isNew) {
+        QUIZ_DATA.push({ id: data.diseaseId, name: data.diseaseName, questions: [] });
+        state.selected.add(data.diseaseId);
+      }
+      const disease = QUIZ_DATA.find(d => d.id === data.diseaseId);
+
+      if (state.editing) {
+        const from = QUIZ_DATA.find(d => d.id === state.editing.diseaseId);
+        if (from === disease) {
+          disease.questions[state.editing.qIndex] = data.question;
+        } else {
+          from.questions.splice(state.editing.qIndex, 1);
+          disease.questions.push(data.question);
+          if (!from.questions.length) {
+            QUIZ_DATA = QUIZ_DATA.filter(d => d !== from);
+            state.selected.delete(from.id);
+          }
+        }
+        clearForm();
+        formMsg('問題を更新しました。', true);
+      } else {
+        disease.questions.push(data.question);
+        clearForm();
+        formMsg('「' + disease.name + '」に問題を追加しました。', true);
+      }
+      buildDiseaseSelect(disease.id);
+      renderList();
+    }
+
+    function editQuestion(diseaseId, qIndex) {
+      const d = QUIZ_DATA.find(x => x.id === diseaseId);
+      const q = d.questions[qIndex];
+      state.editing = { diseaseId, qIndex };
+
+      buildDiseaseSelect(diseaseId);
+      $('nq-f-question').value = q.q;
+      $('nq-f-img').value = q.img || '';
+      $('nq-f-imgalt').value = q.imgAlt || '';
+      $('nq-f-explain').value = q.explain;
+      buildChoiceInputs();
+      const inputs = $('nq-f-choices').querySelectorAll('input[data-choice]');
+      q.choices.forEach((c, i) => { if (inputs[i]) inputs[i].value = c; });
+      const radio = $('nq-f-choices').querySelector('input[name="nq-f-answer"][value="' + q.answer + '"]');
+      if (radio) { radio.checked = true; radio.closest('.nq-ans-pick').classList.add('is-on'); }
+      updatePreview();
+
+      $('nq-form-title').textContent = '問題を編集する';
+      $('nq-f-save').textContent = '変更を保存する';
+      $('nq-f-cancel').classList.remove('nq-hidden');
+      formMsg('');
+      $('nq-view-edit').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function deleteQuestion(diseaseId, qIndex) {
+      const d = QUIZ_DATA.find(x => x.id === diseaseId);
+      d.questions.splice(qIndex, 1);
+      if (!d.questions.length) {
+        QUIZ_DATA = QUIZ_DATA.filter(x => x !== d);
+        state.selected.delete(d.id);
+      }
+      if (state.editing && state.editing.diseaseId === diseaseId) clearForm();
+      buildDiseaseSelect();
+      renderList();
+    }
+
+    function renderList() {
+      const wrap = $('nq-list');
+      wrap.innerHTML = '';
+      const total = QUIZ_DATA.reduce((s, d) => s + d.questions.length, 0);
+      $('nq-list-count').textContent = '全' + QUIZ_DATA.length + '疾患・' + total + '問';
+
+      if (!total) { wrap.innerHTML = '<p class="nq-empty">まだ問題がありません。上のフォームから追加してください。</p>'; return; }
+
+      QUIZ_DATA.forEach(d => {
+        const head = document.createElement('p');
+        head.className = 'nq-list-group';
+        head.textContent = d.name + '（' + d.questions.length + '問）';
+        wrap.appendChild(head);
+
+        d.questions.forEach((q, i) => {
+          const item = document.createElement('div');
+          item.className = 'nq-list-item';
+          item.innerHTML =
+            '<span class="nq-list-text">' + (i + 1) + '. ' + esc(q.q) + '</span>' +
+            (q.img ? '<span class="nq-pic">画像あり</span>' : '') +
+            '<span class="nq-list-btns">' +
+              '<button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" data-act="edit">編集</button>' +
+              '<button type="button" class="nq-btn nq-btn-danger nq-btn-sm" data-act="del">削除</button>' +
+            '</span>';
+          item.querySelector('[data-act="edit"]').addEventListener('click', () => editQuestion(d.id, i));
+          const del = item.querySelector('[data-act="del"]');
+          del.addEventListener('click', () => {
+            if (del.dataset.confirm === '1') { deleteQuestion(d.id, i); return; }
+            del.dataset.confirm = '1';
+            del.textContent = '本当に削除';
+            setTimeout(() => { del.dataset.confirm = ''; del.textContent = '削除'; }, 4000);
+          });
+          wrap.appendChild(item);
+        });
+      });
+    }
+
+    /* ---------------- 書き出し／読み込み ---------------- */
+    function exportCode() {
+      const clean = QUIZ_DATA.map(d => ({
+        id: d.id, name: d.name,
+        questions: d.questions.map(q => {
+          const o = { q: q.q };
+          if (q.img) { o.img = q.img; if (q.imgAlt) o.imgAlt = q.imgAlt; }
+          o.choices = q.choices; o.answer = q.answer; o.explain = q.explain;
+          return o;
+        })
+      }));
+      $('nq-code').value = 'let QUIZ_DATA = ' + JSON.stringify(clean, null, 2) + ';';
+      $('nq-io-msg').textContent = 'index.html の「let QUIZ_DATA = …];」の部分を、この内容で置き換えてください。';
+    }
+
+    function importCode() {
+      const raw = $('nq-code').value.trim().replace(/^\s*(let|const|var)\s+QUIZ_DATA\s*=\s*/, '').replace(/;\s*$/, '');
+      try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || !parsed.length) throw new Error('形式が違います');
+        parsed.forEach(d => {
+          if (!d.id || !d.name || !Array.isArray(d.questions)) throw new Error('形式が違います');
+        });
+        QUIZ_DATA = parsed;
+        state.selected = new Set(QUIZ_DATA.map(d => d.id));
+        state.editing = null;
+        clearForm(); buildDiseaseSelect(); renderList();
+        $('nq-io-msg').textContent = '読み込みました。全' + QUIZ_DATA.length + '疾患です。';
+      } catch (e) {
+        $('nq-io-msg').textContent = '読み込めませんでした。書き出したときの形のまま貼り付けてください。';
+      }
+    }
+
+    function copyCode() {
+      const ta = $('nq-code');
+      if (!ta.value) exportCode();
+      ta.select();
+      const done = () => { $('nq-io-msg').textContent = 'コピーしました。'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ta.value).then(done, () => { document.execCommand('copy'); done(); });
+      } else { document.execCommand('copy'); done(); }
+    }
+
+    /* ---------------- 起動 ---------------- */
+    buildChips();
+    bindRadioChips('nq-count-chips', v => { state.count = parseInt(v, 10); });
+    bindRadioChips('nq-mode-chips', v => { state.mode = v; });
+    updateAvail();
+    buildChoiceInputs();
+    buildDiseaseSelect();
+    renderList();
+
+    $('nq-tab-play').addEventListener('click', () => switchTab('play'));
+    $('nq-tab-edit').addEventListener('click', () => switchTab('edit'));
+
+    $('nq-select-all').addEventListener('click', () => {
+      $('nq-disease-chips').querySelectorAll('input').forEach(i => {
+        i.checked = true; i.closest('.nq-chip').classList.add('is-on'); state.selected.add(i.value);
+      });
+      updateAvail();
+    });
+    $('nq-select-none').addEventListener('click', () => {
+      $('nq-disease-chips').querySelectorAll('input').forEach(i => {
+        i.checked = false; i.closest('.nq-chip').classList.remove('is-on'); state.selected.delete(i.value);
+      });
+      updateAvail();
+    });
+
+    $('nq-start').addEventListener('click', start);
+    $('nq-next').addEventListener('click', next);
+    $('nq-quit').addEventListener('click', () => showPane('nq-setup'));
+    $('nq-retry').addEventListener('click', start);
+    $('nq-back').addEventListener('click', () => showPane('nq-setup'));
+
+    $('nq-f-disease').addEventListener('change', toggleNewDisease);
+    $('nq-f-img').addEventListener('input', updatePreview);
+    $('nq-f-save').addEventListener('click', saveQuestion);
+    $('nq-f-clear').addEventListener('click', clearForm);
+    $('nq-f-cancel').addEventListener('click', clearForm);
+    $('nq-export').addEventListener('click', exportCode);
+    $('nq-import').addEventListener('click', importCode);
+    $('nq-copy').addEventListener('click', copyCode);
+  })();
+  </script>
+</section>
