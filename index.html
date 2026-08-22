@@ -61,33 +61,33 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 50;
-    height: 56px;
+    height: 64px;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 0 24px;
-    background: rgba(20,24,28,0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .topbar.scrolled{
+    background: var(--paper-raised);
+    border-bottom-color: var(--line);
   }
   .topbar-title{
     flex: 1 1 auto; min-width: 0;
-    font-size: 13.5px; font-weight: 700; letter-spacing: 0.03em;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.02em;
     color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 1px 10px rgba(0,0,0,0.3);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color .2s ease, text-shadow .2s ease;
   }
-  .topbar .menu-btn{
-    background: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.32);
-    color: #fff;
-  }
-  .topbar .menu-btn:hover{ border-color: rgba(255,255,255,0.55); }
-  .topbar .menu-btn[aria-expanded="true"]{
-    background: rgba(255,255,255,0.24);
-    border-color: rgba(255,255,255,0.6);
+  .topbar.scrolled .topbar-title{
+    color: var(--ink);
+    text-shadow: none;
   }
   @media (max-width: 560px){
-    .topbar{ height: 48px; padding: 0 16px; }
+    .topbar{ height: 56px; padding: 0 16px; }
     .topbar-title{ font-size: 12.5px; }
   }
 
@@ -110,7 +110,7 @@
   }
   .hero-content{
     position: absolute;
-    left: 0; right: 0; top: 76px;
+    left: 0; right: 0; top: 84px;
     padding: 0 24px;
     max-width: 1040px;
     margin: 0 auto;
@@ -147,7 +147,7 @@
 
   @media (max-width: 560px){
     .hero{ height: min(40vh, 300px); min-height: 240px; }
-    .hero-content{ top: 60px; }
+    .hero-content{ top: 68px; }
     .hero-lecturer{ right: 16px; bottom: 16px; max-width: 60%; }
     .hero-lecturer-name{ font-size: 13px; }
     .hero-lecturer-role{ font-size: 10.5px; }
@@ -214,7 +214,7 @@
 
   .menu-panel{
     position: fixed;
-    top: 64px;
+    top: 72px;
     right: max(24px, calc((100vw - 1040px) / 2 + 24px));
     width: 340px;
     max-height: min(70vh, 560px);
@@ -279,7 +279,7 @@
   .to-top-btn svg{ width: 20px; height: 20px; }
 
   @media (max-width: 560px){
-    .menu-panel{ top: 56px; right: 16px; left: 16px; width: auto; }
+    .menu-panel{ top: 64px; right: 16px; left: 16px; width: auto; }
     .to-top-btn{ right: 16px; bottom: 16px; }
   }
 
@@ -6637,6 +6637,18 @@
 
     window.addEventListener('load', boot);
     boot();
+  })();
+
+  /* ---------- 固定トップバー(スクロールで背景を出す) ---------- */
+  (function(){
+    var topbar = document.querySelector('.topbar');
+    if(!topbar) return;
+    function sync(){
+      if(window.scrollY > 24){ topbar.classList.add('scrolled'); }
+      else { topbar.classList.remove('scrolled'); }
+    }
+    window.addEventListener('scroll', sync, {passive: true});
+    sync();
   })();
 
   /* ---------- Hamburger menu ---------- */
