@@ -56,6 +56,41 @@
   .display{ font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; }
   .mono{ font-family: ui-monospace, "SF Mono", "Roboto Mono", "Courier New", monospace; }
 
+  /* ---------- 固定トップバー(タイトル + 目次ボタン) ---------- */
+  .topbar{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+    background: rgba(20,24,28,0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .topbar-title{
+    flex: 1 1 auto; min-width: 0;
+    font-size: 13.5px; font-weight: 700; letter-spacing: 0.03em;
+    color: #fff;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .topbar .menu-btn{
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.32);
+    color: #fff;
+  }
+  .topbar .menu-btn:hover{ border-color: rgba(255,255,255,0.55); }
+  .topbar .menu-btn[aria-expanded="true"]{
+    background: rgba(255,255,255,0.24);
+    border-color: rgba(255,255,255,0.6);
+  }
+  @media (max-width: 560px){
+    .topbar{ height: 48px; padding: 0 16px; }
+    .topbar-title{ font-size: 12.5px; }
+  }
+
   /* ---------- Hero ---------- */
   .hero{
     position: relative;
@@ -75,18 +110,11 @@
   }
   .hero-content{
     position: absolute;
-    left: 0; right: 0; top: 36px;
+    left: 0; right: 0; top: 76px;
     padding: 0 24px;
-    max-width: 880px;
+    max-width: 1040px;
     margin: 0 auto;
     color: #fff;
-  }
-  .hero-eyebrow{
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    opacity: 0.92;
-    margin-bottom: 8px;
   }
   .hero-title{
     font-size: clamp(22px, 4vw, 32px);
@@ -119,31 +147,14 @@
 
   @media (max-width: 560px){
     .hero{ height: min(40vh, 300px); min-height: 240px; }
-    .hero-content{ top: 20px; }
+    .hero-content{ top: 60px; }
     .hero-lecturer{ right: 16px; bottom: 16px; max-width: 60%; }
     .hero-lecturer-name{ font-size: 13px; }
     .hero-lecturer-role{ font-size: 10.5px; }
   }
 
-  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 24px 96px; }
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 32px 24px 96px; }
 
-  /* ---------- Tab switcher (sticky) ---------- */
-  .tabbar{
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--paper);
-    padding: 20px 0 12px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 32px;
-  }
-  .tabbar-inner{
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    gap: 8px;
-  }
   .tab-btn{
     flex: 1 1 0;
     min-width: 0;
@@ -203,8 +214,8 @@
 
   .menu-panel{
     position: fixed;
-    top: 68px;
-    right: max(24px, calc((100vw - 880px) / 2 + 24px));
+    top: 64px;
+    right: max(24px, calc((100vw - 1040px) / 2 + 24px));
     width: 340px;
     max-height: min(70vh, 560px);
     overflow-y: auto;
@@ -268,7 +279,7 @@
   .to-top-btn svg{ width: 20px; height: 20px; }
 
   @media (max-width: 560px){
-    .menu-panel{ right: 16px; left: 16px; width: auto; }
+    .menu-panel{ top: 56px; right: 16px; left: 16px; width: auto; }
     .to-top-btn{ right: 16px; bottom: 16px; }
   }
 
@@ -351,12 +362,7 @@
     letter-spacing: 0.06em; margin-bottom: 2px;
   }
 
-  /* ---------- ツールバー ---------- */
-  .toolbar-title{
-    flex: 1 1 auto; min-width: 0; align-self: center;
-    font-size: 14px; font-weight: 700; color: var(--ink);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  /* ---------- 目次メニュー ---------- */
   .menu-link{ display: flex; align-items: baseline; gap: 10px; }
   .menu-link-round{
     flex: 0 0 auto; font-size: 10.5px; font-weight: 700; color: var(--accent);
@@ -756,35 +762,30 @@
   }
 
   @media (max-width: 560px){
-    .wrap{ padding: 0 16px 72px; }
-    .tabbar-inner{ padding: 0 16px; }
+    .wrap{ padding: 24px 16px 72px; }
     h1.display{ font-size: 22px; }
     .session-panel-inner{ padding-left: 18px; }
     .footer-grid{ grid-template-columns: 1fr; }
-    .tab-btn .tab-label{ font-size: 13px; }
   }
 </style>
 </head>
 <body>
 
+<div class="topbar">
+  <div class="topbar-title">神経・筋疾患理学療法　講義計画</div>
+  <button class="menu-btn" id="menuBtn" aria-label="目次を開く" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
 <div class="hero" style="background-image:url('hero.jpg')">
   <div class="hero-content">
-    <div class="hero-eyebrow">神経・筋疾患理学療法　講義計画</div>
     <h1 class="hero-title display">2027年度前期　講義計画</h1>
   </div>
 
   <div class="hero-lecturer">
     <div class="hero-lecturer-name">新池 友希</div>
     <div class="hero-lecturer-role">所属:三宅リハビリテーション病院</div>
-  </div>
-</div>
-
-<div class="tabbar">
-  <div class="tabbar-inner">
-    <div class="toolbar-title">神経・筋疾患理学療法　講義計画</div>
-    <button class="menu-btn" id="menuBtn" aria-label="目次を開く" aria-expanded="false">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
   </div>
 </div>
 
