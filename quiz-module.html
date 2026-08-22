@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問題集 | 神経・筋疾患理学療法 講義計画 2027年度前期</title>
+<style>
+  body{ margin:0; background:#F5F8FB; }
+</style>
+</head>
+<body>
+
 <!-- ============================================================
      神経理学療法 疾患別クイズモジュール ver.2
      ・確認テスト（5択・疾患別グラフ）
@@ -28,6 +40,7 @@
     max-width:840px;margin:0 auto;padding:32px 22px 56px;
     background:var(--nq-page);border-radius:var(--nq-radius);
     color:var(--nq-ink);font-size:16px;
+    -webkit-text-size-adjust:100%;text-size-adjust:100%;
     font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
     line-height:1.75;
     -webkit-font-smoothing:antialiased;
@@ -219,9 +232,16 @@
     background:#fbf8f1;color:var(--nq-ink);resize:vertical;
   }
 
-  @media (max-width:560px){
-    #neuro-quiz{padding:24px 15px 44px;border-radius:0;}
-    .nq-card{padding:18px 15px;}
+  @media (max-width:600px){
+    #neuro-quiz{padding:22px 14px 40px;border-radius:0;font-size:17px;}
+    .nq-card{padding:17px 14px;}
+    #nq-title{font-size:1.45rem;}
+    .nq-tab{padding:11px 13px;font-size:1rem;}
+    .nq-grid-disease{grid-template-columns:repeat(auto-fill,minmax(138px,1fr));}
+    .nq-chip{padding:11px 8px;min-height:60px;font-size:.92rem;}
+    .nq-question{font-size:1.22rem;}
+    .nq-choice{font-size:1.08rem;padding:15px 14px;}
+    .nq-feedback{font-size:1.02rem;}
     .nq-score-num{font-size:2.6rem;}
     .nq-row2{grid-template-columns:1fr;}
     .nq-ans-row{grid-template-columns:auto 1fr;grid-template-areas:"pick pick" "num input";}
@@ -231,7 +251,23 @@
     .nq-btn{flex:1 1 auto;}
   }
   @media (prefers-reduced-motion:reduce){#neuro-quiz *{transition:none !important;}}
+
+  /* ---------- 戻るリンク ---------- */
+  .nq-back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:.85rem;font-weight:700;color:var(--nq-sub);
+    text-decoration:none;margin-bottom:18px;
+    padding:6px 4px;border-radius:6px;
+    transition:color .15s;
+  }
+  .nq-back-link:hover{color:var(--nq-primary);}
+  .nq-back-link svg{width:16px;height:16px;flex:0 0 auto;}
   </style>
+
+  <a class="nq-back-link" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    2027年度前期　講義計画に戻る
+  </a>
 
   <p class="nq-eyebrow">CHECK YOUR UNDERSTANDING</p>
   <h2 id="nq-title">疾患別 確認テスト</h2>
@@ -1084,3 +1120,6 @@
   })();
   </script>
 </section>
+
+</body>
+</html>
