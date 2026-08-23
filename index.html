@@ -51,6 +51,7 @@
     font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   .display{ font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; }
@@ -702,21 +703,80 @@
   .case-image-wrap{
     position: relative;
     margin-bottom: 14px;
+  }
+  .case-carousel{
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .case-carousel::-webkit-scrollbar{ display: none; }
+  .case-slide{
+    position: relative;
+    flex: 0 0 calc((100% - 28px) / 3);
+    scroll-snap-align: start;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 10px;
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+  .case-slide:only-child{ flex: 0 0 min(360px, 60%); margin: 0 auto; }
   .case-image{
-    display: block; width: 100%; max-height: 320px; object-fit: contain;
-    margin: 0 auto;
+    display: block; width: 100%; height: 100%; object-fit: contain;
   }
   .case-image-placeholder{
-    display: none; color: var(--ink-soft); font-size: 13px; padding: 32px 14px;
+    display: none; color: var(--ink-soft); font-size: 12.5px; padding: 0 10px;
     text-align: center;
   }
-  .case-image-wrap.missing .case-image{ display: none; }
-  .case-image-wrap.missing .case-image-placeholder{ display: block; }
+  .case-empty{
+    display: none;
+    align-items: center; justify-content: center;
+    aspect-ratio: 3 / 1;
+    background: var(--paper);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    text-align: center;
+    padding: 14px;
+  }
+  .case-image-wrap.all-missing .case-carousel,
+  .case-image-wrap.all-missing .case-nav-btn{ display: none; }
+  .case-image-wrap.all-missing .case-empty{ display: flex; }
+
+  .case-nav-btn{
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 2;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    color: var(--ink);
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .case-nav-btn:hover{ border-color: var(--accent); color: var(--accent); }
+  .case-nav-btn svg{ width: 18px; height: 18px; }
+  .case-nav-prev{ left: -14px; }
+  .case-nav-next{ right: -14px; }
+  .case-nav-btn.hidden{ display: none; }
+
+  @media (max-width: 560px){
+    .case-slide{ flex: 0 0 100%; }
+    .case-slide:only-child{ flex: 0 0 100%; margin: 0; }
+    .case-nav-prev{ left: -8px; }
+    .case-nav-next{ right: -8px; }
+  }
 
   ul.outline{ list-style: none; margin: 0; padding: 0; }
   li.l1{ font-size: 14.5px; font-weight: 700; margin: 12px 0 6px; padding-left: 14px; position: relative; }
@@ -1061,8 +1121,27 @@
       <span class="disease-koma mono">3コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/parkinson.webp" alt="パーキンソン病 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/parkinson.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Parkinson" data-ext="0" src="images/case/Parkinson.webp" alt="パーキンソン病 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Parkinson1" data-ext="0" src="images/case/Parkinson1.webp" alt="パーキンソン病 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Parkinson2" data-ext="0" src="images/case/Parkinson2.webp" alt="パーキンソン病 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Parkinson3" data-ext="0" src="images/case/Parkinson3.webp" alt="パーキンソン病 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subacc subacc-major">
       <button class="subacc-trigger">
@@ -1869,8 +1948,27 @@
       <span class="disease-koma mono">2コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/scd_msa.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/scd_msa.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/SCD" data-ext="0" src="images/case/SCD.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/SCD1" data-ext="0" src="images/case/SCD1.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/SCD2" data-ext="0" src="images/case/SCD2.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/SCD3" data-ext="0" src="images/case/SCD3.webp" alt="脊髄小脳変性症(多系統萎縮症／それ以外) 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subacc subacc-major">
       <button class="subacc-trigger">
@@ -2551,8 +2649,27 @@
       <span class="disease-koma mono">2コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/ms.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/ms.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/MS" data-ext="0" src="images/case/MS.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/MS1" data-ext="0" src="images/case/MS1.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/MS2" data-ext="0" src="images/case/MS2.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/MS3" data-ext="0" src="images/case/MS3.webp" alt="多発性硬化症／視神経脊髄炎 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subacc subacc-major">
       <button class="subacc-trigger">
@@ -3258,8 +3375,27 @@
       <span class="disease-koma mono">2コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/gbs.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/gbs.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Polyneuropathy" data-ext="0" src="images/case/Polyneuropathy.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Polyneuropathy1" data-ext="0" src="images/case/Polyneuropathy1.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Polyneuropathy2" data-ext="0" src="images/case/Polyneuropathy2.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Polyneuropathy3" data-ext="0" src="images/case/Polyneuropathy3.webp" alt="多発ニューロパチー(ギランバレー症候群など) 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subacc subacc-major">
       <button class="subacc-trigger">
@@ -4045,8 +4181,27 @@
       <span class="disease-koma mono">2コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/als.webp" alt="筋萎縮性側索硬化症 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/als.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/ALS" data-ext="0" src="images/case/ALS.webp" alt="筋萎縮性側索硬化症 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/ALS1" data-ext="0" src="images/case/ALS1.webp" alt="筋萎縮性側索硬化症 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/ALS2" data-ext="0" src="images/case/ALS2.webp" alt="筋萎縮性側索硬化症 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/ALS3" data-ext="0" src="images/case/ALS3.webp" alt="筋萎縮性側索硬化症 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subacc subacc-major">
       <button class="subacc-trigger">
@@ -4826,8 +4981,27 @@
       <span class="disease-koma mono">1コマ</span>
     </div>
     <div class="case-image-wrap">
-      <img class="case-image" src="images/case/mg.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ" onerror="this.closest('.case-image-wrap').classList.add('missing')">
-      <div class="case-image-placeholder">症例イメージ未アップロード(images/case/mg.webp)</div>
+      <div class="case-carousel">
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Other" data-ext="0" src="images/case/Other.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ1" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Other1" data-ext="0" src="images/case/Other1.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ2" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Other2" data-ext="0" src="images/case/Other2.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ3" onerror="nqCaseImgFallback(this)">
+        </div>
+        <div class="case-slide">
+          <img class="case-image" data-base="images/case/Other3" data-ext="0" src="images/case/Other3.webp" alt="その他(筋ジストロフィー／重症筋無力症など) 症例イメージ4" onerror="nqCaseImgFallback(this)">
+        </div>
+      </div>
+      <div class="case-empty">症例イメージ未アップロード</div>
+    <button type="button" class="case-nav-btn case-nav-prev" aria-label="前の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="case-nav-btn case-nav-next" aria-label="次の画像">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     </div>
     <div class="subject-head">
       <span class="subject-dot"></span>筋ジストロフィー(Duchenne型など)
@@ -6715,6 +6889,57 @@
 
     window.addEventListener('load', boot);
     boot();
+  })();
+
+  /* ---------- 症例イメージ:拡張子の自動判定(webp→jpg→jpeg→png) ---------- */
+  var NQ_CASE_EXTS = ['webp', 'jpg', 'jpeg', 'png'];
+  function nqCaseImgFallback(img){
+    var i = parseInt(img.dataset.ext, 10) + 1;
+    if(i < NQ_CASE_EXTS.length){
+      img.dataset.ext = i;
+      img.src = img.dataset.base + '.' + NQ_CASE_EXTS[i];
+    } else {
+      var slide = img.closest('.case-slide');
+      if(slide) slide.remove();
+    }
+  }
+
+  /* ---------- 症例イメージ カルーセル ---------- */
+  (function(){
+    document.querySelectorAll('.case-image-wrap').forEach(function(wrap){
+      var track = wrap.querySelector('.case-carousel');
+      var prev = wrap.querySelector('.case-nav-prev');
+      var next = wrap.querySelector('.case-nav-next');
+      if(!track || !prev || !next) return;
+
+      function update(){
+        if(track.children.length === 0){
+          wrap.classList.add('all-missing');
+          return;
+        }
+        var max = track.scrollWidth - track.clientWidth;
+        var overflow = max > 4;
+        prev.classList.toggle('hidden', !overflow || track.scrollLeft <= 4);
+        next.classList.toggle('hidden', !overflow || track.scrollLeft >= max - 4);
+      }
+      function step(dir){
+        var slide = track.querySelector('.case-slide');
+        var amount = slide ? slide.getBoundingClientRect().width + 14 : track.clientWidth;
+        track.scrollBy({left: dir * amount, behavior: 'smooth'});
+      }
+      prev.addEventListener('click', function(){ step(-1); });
+      next.addEventListener('click', function(){ step(1); });
+      track.addEventListener('scroll', update, {passive: true});
+      window.addEventListener('resize', update);
+
+      /* 存在しない画像は onerror でスライドごと消える。
+         それを検知して矢印の表示・非表示を再計算する。 */
+      if(window.MutationObserver){
+        new MutationObserver(update).observe(track, {childList: true});
+      }
+
+      update();
+    });
   })();
 
   /* ---------- 固定トップバー(スクロールで背景を出す) ---------- */
