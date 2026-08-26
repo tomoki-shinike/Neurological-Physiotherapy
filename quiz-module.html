@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>問題集 | 神経・筋疾患理学療法 講義計画 2027年度前期</title>
-<style>
-  body{ margin:0; background:#F5F8FB; }
-</style>
-</head>
-<body>
-
 <!-- ============================================================
      神経理学療法 疾患別クイズモジュール ver.2
      ・確認テスト（5択・疾患別グラフ）
@@ -44,7 +32,6 @@
     font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
     line-height:1.75;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
   }
   #neuro-quiz *{box-sizing:border-box;}
   #neuro-quiz :focus-visible{outline:3px solid #9fb3d0;outline-offset:2px;}
@@ -114,21 +101,22 @@
     display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:.06em;
     background:var(--nq-bg);color:var(--nq-primary);border-radius:5px;padding:4px 10px;margin-bottom:12px;
   }
-  .nq-question{font-size:1.18rem;font-weight:700;margin:0 0 16px;line-height:1.7;overflow-wrap:anywhere;}
+  .nq-question{font-size:1.18rem;font-weight:700;margin:0 0 16px;line-height:1.7;}
+  .nq-multi{
+    display:inline-block;font-size:.9rem;font-weight:700;color:var(--nq-wrong);
+    border:1px solid var(--nq-wrong);border-radius:6px;padding:3px 11px;margin:-6px 0 14px;
+  }
   .nq-qimg{
     display:block;max-width:100%;max-height:340px;margin:0 auto 20px;
     border:1px solid var(--nq-line);border-radius:8px;background:var(--nq-bg);
   }
   .nq-choices{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
-  .nq-choices > li{min-width:0;}
   .nq-choice{
     display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
     background:var(--nq-surface);border:1.5px solid var(--nq-line);border-radius:9px;
     padding:15px 16px;font-size:1.04rem;font-family:inherit;color:inherit;cursor:pointer;
     transition:border-color .15s,background .15s;line-height:1.6;
-    min-width:0;box-sizing:border-box;
   }
-  .nq-choice > span:last-child{min-width:0;overflow-wrap:anywhere;}
   .nq-choice:hover:not(:disabled){border-color:var(--nq-primary);background:#f2ede2;}
   .nq-choice:disabled{cursor:default;}
   .nq-num{
@@ -146,6 +134,7 @@
   .nq-feedback.is-correct{border-left-color:var(--nq-correct);background:var(--nq-correct-bg);}
   .nq-feedback.is-wrong{border-left-color:var(--nq-wrong);background:var(--nq-wrong-bg);}
   .nq-verdict{font-weight:800;margin:0 0 4px;}
+  .nq-feedback .nq-tag{background:rgba(255,255,255,.7);color:var(--nq-ink);margin-bottom:8px;}
   .nq-feedback p{margin:0;}
 
   /* ---------- 結果画面 ---------- */
@@ -191,6 +180,14 @@
   .nq-textarea{resize:vertical;min-height:84px;}
   .nq-input::placeholder,.nq-textarea::placeholder{color:#877d70;opacity:1;}
   .nq-input,.nq-textarea,.nq-select{border-color:#cfc5b4;}
+  .nq-path{display:flex;align-items:stretch;border:1px solid #cfc5b4;border-radius:8px;overflow:hidden;background:var(--nq-surface);}
+  .nq-path > span{
+    display:flex;align-items:center;padding:0 13px;background:var(--nq-bg);
+    color:var(--nq-sub);font-size:.95rem;white-space:nowrap;border-right:1px solid #cfc5b4;
+  }
+  .nq-path > input{border:none;border-radius:0;flex:1 1 auto;min-width:0;}
+  .nq-path > input:focus{box-shadow:none;}
+  .nq-path:focus-within{border-color:var(--nq-primary);box-shadow:0 0 0 3px rgba(47,75,124,.14);}
   .nq-hint{font-size:.85rem;color:var(--nq-sub);margin:6px 0 0;line-height:1.7;}
   .nq-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
@@ -214,6 +211,7 @@
   }
   .nq-preview img{max-width:100%;max-height:200px;border-radius:6px;display:block;margin:0 auto;}
 
+  .nq-draft{border-left:4px solid var(--nq-primary);}
   .nq-alert{border-radius:8px;padding:12px 15px;font-size:.93rem;font-weight:700;margin-bottom:16px;}
   .nq-alert.is-error{background:var(--nq-wrong-bg);color:var(--nq-wrong);}
   .nq-alert.is-ok{background:var(--nq-correct-bg);color:var(--nq-correct);}
@@ -224,9 +222,8 @@
   .nq-list-item{
     display:flex;align-items:center;gap:10px;border:1px solid var(--nq-line);
     border-radius:8px;padding:11px 13px;font-size:.95rem;
-    min-width:0;box-sizing:border-box;flex-wrap:wrap;
   }
-  .nq-list-text{flex:1 1 160px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nq-list-text{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .nq-pic{font-size:.74rem;font-weight:700;background:var(--nq-bg);color:var(--nq-sub);border-radius:4px;padding:2px 6px;flex:0 0 auto;}
   .nq-list-btns{display:flex;gap:6px;flex:0 0 auto;}
   .nq-empty{color:var(--nq-sub);font-size:.95rem;padding:16px 0;text-align:center;}
@@ -256,26 +253,11 @@
     .nq-btn{flex:1 1 auto;}
   }
   @media (prefers-reduced-motion:reduce){#neuro-quiz *{transition:none !important;}}
-
-  /* ---------- 戻るリンク ---------- */
-  .nq-back-link{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:.85rem;font-weight:700;color:var(--nq-sub);
-    text-decoration:none;margin-bottom:18px;
-    padding:6px 4px;border-radius:6px;
-    transition:color .15s;
-  }
-  .nq-back-link:hover{color:var(--nq-primary);}
-  .nq-back-link svg{width:16px;height:16px;flex:0 0 auto;}
   </style>
-
-  <a class="nq-back-link" href="index.html">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    2027年度前期　講義計画に戻る
-  </a>
 
   <p class="nq-eyebrow">CHECK YOUR UNDERSTANDING</p>
   <h2 id="nq-title">疾患別 確認テスト</h2>
+  <p class="nq-lead">国家試験と同じ5択形式です。解いた疾患だけが結果グラフに表示されます。</p>
 
   <div class="nq-tabs" role="tablist">
     <button type="button" class="nq-tab is-on" id="nq-tab-play" role="tab" aria-selected="true">テストを解く</button>
@@ -288,7 +270,7 @@
     <!-- 設定 -->
     <div class="nq-card" id="nq-setup">
       <div class="nq-field">
-        <span class="nq-label">出題する疾患</span>
+        <span class="nq-label">出題するカテゴリー</span>
         <div class="nq-grid-disease" id="nq-disease-chips"></div>
         <div style="display:flex;gap:8px;margin-top:12px;">
           <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-select-all">すべて選ぶ</button>
@@ -301,7 +283,7 @@
         <div class="nq-grid-even" id="nq-count-chips">
           <label class="nq-chip nq-chip-single"><input type="radio" name="nq-count" value="5"><span>5問</span></label>
           <label class="nq-chip nq-chip-single is-on"><input type="radio" name="nq-count" value="10" checked><span>10問</span></label>
-          <label class="nq-chip nq-chip-single"><input type="radio" name="nq-count" value="0"><span>選んだ疾患のすべて</span></label>
+          <label class="nq-chip nq-chip-single"><input type="radio" name="nq-count" value="0"><span>選んだカテゴリーのすべて</span></label>
         </div>
       </div>
 
@@ -327,12 +309,13 @@
       </div>
       <div class="nq-progress"><span id="nq-progress-fill" style="width:0%"></span></div>
 
-      <span class="nq-tag" id="nq-disease-tag"></span>
       <p class="nq-question" id="nq-question"></p>
+      <p class="nq-multi nq-hidden" id="nq-multi"></p>
       <img class="nq-qimg nq-hidden" id="nq-qimg" alt="">
       <ul class="nq-choices" id="nq-choices"></ul>
 
       <div class="nq-feedback nq-hidden" id="nq-feedback" role="status" aria-live="polite">
+        <span class="nq-tag" id="nq-fb-tag"></span>
         <p class="nq-verdict" id="nq-verdict"></p>
         <p id="nq-explain"></p>
       </div>
@@ -350,10 +333,10 @@
         <div class="nq-score-sub" id="nq-final-detail"></div>
       </div>
 
-      <h3 class="nq-sec-title">疾患別の正答率</h3>
-      <p class="nq-sec-note">今回解いた疾患のみを表示しています。</p>
+      <h3 class="nq-sec-title">カテゴリー別の正答率</h3>
+      <p class="nq-sec-note">今回解いたカテゴリーのみを表示しています。</p>
       <div class="nq-graph" id="nq-graph"></div>
-      <p class="nq-legend">縦の線は60%の目安です。1疾患あたり2問以下の場合は参考値としてご覧ください。</p>
+      <p class="nq-legend">縦の線は60%の目安です。1カテゴリーあたり2問以下の場合は参考値としてご覧ください。</p>
 
       <h3 class="nq-sec-title">解答の振り返り</h3>
       <p class="nq-sec-note">問題をタップすると正解と解説が開きます。</p>
@@ -369,9 +352,18 @@
   <!-- ============ 作成側 ============ -->
   <div id="nq-view-edit" class="nq-hidden">
 
+    <div class="nq-card nq-draft nq-hidden" id="nq-draft-box">
+      <p style="margin:0;font-size:.95rem;font-weight:700;">前回の続きの下書きが残っています（<span id="nq-draft-when"></span>）。</p>
+      <p class="nq-hint" style="margin-top:6px;">読み込むと、いま表示されている問題はその内容に置き換わります。</p>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button type="button" class="nq-btn nq-btn-primary nq-btn-sm" id="nq-draft-load">下書きを読み込む</button>
+        <button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" id="nq-draft-drop">破棄する</button>
+      </div>
+    </div>
+
     <div class="nq-card">
       <h3 class="nq-sec-title" id="nq-form-title">新しい問題を作る</h3>
-      <p class="nq-sec-note">入力した内容はこのブラウザを閉じるまで有効です。残す場合は下の「コードで書き出す」をお使いください。</p>
+      <p class="nq-sec-note">作った問題はこのブラウザに下書きとして自動保存されます。ほかの人にも見せるには、下の「コードで書き出す」で index.html に反映してください。</p>
 
       <div class="nq-alert nq-hidden" id="nq-form-msg"></div>
 
@@ -379,7 +371,7 @@
         <span class="nq-label">疾患カテゴリー<span class="nq-req">必須</span></span>
         <div class="nq-row2">
           <select class="nq-select" id="nq-f-disease"></select>
-          <input type="text" class="nq-input nq-hidden" id="nq-f-newdisease" placeholder="新しい疾患名を入力">
+          <input type="text" class="nq-input nq-hidden" id="nq-f-newdisease" placeholder="新しいカテゴリー名を入力">
         </div>
       </div>
 
@@ -389,9 +381,12 @@
       </div>
 
       <div class="nq-field">
-        <span class="nq-label">画像（任意）</span>
-        <input type="text" class="nq-input" id="nq-f-img" placeholder="images/gait01.jpg  または  https://...">
-        <p class="nq-hint">画像のアドレスを入れた問題だけ、テスト中に画像が表示されます。空欄なら表示されません。</p>
+        <span class="nq-label">画像ファイル名（任意）</span>
+        <div class="nq-path">
+          <span id="nq-img-base"></span>
+          <input type="text" class="nq-input" id="nq-f-img" placeholder="gait01.jpg">
+        </div>
+        <p class="nq-hint">GitHubの画像フォルダに置いたファイル名だけを入れてください。名前が一致すればテスト中に表示され、一致しなければ何も表示されません（空欄の場合も同じです）。大文字と小文字は区別されます。</p>
         <input type="text" class="nq-input" id="nq-f-imgalt" placeholder="画像の説明（読み上げ用・任意）" style="margin-top:8px;">
         <div class="nq-preview nq-hidden" id="nq-f-preview"></div>
       </div>
@@ -399,7 +394,7 @@
       <div class="nq-field">
         <span class="nq-label">選択肢と正解<span class="nq-req">必須</span></span>
         <div class="nq-ans-list" id="nq-f-choices"></div>
-        <p class="nq-hint">左の「正解」を押した選択肢が正答になります。出題時は5つの並び順がランダムに入れ替わります。</p>
+        <p class="nq-hint">左の「正解」を押した選択肢が正答になります。2つ以上押すと「2つ選べ」形式の問題になり、テストでは指示が自動で表示されます。出題時は5つの並び順がランダムに入れ替わります。</p>
       </div>
 
       <div class="nq-field" style="margin-bottom:0;">
@@ -412,6 +407,7 @@
         <button type="button" class="nq-btn nq-btn-ghost" id="nq-f-clear">入力を消す</button>
         <button type="button" class="nq-btn nq-btn-ghost nq-hidden" id="nq-f-cancel">編集をやめる</button>
       </div>
+      <p class="nq-hint" id="nq-save-state"></p>
     </div>
 
     <div class="nq-card">
@@ -445,118 +441,330 @@
        ============================================================ */
     let QUIZ_DATA = [
       {
-        id: 'parkinson', name: 'パーキンソン病（PD）',
-        questions: [
-          { q: 'パーキンソン病の4大症状に含まれないのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['安静時振戦', '筋固縮', '無動・寡動', '姿勢反射障害', '企図振戦'],
-            answer: 4,
-            explain: '企図振戦は、目標に近づくほど手が震える症状で、小脳の障害でみられます。パーキンソン病では、何もしていないときに震える安静時振戦が特徴です。' },
-          { q: 'Hoehn&Yahr重症度分類のステージⅢに該当するのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['症状は片側のみで日常生活に支障がない', '両側の症状があるが姿勢反射障害はない', '姿勢反射障害があるが介助なしに生活できる', '起立や歩行に介助が必要である', '車椅子またはベッド上の生活である'],
-            answer: 2,
-            explain: 'ステージⅢは、バランスを立て直す反応（姿勢反射）が低下して転びやすくなるものの、まだ自立して生活できる段階です。ここから介護保険や医療費助成の対象になります。' },
-          { q: 'すくみ足への対応として最も適切なのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['歩行速度をできるだけ速めるよう指示する', '床のテープや号令などの外的手がかりを用いる', '狭い場所での方向転換を繰り返し練習させる', '二重課題を課しながら歩行させる', '歩行器の使用を全例で禁止する'],
-            answer: 1,
-            explain: 'すくみ足は、床のライン、メトロノーム、号令といった外からの合図（外的手がかり）でまたぎ動作が引き出され、改善しやすいことが知られています。' }
+        "id": "general",
+        "name": "総論",
+        "questions": [
+          {
+            "q": "上位運動ニューロン障害でみられる所見はどれか。",
+            "choices": [
+              "腱反射の消失",
+              "腱反射の亢進",
+              "線維束性収縮",
+              "著明な筋萎縮",
+              "筋緊張の低下"
+            ],
+            "answer": 1,
+            "explain": "脳や脊髄など中枢側の障害では、反射を抑える働きが失われるため腱反射が亢進し、痙縮（筋の突っ張り）やBabinski徴候などがみられます。線維束性収縮や強い筋萎縮は、末梢側（下位運動ニューロン）の障害で目立ちます。"
+          },
+          {
+            "q": "修正Ashworth尺度で評価するのはどれか。",
+            "choices": [
+              "筋力",
+              "筋緊張",
+              "関節可動域",
+              "深部感覚",
+              "立位バランス"
+            ],
+            "answer": 1,
+            "explain": "他動的に手足を動かしたときの抵抗の強さから、筋緊張（とくに痙縮）の程度を6段階で評価する尺度です。筋力はMMT、関節可動域はROM測定で評価します。"
+          },
+          {
+            "q": "深部感覚に分類されるのはどれか。",
+            "choices": [
+              "触覚",
+              "温度覚",
+              "痛覚",
+              "位置覚",
+              "二点識別覚"
+            ],
+            "answer": 3,
+            "explain": "深部感覚は、関節や筋から得られる「体の位置や動きの感覚」で、位置覚・運動覚・振動覚が含まれます。触覚・温度覚・痛覚は表在感覚、二点識別覚は複合感覚に分類されます。"
+          },
+          {
+            "q": "自律神経障害の症状はどれか。",
+            "choices": [
+              "振戦",
+              "複視",
+              "不整脈",
+              "血圧低下",
+              "視力低下"
+            ],
+            "answer": [
+              2,
+              3
+            ],
+            "explain": "× 振戦：リズムのある動的なふるえで、不随意運動の一つ。生理的振戦と病的な振戦があり、Parkinson病（静止時振戦）、企図振戦（小脳機能障害）、薬剤性、内分泌性、代謝性、中毒性の異常などが原因として挙げられる。\n× 複視：主な原因として、眼筋の疾患、脳神経障害、脳幹障害が挙げられる。\n○ 不整脈：交感神経活性が優位では頻脈性の、副交感神経活性が優位では徐脈性の不整脈が発生する要因となりうる。\n○ 血圧低下：自律神経障害により副交感神経優位になると血圧低下を来す。\n× 視力低下：自律神経障害により瞳孔の異常（縮瞳・散瞳）や眼瞼下垂がみられる場合はあるが、視力低下はみとめない。"
+          },
+          {
+            "q": "錐体外路に含まれないのはどれか。",
+            "choices": [
+              "黒質",
+              "視床下核",
+              "錐体交叉",
+              "線条体",
+              "淡蒼球"
+            ],
+            "answer": 2,
+            "explain": "錐体外路は、運動に関係する下行路および中枢間の伝導路のうち、錐体路に含まれないものをいう。運動中の無意識な部分をコントロールする働きがあり、大脳基底核（尾状核・被殻・淡蒼球）、視床、視床下核、赤核、黒質、小脳などが含まれる。\n× 錐体交叉：錐体路に含まれる。"
+          },
+          {
+            "q": "錐体路徴候はどれか。",
+            "choices": [
+              "膝蓋腱反射低下",
+              "深部感覚鈍麻",
+              "腹壁反射消失",
+              "筋緊張低下",
+              "ジストニア"
+            ],
+            "answer": 2,
+            "explain": "大脳皮質から脊髄に向かって下行する運動経路のうち、延髄の錐体を通過する経路を錐体路という。外側皮質脊髄路ともいい、大脳皮質運動野より始まり、内包後脚、中脳の大脳脚、橋縦束を通り、延髄で交叉し、脊髄側索を通って下行する。錐体路の障害によって、痙性麻痺、腱反射亢進、病的反射の出現、表在反射の減弱が現れる。錐体路は延髄で交叉するため、これらの症状はいずれも対側にみられる。\n× 膝蓋腱反射低下：伸張反射（膝蓋腱反射）は亢進する。上位中枢が伸張反射などの興奮性を調節しているが、上位中枢の障害によって調節機構が破綻し、抑制が減少して過剰な興奮となることが原因である。\n× 深部感覚鈍麻：脊髄後索の障害でみられる。錐体路は後索を通らないため無関係である。\n○ 腹壁反射消失：腹壁反射は、片側の腹壁を水平にこすると同側の腹筋が収縮する表在反射である。T6〜L1が対応し、胸髄領域の高位診断に有用である。反射が消失していれば錐体路徴候である。\n× 筋緊張低下：錐体路障害では筋緊張は亢進する。\n× ジストニア：筋緊張の異常亢進により体幹や頸部をねじる不随意運動が起こるもので、錐体外路系が障害された際にみられる。"
+          },
+          {
+            "q": "腱反射が亢進する疾患はどれか。",
+            "choices": [
+              "多発性筋炎",
+              "多発性硬化症",
+              "Guillain-Barre症候群",
+              "尿毒症性ニューロパチー",
+              "Duchenne型筋ジストロフィー"
+            ],
+            "answer": 1,
+            "explain": "× 多発性筋炎：筋原性の障害であり、腱反射は減弱する。\n○ 多発性硬化症：上位運動ニューロンの障害であり、腱反射は亢進する。\n× Guillain-Barre症候群：末梢神経の障害であり、腱反射は減弱する。\n× 尿毒症性ニューロパチー：末梢神経の障害であり、腱反射は減弱する。\n× Duchenne型筋ジストロフィー：筋原性の障害であり、腱反射は減弱する。"
+          }
         ]
       },
       {
-        id: 'sca', name: '脊髄小脳変性症（SCD）',
-        questions: [
-          { q: '小脳性運動失調の症状として正しいのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['安静時振戦', '測定障害', '歯車様固縮', '線維束性収縮', '感覚性失調による深部感覚低下'],
-            answer: 1,
-            explain: '測定障害は、目標までの距離の見積もりがずれて行き過ぎたり手前で止まったりする症状です。指鼻試験や踵膝試験で確認します。' },
-          { q: '小脳性運動失調と脊髄性（感覚性）失調の鑑別に有用なのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['Romberg試験', 'Thomasテスト', 'Phalenテスト', 'Adsonテスト', 'Trendelenburg徴候'],
-            answer: 0,
-            explain: 'Romberg試験は、閉眼で立位のふらつきが強まるかをみる検査です。感覚性失調では閉眼で明らかに悪化しますが、小脳性では開眼・閉眼の差が小さいのが特徴です。' },
-          { q: '失調症状に対する理学療法として適切なのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['重錘やスーツによる固有感覚入力の付与', '徒手抵抗を用いた最大筋力増強のみを行う', '安静臥床を優先し活動量を制限する', '視覚を遮断した状態での歩行を主体とする', '関節可動域制限の改善を最優先とする'],
-            answer: 0,
-            explain: '重錘（おもり）や弾性帯で体に適度な負荷や締めつけを加えると、体の位置の感覚が入りやすくなり、動きのブレが減ることがあります。' }
+        "id": "parkinson",
+        "name": "パーキンソン病（PD）",
+        "questions": [
+          {
+            "q": "パーキンソン病の4大症状に含まれないのはどれか。",
+            "choices": [
+              "安静時振戦",
+              "筋固縮",
+              "無動・寡動",
+              "姿勢反射障害",
+              "企図振戦"
+            ],
+            "answer": 4,
+            "explain": "企図振戦は、目標に近づくほど手が震える症状で、小脳の障害でみられます。パーキンソン病では、何もしていないときに震える安静時振戦が特徴です。"
+          },
+          {
+            "q": "Hoehn&Yahr重症度分類のステージⅢに該当するのはどれか。",
+            "choices": [
+              "症状は片側のみで日常生活に支障がない",
+              "両側の症状があるが姿勢反射障害はない",
+              "姿勢反射障害があるが介助なしに生活できる",
+              "起立や歩行に介助が必要である",
+              "車椅子またはベッド上の生活である"
+            ],
+            "answer": 2,
+            "explain": "ステージⅢは、バランスを立て直す反応（姿勢反射）が低下して転びやすくなるものの、まだ自立して生活できる段階です。ここから介護保険や医療費助成の対象になります。"
+          },
+          {
+            "q": "すくみ足への対応として最も適切なのはどれか。",
+            "choices": [
+              "歩行速度をできるだけ速めるよう指示する",
+              "床のテープや号令などの外的手がかりを用いる",
+              "狭い場所での方向転換を繰り返し練習させる",
+              "二重課題を課しながら歩行させる",
+              "歩行器の使用を全例で禁止する"
+            ],
+            "answer": 1,
+            "explain": "すくみ足は、床のライン、メトロノーム、号令といった外からの合図（外的手がかり）でまたぎ動作が引き出され、改善しやすいことが知られています。"
+          }
         ]
       },
       {
-        id: 'ms', name: '多発性硬化症（MS）',
-        questions: [
-          { q: '多発性硬化症の運動療法で最も注意すべきなのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['低血糖の出現', '体温の上昇', '起立性低血圧', '横紋筋融解症', '不随意運動の増悪'],
-            answer: 1,
-            explain: '体温が上がると一時的に症状が悪化するUhthoff（ウートフ）現象がみられます。室温管理、こまめな休憩、冷却などが必要です。' },
-          { q: '多発性硬化症の病態の特徴はどれか。',
-            img: '', imgAlt: '',
-            choices: ['中枢神経の脱髄が時間的・空間的に多発する', '末梢神経の軸索が対称性に変性する', '運動ニューロンが選択的に脱落する', '神経筋接合部の伝達が障害される', '筋線維そのものが進行性に変性する'],
-            answer: 0,
-            explain: '中枢神経の髄鞘（神経を包む膜）が壊れる病気で、時期を変え、場所を変えて症状が出るのが特徴です。' }
+        "id": "sca",
+        "name": "脊髄小脳変性症（SCD）",
+        "questions": [
+          {
+            "q": "小脳性運動失調の症状として正しいのはどれか。",
+            "choices": [
+              "安静時振戦",
+              "測定障害",
+              "歯車様固縮",
+              "線維束性収縮",
+              "感覚性失調による深部感覚低下"
+            ],
+            "answer": 1,
+            "explain": "測定障害は、目標までの距離の見積もりがずれて行き過ぎたり手前で止まったりする症状です。指鼻試験や踵膝試験で確認します。"
+          },
+          {
+            "q": "小脳性運動失調と脊髄性（感覚性）失調の鑑別に有用なのはどれか。",
+            "choices": [
+              "Romberg試験",
+              "Thomasテスト",
+              "Phalenテスト",
+              "Adsonテスト",
+              "Trendelenburg徴候"
+            ],
+            "answer": 0,
+            "explain": "Romberg試験は、閉眼で立位のふらつきが強まるかをみる検査です。感覚性失調では閉眼で明らかに悪化しますが、小脳性では開眼・閉眼の差が小さいのが特徴です。"
+          },
+          {
+            "q": "失調症状に対する理学療法として適切なのはどれか。",
+            "choices": [
+              "重錘やスーツによる固有感覚入力の付与",
+              "徒手抵抗を用いた最大筋力増強のみを行う",
+              "安静臥床を優先し活動量を制限する",
+              "視覚を遮断した状態での歩行を主体とする",
+              "関節可動域制限の改善を最優先とする"
+            ],
+            "answer": 0,
+            "explain": "重錘（おもり）や弾性帯で体に適度な負荷や締めつけを加えると、体の位置の感覚が入りやすくなり、動きのブレが減ることがあります。"
+          }
         ]
       },
       {
-        id: 'als', name: '筋萎縮性側索硬化症（ALS）',
-        questions: [
-          { q: 'ALSで一般に障害されにくい（陰性徴候とされる）のはどれか。',
-            img: '', imgAlt: '',
-            choices: ['嚥下機能', '呼吸機能', '眼球運動', '上肢の筋力', '構音機能'],
-            answer: 2,
-            explain: '眼球運動・感覚・膀胱直腸機能・褥瘡は「4大陰性徴候」と呼ばれ、比較的保たれます。これを利用した視線入力による意思伝達装置が使われます。' },
-          { q: 'ALS患者への理学療法として適切なのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['最大負荷での筋力増強運動を毎日行う', '疲労を残さない範囲での関節可動域運動を行う', '筋力低下の進行を止めるため過負荷を徹底する', '呼吸機能の評価は末期まで行わない', '転倒予防のため終日臥床とする'],
-            answer: 1,
-            explain: '過度な運動は筋の使いすぎ（過用性筋力低下）を招きます。拘縮予防を中心に、疲れを翌日に残さない範囲で行うのが原則です。' }
+        "id": "ms",
+        "name": "多発性硬化症（MS）",
+        "questions": [
+          {
+            "q": "多発性硬化症の運動療法で最も注意すべきなのはどれか。",
+            "choices": [
+              "低血糖の出現",
+              "体温の上昇",
+              "起立性低血圧",
+              "横紋筋融解症",
+              "不随意運動の増悪"
+            ],
+            "answer": 1,
+            "explain": "体温が上がると一時的に症状が悪化するUhthoff（ウートフ）現象がみられます。室温管理、こまめな休憩、冷却などが必要です。"
+          },
+          {
+            "q": "多発性硬化症の病態の特徴はどれか。",
+            "choices": [
+              "中枢神経の脱髄が時間的・空間的に多発する",
+              "末梢神経の軸索が対称性に変性する",
+              "運動ニューロンが選択的に脱落する",
+              "神経筋接合部の伝達が障害される",
+              "筋線維そのものが進行性に変性する"
+            ],
+            "answer": 0,
+            "explain": "中枢神経の髄鞘（神経を包む膜）が壊れる病気で、時期を変え、場所を変えて症状が出るのが特徴です。"
+          }
         ]
       },
       {
-        id: 'gbs', name: 'ギラン・バレー症候群',
-        questions: [
-          { q: 'ギラン・バレー症候群の典型的な特徴はどれか。',
-            img: '', imgAlt: '',
-            choices: ['腱反射の亢進と病的反射の出現', '先行感染後に生じる左右対称性の弛緩性麻痺', '片側性に進行する筋萎縮', '症状の日内変動が著明である', '発症から数年かけて緩徐に進行する'],
-            answer: 1,
-            explain: '風邪や下痢などの感染の1〜3週間後に、両足の力が入りにくくなり、上へ広がっていくのが典型です。腱反射は低下・消失します。' },
-          { q: '急性期のギラン・バレー症候群で最も注意すべきなのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['認知機能の低下', '呼吸筋麻痺', '不随意運動', '高血糖', '関節の異所性骨化'],
-            answer: 1,
-            explain: '麻痺が横隔膜など呼吸の筋に及ぶと人工呼吸器が必要になります。肺活量や呼吸状態の観察が欠かせません。' }
+        "id": "als",
+        "name": "筋萎縮性側索硬化症（ALS）",
+        "questions": [
+          {
+            "q": "ALSで一般に障害されにくい（陰性徴候とされる）のはどれか。",
+            "choices": [
+              "嚥下機能",
+              "呼吸機能",
+              "眼球運動",
+              "上肢の筋力",
+              "構音機能"
+            ],
+            "answer": 2,
+            "explain": "眼球運動・感覚・膀胱直腸機能・褥瘡は「4大陰性徴候」と呼ばれ、比較的保たれます。これを利用した視線入力による意思伝達装置が使われます。"
+          },
+          {
+            "q": "ALS患者への理学療法として適切なのはどれか。",
+            "choices": [
+              "最大負荷での筋力増強運動を毎日行う",
+              "疲労を残さない範囲での関節可動域運動を行う",
+              "筋力低下の進行を止めるため過負荷を徹底する",
+              "呼吸機能の評価は末期まで行わない",
+              "転倒予防のため終日臥床とする"
+            ],
+            "answer": 1,
+            "explain": "過度な運動は筋の使いすぎ（過用性筋力低下）を招きます。拘縮予防を中心に、疲れを翌日に残さない範囲で行うのが原則です。"
+          }
         ]
       },
       {
-        id: 'md', name: '筋ジストロフィー',
-        questions: [
-          { q: 'Duchenne型筋ジストロフィーでみられる特徴的な所見はどれか。',
-            img: '', imgAlt: '',
-            choices: ['Gowers徴候', 'Babinski徴候', 'Kernig徴候', 'Lhermitte徴候', 'Tinel徴候'],
-            answer: 0,
-            explain: 'Gowers（ガワーズ）徴候は、床から立ち上がるときに自分の膝に手をついて体をよじ登るようにする動作で、腰まわりの筋力低下を示します。' },
-          { q: 'Duchenne型筋ジストロフィーの理学療法で正しいのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['最大筋力での抵抗運動を積極的に行う', '過用を避け拘縮予防と呼吸理学療法を重視する', '歩行可能な時期は装具を一切用いない', '側弯の進行は自然経過なので対応しない', '心機能の評価は不要である'],
-            answer: 1,
-            explain: '筋が壊れやすいため強い抵抗運動は避けます。拘縮予防、装具や車椅子の適合、呼吸と心臓の管理が中心になります。' }
+        "id": "gbs",
+        "name": "ギラン・バレー症候群",
+        "questions": [
+          {
+            "q": "ギラン・バレー症候群の典型的な特徴はどれか。",
+            "choices": [
+              "腱反射の亢進と病的反射の出現",
+              "先行感染後に生じる左右対称性の弛緩性麻痺",
+              "片側性に進行する筋萎縮",
+              "症状の日内変動が著明である",
+              "発症から数年かけて緩徐に進行する"
+            ],
+            "answer": 1,
+            "explain": "風邪や下痢などの感染の1〜3週間後に、両足の力が入りにくくなり、上へ広がっていくのが典型です。腱反射は低下・消失します。"
+          },
+          {
+            "q": "急性期のギラン・バレー症候群で最も注意すべきなのはどれか。",
+            "choices": [
+              "認知機能の低下",
+              "呼吸筋麻痺",
+              "不随意運動",
+              "高血糖",
+              "関節の異所性骨化"
+            ],
+            "answer": 1,
+            "explain": "麻痺が横隔膜など呼吸の筋に及ぶと人工呼吸器が必要になります。肺活量や呼吸状態の観察が欠かせません。"
+          }
         ]
       },
       {
-        id: 'mg', name: '重症筋無力症',
-        questions: [
-          { q: '重症筋無力症の特徴はどれか。',
-            img: '', imgAlt: '',
-            choices: ['朝に症状が最も強く夕方に軽快する', '易疲労性があり夕方に症状が増悪する', '症状が数年単位で不変である', '感覚障害が初発症状となる', '腱反射が著明に亢進する'],
-            answer: 1,
-            explain: '使い続けると力が入らなくなる「易疲労性」があり、夕方に悪くなる日内変動が特徴です。まぶたが下がる、物が二重に見えるなどで気づかれます。' },
-          { q: '重症筋無力症患者への運動療法で適切なのはどれか。',
-            img: '', imgAlt: '',
-            choices: ['疲労が蓄積しないよう休憩を挟んで行う', '筋力低下を防ぐため高負荷で連続して行う', '運動は禁忌であり実施しない', '症状が最も強い時間帯に集中して行う', '呼吸状態の確認は不要である'],
-            answer: 0,
-            explain: '疲れを残さないことが原則です。薬が効いている時間帯に合わせ、短時間・分割して行います。急激な悪化（クリーゼ）による呼吸状態にも注意します。' }
+        "id": "md",
+        "name": "筋ジストロフィー",
+        "questions": [
+          {
+            "q": "Duchenne型筋ジストロフィーでみられる特徴的な所見はどれか。",
+            "choices": [
+              "Gowers徴候",
+              "Babinski徴候",
+              "Kernig徴候",
+              "Lhermitte徴候",
+              "Tinel徴候"
+            ],
+            "answer": 0,
+            "explain": "Gowers（ガワーズ）徴候は、床から立ち上がるときに自分の膝に手をついて体をよじ登るようにする動作で、腰まわりの筋力低下を示します。"
+          },
+          {
+            "q": "Duchenne型筋ジストロフィーの理学療法で正しいのはどれか。",
+            "choices": [
+              "最大筋力での抵抗運動を積極的に行う",
+              "過用を避け拘縮予防と呼吸理学療法を重視する",
+              "歩行可能な時期は装具を一切用いない",
+              "側弯の進行は自然経過なので対応しない",
+              "心機能の評価は不要である"
+            ],
+            "answer": 1,
+            "explain": "筋が壊れやすいため強い抵抗運動は避けます。拘縮予防、装具や車椅子の適合、呼吸と心臓の管理が中心になります。"
+          }
+        ]
+      },
+      {
+        "id": "mg",
+        "name": "重症筋無力症",
+        "questions": [
+          {
+            "q": "重症筋無力症の特徴はどれか。",
+            "choices": [
+              "朝に症状が最も強く夕方に軽快する",
+              "易疲労性があり夕方に症状が増悪する",
+              "症状が数年単位で不変である",
+              "感覚障害が初発症状となる",
+              "腱反射が著明に亢進する"
+            ],
+            "answer": 1,
+            "explain": "使い続けると力が入らなくなる「易疲労性」があり、夕方に悪くなる日内変動が特徴です。まぶたが下がる、物が二重に見えるなどで気づかれます。"
+          },
+          {
+            "q": "重症筋無力症患者への運動療法で適切なのはどれか。",
+            "choices": [
+              "疲労が蓄積しないよう休憩を挟んで行う",
+              "筋力低下を防ぐため高負荷で連続して行う",
+              "運動は禁忌であり実施しない",
+              "症状が最も強い時間帯に集中して行う",
+              "呼吸状態の確認は不要である"
+            ],
+            "answer": 0,
+            "explain": "疲れを残さないことが原則です。薬が効いている時間帯に合わせ、短時間・分割して行います。急激な悪化（クリーゼ）による呼吸状態にも注意します。"
+          }
         ]
       }
     ];
@@ -564,6 +772,9 @@
     /* ============================================================
        ■ ここから下は動作の仕組みです（通常は変更不要）
        ============================================================ */
+    /* 画像を置いてあるフォルダ。index.html から見た場所を書きます。 */
+    const IMG_BASE = 'images/';
+
     const $ = (id) => document.getElementById(id);
     const MARK = ['①','②','③','④','⑤','⑥'];
     const NEW_DISEASE = '__new__';
@@ -571,7 +782,7 @@
     const state = {
       selected: new Set(QUIZ_DATA.map(d => d.id)),
       count: 10, mode: 'instant',
-      queue: [], index: 0, results: [], locked: false, picked: null,
+      queue: [], index: 0, results: [], locked: false, picked: [],
       editing: null   // {diseaseId, qIndex} 編集中の問題
     };
 
@@ -583,6 +794,18 @@
       }
       return a;
     };
+    /* ファイル名だけなら画像フォルダを頭に付けます（http… や / を含む指定はそのまま） */
+    const imgURL = (v) => {
+      const name = String(v == null ? '' : v).trim();
+      if (!name) return '';
+      if (/^(https?:)?\/\//.test(name) || name.indexOf('/') >= 0) return name;
+      return IMG_BASE + encodeURIComponent(name);
+    };
+    const toArr = (a) => Array.isArray(a) ? a.slice() : [a];
+    const marks = (list) => list.slice().sort((x, y) => x - y).map(i => MARK[i]).join(' ');
+    const isCorrect = (picked, answers) =>
+      picked.length === answers.length && picked.every(i => answers.indexOf(i) >= 0);
+    const nextLabel = () => (state.index === state.queue.length - 1) ? '結果を見る' : '次の問題へ';
     const esc = (s) => String(s == null ? '' : s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -647,7 +870,7 @@
     function updateAvail() {
       const n = pool().length;
       $('nq-start').disabled = n === 0;
-      if (n === 0) { $('nq-avail').textContent = '疾患を1つ以上選んでください。'; return; }
+      if (n === 0) { $('nq-avail').textContent = 'カテゴリーを1つ以上選んでください。'; return; }
       const need = state.count === 0 ? n : state.count;
       $('nq-avail').textContent = (state.count !== 0 && n < state.count)
         ? '選択中の問題は' + n + '問です。全' + n + '問を出題します。'
@@ -672,7 +895,7 @@
           img: item.data.img || '', imgAlt: item.data.imgAlt || '',
           explain: item.data.explain,
           choices: order.map(i => item.data.choices[i]),
-          answer: order.indexOf(item.data.answer)
+          answers: toArr(item.data.answer).map(a => order.indexOf(a)).sort((x, y) => x - y)
         };
       });
       state.index = 0; state.results = [];
@@ -682,22 +905,27 @@
 
     function renderQuestion() {
       const q = state.queue[state.index];
-      state.locked = false; state.picked = null;
+      state.locked = false; state.picked = [];
+      const need = q.answers.length;
 
       $('nq-counter').textContent = (state.index + 1) + ' / ' + state.queue.length;
       $('nq-progress-fill').style.width = (state.index / state.queue.length * 100) + '%';
-      $('nq-disease-tag').textContent = q.diseaseName;
       $('nq-question').textContent = q.question;
       $('nq-feedback').classList.add('nq-hidden');
       $('nq-next').disabled = true;
-      $('nq-next').textContent = (state.index === state.queue.length - 1) ? '結果を見る' : '次の問題へ';
+      $('nq-next').textContent = (state.mode === 'instant' && need > 1) ? '解答する' : nextLabel();
+
+      /* 「2つ選べ」の指示は正解の数から自動表示 */
+      const multi = $('nq-multi');
+      if (need > 1) { multi.textContent = need + 'つ選べ'; multi.classList.remove('nq-hidden'); }
+      else { multi.classList.add('nq-hidden'); }
       $('nq-live-score').textContent = (state.mode === 'instant' && state.results.length)
         ? '正解 ' + state.results.filter(r => r.correct).length + ' / ' + state.results.length : '';
 
       /* 画像は登録があるときだけ表示 */
       const img = $('nq-qimg');
       if (q.img) {
-        img.src = q.img;
+        img.src = imgURL(q.img);
         img.alt = q.imgAlt || '問題の画像';
         img.classList.remove('nq-hidden');
         img.onerror = () => img.classList.add('nq-hidden');
@@ -722,37 +950,62 @@
 
     function pick(i) {
       const q = state.queue[state.index];
+      const need = q.answers.length;
       const buttons = Array.from($('nq-choices').querySelectorAll('.nq-choice'));
-
-      if (state.mode === 'later') {
-        state.picked = i;
-        buttons.forEach((b, k) => b.classList.toggle('is-picked', k === i));
-        $('nq-next').disabled = false;
-        return;
-      }
       if (state.locked) return;
-      state.locked = true; state.picked = i;
-      const correct = (i === q.answer);
+
+      if (need === 1) {
+        state.picked = [i];
+      } else {
+        const at = state.picked.indexOf(i);
+        if (at >= 0) state.picked.splice(at, 1);
+        else if (state.picked.length < need) state.picked.push(i);
+        else return;   /* 指定数を超えては選べない */
+      }
+      buttons.forEach((b, k) => b.classList.toggle('is-picked', state.picked.indexOf(k) >= 0));
+
+      /* 1つだけ選ぶ問題で「1問ごとに正誤を表示」なら即採点 */
+      if (state.mode === 'instant' && need === 1) { grade(); return; }
+      $('nq-next').disabled = (state.picked.length !== need);
+    }
+
+    function grade() {
+      const q = state.queue[state.index];
+      const buttons = Array.from($('nq-choices').querySelectorAll('.nq-choice'));
+      state.locked = true;
+      const correct = isCorrect(state.picked, q.answers);
+
       buttons.forEach((b, k) => {
         b.disabled = true;
-        if (k === q.answer) b.classList.add('is-correct');
-        else if (k === i) b.classList.add('is-wrong');
+        b.classList.remove('is-picked');
+        if (q.answers.indexOf(k) >= 0) b.classList.add('is-correct');
+        else if (state.picked.indexOf(k) >= 0) b.classList.add('is-wrong');
       });
       const fb = $('nq-feedback');
       fb.classList.remove('nq-hidden','is-correct','is-wrong');
       fb.classList.add(correct ? 'is-correct' : 'is-wrong');
-      $('nq-verdict').textContent = correct ? '正解' : '不正解　正解は ' + MARK[q.answer];
+      $('nq-fb-tag').textContent = q.diseaseName;
+      $('nq-verdict').textContent = correct ? '正解' : '不正解　正解は ' + marks(q.answers);
       $('nq-explain').textContent = q.explain;
+      $('nq-next').textContent = nextLabel();
       $('nq-next').disabled = false;
+    }
+
+    /* ボタンは「解答する」→「次の問題へ」の順に役割が変わります */
+    function onMain() {
+      const q = state.queue[state.index];
+      if (state.mode === 'instant' && q.answers.length > 1 && !state.locked) { grade(); return; }
+      next();
     }
 
     function next() {
       const q = state.queue[state.index];
-      if (state.picked === null) return;
+      if (state.picked.length !== q.answers.length) return;
       state.results.push({
         diseaseId: q.diseaseId, diseaseName: q.diseaseName, question: q.question,
-        img: q.img, imgAlt: q.imgAlt, choices: q.choices, answer: q.answer,
-        picked: state.picked, correct: state.picked === q.answer, explain: q.explain
+        img: q.img, imgAlt: q.imgAlt, choices: q.choices, answers: q.answers,
+        picked: state.picked.slice().sort((x, y) => x - y),
+        correct: isCorrect(state.picked, q.answers), explain: q.explain
       });
       state.index++;
       if (state.index >= state.queue.length) renderResult();
@@ -808,9 +1061,11 @@
             '<span>' + (i + 1) + '. [' + esc(r.diseaseName) + '] ' + esc(r.question) + '</span>' +
           '</button>' +
           '<div class="nq-rev-body nq-hidden" id="' + bodyId + '">' +
-            (r.img ? '<img src="' + esc(r.img) + '" alt="' + esc(r.imgAlt) + '">' : '') +
-            '<p style="margin:0 0 6px;">正解：<b>' + MARK[r.answer] + ' ' + esc(r.choices[r.answer]) + '</b>' +
-            (r.correct ? '' : '　／　あなたの解答：' + MARK[r.picked] + ' ' + esc(r.choices[r.picked])) + '</p>' +
+            (r.img ? '<img src="' + esc(imgURL(r.img)) + '" alt="' + esc(r.imgAlt) + '">' : '') +
+            '<p style="margin:0 0 6px;">正解：<b>' +
+              r.answers.map(i => MARK[i] + ' ' + esc(r.choices[i])).join('　') + '</b>' +
+            (r.correct ? '' : '　／　あなたの解答：' +
+              r.picked.map(i => MARK[i] + ' ' + esc(r.choices[i])).join('　')) + '</p>' +
             '<p style="margin:0;">' + esc(r.explain) + '</p>' +
           '</div>';
         const head = item.querySelector('.nq-rev-head');
@@ -834,7 +1089,7 @@
         sel.appendChild(o);
       });
       const o = document.createElement('option');
-      o.value = NEW_DISEASE; o.textContent = '＋ 新しい疾患を追加';
+      o.value = NEW_DISEASE; o.textContent = '＋ 新しいカテゴリーを追加';
       sel.appendChild(o);
       if (cur) sel.value = cur;
       toggleNewDisease();
@@ -853,15 +1108,14 @@
         const row = document.createElement('div');
         row.className = 'nq-ans-row';
         row.innerHTML =
-          '<label class="nq-ans-pick"><input type="radio" name="nq-f-answer" value="' + i + '"><span>正解</span></label>' +
+          '<label class="nq-ans-pick"><input type="checkbox" name="nq-f-answer" value="' + i + '"><span>正解</span></label>' +
           '<span class="nq-ans-num">' + MARK[i] + '</span>' +
           '<input type="text" class="nq-input" data-choice="' + i + '" placeholder="選択肢' + MARK[i] + 'の文章">';
         wrap.appendChild(row);
       }
       wrap.querySelectorAll('input[name="nq-f-answer"]').forEach(r => {
         r.addEventListener('change', () => {
-          wrap.querySelectorAll('.nq-ans-pick').forEach(p => p.classList.remove('is-on'));
-          if (r.checked) r.closest('.nq-ans-pick').classList.add('is-on');
+          r.closest('.nq-ans-pick').classList.toggle('is-on', r.checked);
         });
       });
     }
@@ -889,14 +1143,17 @@
     }
 
     function updatePreview() {
-      const url = $('nq-f-img').value.trim();
+      const name = $('nq-f-img').value.trim();
       const box = $('nq-f-preview');
-      if (!url) { box.classList.add('nq-hidden'); box.innerHTML = ''; return; }
+      if (!name) { box.classList.add('nq-hidden'); box.innerHTML = ''; return; }
       box.classList.remove('nq-hidden');
       box.innerHTML = '<img alt="プレビュー">';
       const img = box.querySelector('img');
-      img.onerror = () => { box.innerHTML = '画像を読み込めませんでした。アドレスをご確認ください。'; };
-      img.src = url;
+      img.onerror = () => {
+        box.innerHTML = '「' + esc(IMG_BASE + name) + '」が見つかりませんでした。' +
+          'ファイル名の綴りと、大文字・小文字をご確認ください。';
+      };
+      img.src = imgURL(name);
     }
 
     function readForm() {
@@ -904,7 +1161,7 @@
       let diseaseId = sel, diseaseName = '';
       if (sel === NEW_DISEASE) {
         diseaseName = $('nq-f-newdisease').value.trim();
-        if (!diseaseName) return { error: '新しい疾患名を入力してください。' };
+        if (!diseaseName) return { error: '新しいカテゴリー名を入力してください。' };
         diseaseId = 'd' + Date.now().toString(36);
       }
       const q = $('nq-f-question').value.trim();
@@ -914,8 +1171,10 @@
       const choices = inputs.map(i => i.value.trim());
       if (choices.some(c => !c)) return { error: '選択肢を5つすべて入力してください。' };
 
-      const picked = $('nq-f-choices').querySelector('input[name="nq-f-answer"]:checked');
-      if (!picked) return { error: 'どれが正解かを選んでください。' };
+      const picked = Array.from($('nq-f-choices').querySelectorAll('input[name="nq-f-answer"]:checked'))
+        .map(el => parseInt(el.value, 10)).sort((x, y) => x - y);
+      if (!picked.length) return { error: 'どれが正解かを選んでください。' };
+      if (picked.length >= 5) return { error: '正解は4つまでにしてください。' };
 
       const explain = $('nq-f-explain').value.trim();
       if (!explain) return { error: '解説文を入力してください。' };
@@ -927,7 +1186,7 @@
           img: $('nq-f-img').value.trim(),
           imgAlt: $('nq-f-imgalt').value.trim(),
           choices: choices,
-          answer: parseInt(picked.value, 10),
+          answer: picked.length === 1 ? picked[0] : picked,
           explain: explain
         }
       };
@@ -957,10 +1216,12 @@
         }
         clearForm();
         formMsg('問題を更新しました。', true);
+        saveDraft();
       } else {
         disease.questions.push(data.question);
         clearForm();
         formMsg('「' + disease.name + '」に問題を追加しました。', true);
+        saveDraft();
       }
       buildDiseaseSelect(disease.id);
       renderList();
@@ -979,8 +1240,10 @@
       buildChoiceInputs();
       const inputs = $('nq-f-choices').querySelectorAll('input[data-choice]');
       q.choices.forEach((c, i) => { if (inputs[i]) inputs[i].value = c; });
-      const radio = $('nq-f-choices').querySelector('input[name="nq-f-answer"][value="' + q.answer + '"]');
-      if (radio) { radio.checked = true; radio.closest('.nq-ans-pick').classList.add('is-on'); }
+      toArr(q.answer).forEach(a => {
+        const box = $('nq-f-choices').querySelector('input[name="nq-f-answer"][value="' + a + '"]');
+        if (box) { box.checked = true; box.closest('.nq-ans-pick').classList.add('is-on'); }
+      });
       updatePreview();
 
       $('nq-form-title').textContent = '問題を編集する';
@@ -1000,13 +1263,14 @@
       if (state.editing && state.editing.diseaseId === diseaseId) clearForm();
       buildDiseaseSelect();
       renderList();
+      saveDraft();
     }
 
     function renderList() {
       const wrap = $('nq-list');
       wrap.innerHTML = '';
       const total = QUIZ_DATA.reduce((s, d) => s + d.questions.length, 0);
-      $('nq-list-count').textContent = '全' + QUIZ_DATA.length + '疾患・' + total + '問';
+      $('nq-list-count').textContent = '全' + QUIZ_DATA.length + 'カテゴリー・' + total + '問';
 
       if (!total) { wrap.innerHTML = '<p class="nq-empty">まだ問題がありません。上のフォームから追加してください。</p>'; return; }
 
@@ -1021,6 +1285,7 @@
           item.className = 'nq-list-item';
           item.innerHTML =
             '<span class="nq-list-text">' + (i + 1) + '. ' + esc(q.q) + '</span>' +
+            (toArr(q.answer).length > 1 ? '<span class="nq-pic">' + toArr(q.answer).length + 'つ選べ</span>' : '') +
             (q.img ? '<span class="nq-pic">画像あり</span>' : '') +
             '<span class="nq-list-btns">' +
               '<button type="button" class="nq-btn nq-btn-ghost nq-btn-sm" data-act="edit">編集</button>' +
@@ -1039,9 +1304,21 @@
       });
     }
 
-    /* ---------------- 書き出し／読み込み ---------------- */
-    function exportCode() {
-      const clean = QUIZ_DATA.map(d => ({
+    /* ---------------- 下書きの自動保存 ---------------- */
+    const DRAFT_KEY = 'neuroQuizDraft.v1';
+
+    /* localStorage が使えない環境でも止まらないようにしています */
+    function store(op, val) {
+      try {
+        if (op === 'get') return window.localStorage.getItem(DRAFT_KEY);
+        if (op === 'set') { window.localStorage.setItem(DRAFT_KEY, val); return 'ok'; }
+        if (op === 'del') { window.localStorage.removeItem(DRAFT_KEY); return 'ok'; }
+      } catch (e) { return null; }
+      return null;
+    }
+
+    function cleanData() {
+      return QUIZ_DATA.map(d => ({
         id: d.id, name: d.name,
         questions: d.questions.map(q => {
           const o = { q: q.q };
@@ -1050,7 +1327,47 @@
           return o;
         })
       }));
-      $('nq-code').value = 'let QUIZ_DATA = ' + JSON.stringify(clean, null, 2) + ';';
+    }
+
+    const stamp = (iso) => {
+      const d = iso ? new Date(iso) : new Date();
+      return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' +
+        ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    };
+
+    function saveDraft() {
+      const ok = store('set', JSON.stringify({ saved: new Date().toISOString(), data: cleanData() }));
+      $('nq-save-state').textContent = ok
+        ? '下書きを自動保存しました（' + stamp() + '）'
+        : 'この環境では下書きを保存できません。「コードで書き出す」で控えを取ってください。';
+    }
+
+    function checkDraft() {
+      const raw = store('get');
+      if (!raw) return;
+      try {
+        const draft = JSON.parse(raw);
+        if (!draft || !Array.isArray(draft.data) || !draft.data.length) return;
+        const n = draft.data.reduce((t, d) => t + d.questions.length, 0);
+        $('nq-draft-when').textContent = stamp(draft.saved) + '・全' + draft.data.length + 'カテゴリー' + n + '問';
+        $('nq-draft-box').classList.remove('nq-hidden');
+        $('nq-draft-load').onclick = () => {
+          QUIZ_DATA = draft.data;
+          state.selected = new Set(QUIZ_DATA.map(d => d.id));
+          clearForm(); buildDiseaseSelect(); renderList();
+          $('nq-draft-box').classList.add('nq-hidden');
+          formMsg('下書きを読み込みました。', true);
+        };
+        $('nq-draft-drop').onclick = () => {
+          store('del');
+          $('nq-draft-box').classList.add('nq-hidden');
+        };
+      } catch (e) { /* 壊れた下書きは無視します */ }
+    }
+
+    /* ---------------- 書き出し／読み込み ---------------- */
+    function exportCode() {
+      $('nq-code').value = 'let QUIZ_DATA = ' + JSON.stringify(cleanData(), null, 2) + ';';
       $('nq-io-msg').textContent = 'index.html の「let QUIZ_DATA = …];」の部分を、この内容で置き換えてください。';
     }
 
@@ -1065,8 +1382,8 @@
         QUIZ_DATA = parsed;
         state.selected = new Set(QUIZ_DATA.map(d => d.id));
         state.editing = null;
-        clearForm(); buildDiseaseSelect(); renderList();
-        $('nq-io-msg').textContent = '読み込みました。全' + QUIZ_DATA.length + '疾患です。';
+        clearForm(); buildDiseaseSelect(); renderList(); saveDraft();
+        $('nq-io-msg').textContent = '読み込みました。全' + QUIZ_DATA.length + 'カテゴリーです。';
       } catch (e) {
         $('nq-io-msg').textContent = '読み込めませんでした。書き出したときの形のまま貼り付けてください。';
       }
@@ -1089,6 +1406,8 @@
     updateAvail();
     buildChoiceInputs();
     buildDiseaseSelect();
+    $('nq-img-base').textContent = IMG_BASE;
+    checkDraft();
     renderList();
 
     $('nq-tab-play').addEventListener('click', () => switchTab('play'));
@@ -1108,7 +1427,7 @@
     });
 
     $('nq-start').addEventListener('click', start);
-    $('nq-next').addEventListener('click', next);
+    $('nq-next').addEventListener('click', onMain);
     $('nq-quit').addEventListener('click', () => showPane('nq-setup'));
     $('nq-retry').addEventListener('click', start);
     $('nq-back').addEventListener('click', () => showPane('nq-setup'));
@@ -1124,6 +1443,3 @@
   })();
   </script>
 </section>
-
-</body>
-</html>
