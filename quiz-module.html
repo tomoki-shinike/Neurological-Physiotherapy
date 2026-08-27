@@ -166,7 +166,10 @@
   .nq-feedback{margin-top:18px;border-radius:9px;padding:15px 17px;font-size:.98rem;border-left:4px solid var(--nq-primary);background:var(--nq-bg);}
   .nq-feedback.is-correct{border-left-color:var(--nq-correct);background:var(--nq-correct-bg);}
   .nq-feedback.is-wrong{border-left-color:var(--nq-wrong);background:var(--nq-wrong-bg);}
-  .nq-verdict{font-weight:800;margin:0 0 4px;}
+  .nq-verdict{font-weight:800;margin:0 0 8px;}
+  .nq-exp-line{display:block;margin-bottom:8px;}
+  .nq-exp-line:last-child{margin-bottom:0;}
+  .nq-exp-line.is-mark{padding-left:1.5em;text-indent:-1.5em;}
   .nq-feedback .nq-tag{background:rgba(255,255,255,.7);color:var(--nq-ink);margin-bottom:8px;}
   .nq-feedback p{margin:0;}
 
@@ -1725,6 +1728,15 @@
       if (/^(https?:)?\/\//.test(name) || name.indexOf('/') >= 0) return name;
       return IMG_BASE + encodeURIComponent(name);
     };
+    /* 解説を改行ごとに1行ずつ表示する。×や○で始まる行は字下げをそろえる */
+    const expHTML = (text) => String(text == null ? '' : text)
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line)
+      .map(line => '<span class="nq-exp-line' +
+        (/^[×○〇①②③④⑤]/.test(line) ? ' is-mark' : '') + '">' + esc(line) + '</span>')
+      .join('');
+
     const toArr = (a) => Array.isArray(a) ? a.slice() : [a];
     const marks = (list) => list.slice().sort((x, y) => x - y).map(i => MARK[i]).join(' ');
     const isCorrect = (picked, answers) =>
@@ -1910,7 +1922,7 @@
       fb.classList.add(correct ? 'is-correct' : 'is-wrong');
       $('nq-fb-tag').textContent = q.diseaseName;
       $('nq-verdict').textContent = correct ? '正解' : '不正解　正解は ' + marks(q.answers);
-      $('nq-explain').textContent = q.explain;
+      $('nq-explain').innerHTML = expHTML(q.explain);
       $('nq-next').textContent = nextLabel();
       $('nq-next').disabled = false;
     }
@@ -1990,7 +2002,7 @@
               r.answers.map(i => MARK[i] + ' ' + esc(r.choices[i])).join('　') + '</b>' +
             (r.correct ? '' : '　／　あなたの解答：' +
               r.picked.map(i => MARK[i] + ' ' + esc(r.choices[i])).join('　')) + '</p>' +
-            '<p style="margin:0;">' + esc(r.explain) + '</p>' +
+            '<p style="margin:0;">' + expHTML(r.explain) + '</p>' +
           '</div>';
         const head = item.querySelector('.nq-rev-head');
         const body = item.querySelector('.nq-rev-body');
