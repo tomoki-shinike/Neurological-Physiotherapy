@@ -2,14 +2,35 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<!-- ★この1行がスマホ表示の要です -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>疾患別 確認テスト（表示確認用）</title>
+<title>疾患別 確認テスト｜神経理学療法</title>
+<meta name="description" content="神経・筋障害の理学療法について、国家試験と同じ5択形式で確認できるテストです。">
 <style>
-  html,body{margin:0;padding:0;background:#f7f4ee;}
+  html{background:#f7f4ee;}
+  body{
+    margin:0;padding:0;background:#f7f4ee;
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
+  }
+  /* 上部の戻るリンク（リンク先は必要に応じて書き換えてください） */
+  .page-nav{max-width:840px;margin:0 auto;padding:18px 22px 0;}
+  .page-nav a{
+    display:inline-block;font-size:.9rem;font-weight:700;color:#2f4b7c;
+    text-decoration:none;padding:6px 0;
+  }
+  .page-nav a:hover{text-decoration:underline;}
+  .page-foot{
+    max-width:840px;margin:0 auto;padding:0 22px 40px;
+    font-size:.82rem;color:#4a4239;
+  }
+  @media (max-width:600px){
+    .page-nav{padding:14px 14px 0;}
+    .page-foot{padding:0 14px 32px;}
+  }
 </style>
 </head>
 <body>
+
+<nav class="page-nav"><a href="index.html">← 講義ページに戻る</a></nav>
 
 <!-- ============================================================
      神経理学療法 疾患別クイズモジュール ver.2
@@ -229,11 +250,12 @@
   .nq-alert.is-ok{background:var(--nq-correct-bg);color:var(--nq-correct);}
 
   .nq-list{display:grid;gap:8px;}
-  .nq-list-group{font-size:.88rem;font-weight:800;color:var(--nq-primary);margin:14px 0 2px;}
+  .nq-list-group{font-size:.88rem;font-weight:800;color:var(--nq-primary);margin:14px 0 2px;overflow-wrap:anywhere;}
   .nq-list-group:first-child{margin-top:0;}
   .nq-list-item{
     display:flex;align-items:center;gap:10px;border:1px solid var(--nq-line);
     border-radius:8px;padding:11px 13px;font-size:.95rem;
+    min-width:0;overflow:hidden;
   }
   .nq-list-text{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .nq-pic{font-size:.74rem;font-weight:700;background:var(--nq-bg);color:var(--nq-sub);border-radius:4px;padding:2px 6px;flex:0 0 auto;}
@@ -243,7 +265,7 @@
   .nq-code{
     width:100%;min-height:150px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     font-size:.82rem;line-height:1.6;border:1px solid var(--nq-line);border-radius:8px;padding:12px;
-    background:#fbf8f1;color:var(--nq-ink);resize:vertical;
+    background:#fbf8f1;max-width:100%;white-space:pre;overflow:auto;color:var(--nq-ink);resize:vertical;
   }
 
   @media (max-width:600px){
@@ -257,6 +279,10 @@
     .nq-choice{font-size:1.08rem;padding:15px 14px;}
     .nq-feedback{font-size:1.02rem;}
     .nq-score-num{font-size:2.6rem;}
+    .nq-list-item{flex-wrap:wrap;row-gap:8px;}
+    .nq-list-text{flex:1 1 100%;white-space:normal;overflow:visible;text-overflow:clip;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .nq-list-btns{margin-left:auto;}
     .nq-row2{grid-template-columns:1fr;}
     .nq-ans-row{grid-template-columns:auto 1fr;grid-template-areas:"pick pick" "num input";}
     .nq-ans-pick{grid-area:pick;justify-content:center;}
@@ -2342,6 +2368,8 @@
   </script>
 </section>
 
+
+<p class="page-foot">問題文および解説は学習用に作成したものです。内容は各自で最終確認してください。</p>
 
 </body>
 </html>
